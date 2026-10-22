@@ -1,0 +1,553 @@
+//@version=6
+// Cost/margin settings must be constants in Pine v6 (inputs are rejected here), so they live in 3 named consts.
+// Futures (NQ/MNQ/ES): MARGIN_PCT 5, COMM_PER_UNIT 0.70 ($ per contract per side).
+// The ETF variant (QQQ/SPY, see creamer_order_flow_etf.pine) swaps in MARGIN_PCT 25 (4x intraday) and $0.005/share.
+const float MARGIN_PCT    = 5.0
+const float COMM_PER_UNIT = 0.70
+const int   SLIP_TICKS    = 2
+strategy("Creamer Order Flow Reversal (NQ 5m)", shorttitle = "Creamer OF", overlay = true,
+     initial_capital = 50000, currency = currency.USD,
+     default_qty_type = strategy.fixed, default_qty_value = 1, pyramiding = 0,
+     margin_long = MARGIN_PCT, margin_short = MARGIN_PCT,
+     commission_type = strategy.commission.cash_per_contract, commission_value = COMM_PER_UNIT,
+     slippage = SLIP_TICKS, calc_on_every_tick = false, process_orders_on_close = false)
+
+// ════════════════════════════════════════════════════════════════════════════
+//  Chris Creamer order-flow reversal ("wait for one side to try and fail")
+//  Step 1 TREND     : yesterday's value area vs the day before (rising -> longs only, falling -> shorts only)
+//  Step 2 LOCATION  : 0.705 / 0.786 / 0.886 Fib retrace of the last swing, zone must sit OUTSIDE the value area
+//  Step 3 CONFIRM   : (A) absorption bar in the zone: heavy opposite delta in the wick, bar closes our way
+//                     (B) next bar retests but makes a higher low (lower high) and flips back with delta + imbalance
+//  Step 4 EXECUTION : stop beyond the failed-retest extreme, 1.5R target, BE/exit if price cannot get back into the VA
+//  Filters          : 5m bar volume >= floor (relative to opening-bar volume, so it works on NQ/ES/MNQ), first 90 minutes
+//                     of the NY open only, max 2 trades/day. Built for the 5m chart - the info table warns otherwise.
+//  NOTE: true footprint delta is NOT available in Pine. Two proxies: (1) 1m-intrabar CLV volume split (TradingView only
+//        keeps ~half the 7-month history for this), (2) bar wick x volume (full history). GEX/walls are MANUAL inputs.
+//  A "Signal funnel" table (middle-right) counts how many bars survive each filter, to show where setups die.
+// ════════════════════════════════════════════════════════════════════════════
+
+const string TZ = "America/New_York"
+const string G1 = "1 · Session & filters"
+const string G2 = "2 · Value area / trend"
+const string G3 = "3 · Fib discount-premium zone"
+const string G4 = "4 · Order-flow confirmation (proxy)"
+const string G5 = "5 · Risk & exits"
+const string G6 = "6 · Manual gamma levels (optional, 0 = off)"
+
+// ── Inputs ──────────────────────────────────────────────────────────────────
+tradeSess = input.session("0930-1100", "Entry window (ET) - first 90 min of NY open", group = G1)
+flatSess  = input.session("1550-1800", "Force-flat window (ET)", group = G1)
+minVol    = input.int(20000, "Absolute mode: min volume per signal bar (video: MNQ 5m >= 20k)", minval = 0, group = G1)
+maxTrades = input.int(2, "Max trades per day", minval = 1, group = G1)
+maxHold   = input.int(24, "Max bars in trade", minval = 1, group = G1)
+
+profSess  = input.session("0930-1600", "Value-area session (ET)", group = G2)
+vaPct     = input.float(70.0, "Value-area %", minval = 50.0, maxval = 95.0, group = G2)
+bucketTks = input.int(10, "Profile bucket (ticks)", minval = 1, group = G2)
+trendRule = input.string("Both edges", "Trend rule (yesterday vs day before)", options = ["Both edges", "POC only"], group = G2)
+zoneRule  = input.string("Zone mid outside VA", "Fib zone vs yesterday's VA", options = ["Zone mid outside VA", "Whole zone outside VA", "Off"], group = G2)
+
+swingLen    = input.int(3, "Swing pivot length (bars each side)", minval = 1, group = G3)
+minSwingAtr = input.float(2.0, "Min swing size (x ATR14)", minval = 0.0, step = 0.5, group = G3)
+fibTop      = input.float(0.705, "Zone edge near swing extreme", group = G3)
+fibMid      = input.float(0.786, "Zone mid", group = G3)
+fibBot      = input.float(0.886, "Zone invalidation edge", group = G3)
+
+ltf         = input.timeframe("1", "Intrabar timeframe (intrabar proxy only)", group = G4)
+absorbMult  = input.float(0.5, "Wick delta >= x * avg |bar delta|", minval = 0.0, step = 0.1, group = G4)
+minWickPct  = input.float(0.2, "Min wick as fraction of bar range", minval = 0.0, maxval = 1.0, step = 0.05, group = G4)
+needPoc     = input.bool(false, "Require max-volume intrabar inside the wick", group = G4)
+imbRatio    = input.float(1.2, "Confirm bar buy/sell volume ratio", minval = 1.0, step = 0.05, group = G4)
+confirmWin  = input.int(1, "Bars allowed for the confirm candle", minval = 1, maxval = 3, group = G4)
+deltaMode   = input.string("Bar wick x volume", "Delta proxy", options = ["Bar wick x volume", "Intrabar 1m CLV split"], group = G4)
+
+riskPct     = input.float(1.0, "Risk per trade (% equity)", minval = 0.1, step = 0.1, group = G5)
+maxQty      = input.int(10, "Max contracts", minval = 1, group = G5)
+stopBufTks  = input.int(8, "Stop buffer beyond retest extreme (ticks)", minval = 0, group = G5)
+maxStopAtr  = input.float(3.0, "Skip if stop distance > x ATR14", minval = 0.5, step = 0.5, group = G5)
+rr          = input.float(1.5, "Target R multiple", minval = 0.5, step = 0.25, group = G5)
+tpMode      = input.string("Fixed RR", "Target mode", options = ["Fixed RR", "Structure (POC/swing/wall) else RR"], group = G5)
+minStructRR = input.float(1.0, "Structure target min R", minval = 0.5, step = 0.25, group = G5)
+vaBars      = input.int(6, "Bars allowed to get back into the VA", minval = 1, group = G5)
+vaFailAct   = input.string("Breakeven", "If price cannot return to the VA", options = ["Breakeven", "Exit", "Off"], group = G5)
+trailOn     = input.bool(false, "Trail stop after +1R", group = G5)
+trailBars   = input.int(2, "Trail: lowest low / highest high of N bars", minval = 1, group = G5)
+
+zeroGamma = input.float(0.0, "Zero-gamma line", group = G6)
+callWall  = input.float(0.0, "Call wall", group = G6)
+putWall   = input.float(0.0, "Put wall", group = G6)
+
+// appended last so existing input ids (in_0..in_34) never shift; shown under group 1
+volMode   = input.string("Relative to opening-bar volume", "Volume filter mode", options = ["Relative to opening-bar volume", "Absolute (contracts)"], group = G1, tooltip = "The video's 20k floor is for MICRO Nasdaq (MNQ). Full NQ prints several times fewer contracts per bar, so an absolute 20k blocks every NQ trade. Relative mode scales the floor to the symbol.")
+volMult   = input.float(0.4, "Relative mode: floor = x * avg opening-bar volume", minval = 0.0, step = 0.05, group = G1, tooltip = "Video: opening 5m bar is usually 50k+ on MNQ and the floor is 20k, i.e. about 0.4x.")
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
+calcVA(map<int, float> m, float pct, float bk) =>
+    array<int> keys = m.keys()
+    keys.sort()
+    int n = keys.size()
+    float hiPx = na
+    float loPx = na
+    float pocPx = na
+    if n > 0
+        array<float> vols = array.new<float>(n, 0.0)
+        float tot = 0.0
+        float mx = -1.0
+        int pocI = 0
+        for i = 0 to n - 1
+            float v = nz(m.get(keys.get(i)))
+            vols.set(i, v)
+            tot += v
+            if v > mx
+                mx := v
+                pocI := i
+        float acc = mx
+        int lo = pocI
+        int hi = pocI
+        while acc < tot * pct and (lo > 0 or hi < n - 1)
+            float upV = hi < n - 1 ? vols.get(hi + 1) : -1.0
+            float dnV = lo > 0 ? vols.get(lo - 1) : -1.0
+            if upV >= dnV
+                hi += 1
+                acc += upV
+            else
+                lo -= 1
+                acc += dnV
+        pocPx := keys.get(pocI) * bk + bk * 0.5
+        hiPx := keys.get(hi) * bk + bk
+        loPx := keys.get(lo) * bk
+    [hiPx, loPx, pocPx]
+
+calcQty(float entryPx, float stopPx, float riskPctIn, int maxQtyIn) =>
+    float perContract = math.abs(entryPx - stopPx) * syminfo.pointvalue
+    float riskCash = strategy.equity * riskPctIn / 100.0
+    int q = perContract > 0 ? int(math.floor(riskCash / perContract)) : 1
+    // never ask for more than the margin can carry (TradingView silently drops such orders); 0 = skip the trade
+    float marginPerUnit = entryPx * syminfo.pointvalue * MARGIN_PCT / 100.0
+    // 10% buffer: sizing exactly at the limit triggers a forced "Margin call" liquidation after slippage/commission
+    int qMargin = marginPerUnit > 0 ? int(math.floor(0.9 * strategy.equity / marginPerUnit)) : q
+    math.max(0, math.min(maxQtyIn, math.min(math.max(1, q), qMargin)))
+
+pickTarget(bool isLong, float e, float r, float minR, float c1, float c2, float c3) =>
+    float best = na
+    float need = e + (isLong ? 1.0 : -1.0) * minR * r
+    array<float> cs = array.from(c1, c2, c3)
+    for i = 0 to 2
+        float c = cs.get(i)
+        if not na(c)
+            bool ok = isLong ? c >= need : c <= need
+            if ok
+                best := na(best) ? c : (isLong ? math.min(best, c) : math.max(best, c))
+    best
+
+// ── Time state ──────────────────────────────────────────────────────────────
+inTrade    = not na(time(timeframe.period, tradeSess, TZ))
+inFlat     = not na(time(timeframe.period, flatSess, TZ))
+inProf     = not na(time(timeframe.period, profSess, TZ))
+tradeStart = inTrade and not inTrade[1]
+int nyDate = year(time, TZ) * 10000 + month(time, TZ) * 100 + dayofmonth(time, TZ)
+// session ended = previous bar was in-session and this bar is out of session OR on a new NY date
+// (RTH-only charts such as QQQ/SPY have no out-of-session bar, so the date change is the only signal)
+profEnd    = inProf[1] and (not inProf or nyDate != nyDate[1])
+atr14      = ta.atr(14)
+
+// Volume floor: absolute contracts (MNQ) or a fraction of the symbol's own average opening-bar volume (any symbol)
+var float openAvg = na
+if tradeStart
+    openAvg := na(openAvg) ? volume : openAvg + (volume - openAvg) / 20.0
+float volThr = volMode == "Absolute (contracts)" ? float(minVol) : (na(openAvg) ? na : volMult * openAvg)
+bool volOK = not na(volThr) and volume >= volThr
+
+// ── Daily value-area profile (volume spread across each bar's range) ────────
+bkt = syminfo.mintick * bucketTks
+var map<int, float> prof = map.new<int, float>()
+var int profBars = 0
+var float vaHi1 = na
+var float vaLo1 = na
+var float poc1  = na
+var float vaHi2 = na
+var float vaLo2 = na
+var float poc2  = na
+
+// need ~64% of a regular 390-minute session (50 of 78 bars on 5m) so half-days are skipped on any timeframe
+int minProfBars = math.max(5, int(math.ceil(0.64 * 390 * 60 / timeframe.in_seconds())))
+
+// finalize yesterday's profile FIRST (before today's first bar is added to the map)
+if profEnd
+    if profBars >= minProfBars
+        [h_, l_, p_] = calcVA(prof, vaPct / 100.0, bkt)
+        if not na(p_)
+            vaHi2 := vaHi1
+            vaLo2 := vaLo1
+            poc2  := poc1
+            vaHi1 := h_
+            vaLo1 := l_
+            poc1  := p_
+    prof.clear()
+    profBars := 0
+
+if inProf
+    int kLo = math.floor(low / bkt)
+    int kHi = math.floor(high / bkt)
+    float share = volume / (kHi - kLo + 1)
+    for k = kLo to kHi
+        prof.put(k, nz(prof.get(k)) + share)
+    profBars += 1
+
+bool trendUp   = trendRule == "Both edges" ? (vaHi1 > vaHi2 and vaLo1 > vaLo2) : (poc1 > poc2)
+bool trendDown = trendRule == "Both edges" ? (vaHi1 < vaHi2 and vaLo1 < vaLo2) : (poc1 < poc2)
+
+// ── Swing legs ──────────────────────────────────────────────────────────────
+ph = ta.pivothigh(high, swingLen, swingLen)
+pl = ta.pivotlow(low, swingLen, swingLen)
+lowSincePivot  = ta.lowest(low, swingLen + 1)
+highSincePivot = ta.highest(high, swingLen + 1)
+
+var float lastPH = na
+var float lastPL = na
+var int lastPHbar = na
+var int lastPLbar = na
+var float minSincePH = na
+var float maxSincePL = na
+
+if not na(ph)
+    lastPH := ph
+    lastPHbar := bar_index - swingLen
+    minSincePH := lowSincePivot
+else
+    minSincePH := math.min(minSincePH, low)
+if not na(pl)
+    lastPL := pl
+    lastPLbar := bar_index - swingLen
+    maxSincePL := highSincePivot
+else
+    maxSincePL := math.max(maxSincePL, high)
+
+bool swingUp   = not na(lastPH) and not na(lastPL) and lastPHbar > lastPLbar
+bool swingDown = not na(lastPH) and not na(lastPL) and lastPLbar > lastPHbar
+float swRange  = lastPH - lastPL
+
+// long: retrace down from the swing high; short: retrace up from the swing low
+float zTopL = lastPH - fibTop * swRange
+float zMidL = lastPH - fibMid * swRange
+float zBotL = lastPH - fibBot * swRange
+float zBotS = lastPL + fibTop * swRange
+float zMidS = lastPL + fibMid * swRange
+float zTopS = lastPL + fibBot * swRange
+
+bool zoneOkL = zoneRule == "Off" ? true : (zoneRule == "Whole zone outside VA" ? zTopL < vaLo1 : zMidL < vaLo1)
+bool zoneOkS = zoneRule == "Off" ? true : (zoneRule == "Whole zone outside VA" ? zBotS > vaHi1 : zMidS > vaHi1)
+
+bool bigSwing  = swRange >= minSwingAtr * atr14
+bool longSetup  = trendUp and swingUp and bigSwing and zoneOkL and minSincePH >= zBotL
+bool shortSetup = trendDown and swingDown and bigSwing and zoneOkS and maxSincePL <= zTopS
+
+// ── Bar geometry ────────────────────────────────────────────────────────────
+float bodyTop    = math.max(open, close)
+float bodyBot    = math.min(open, close)
+float rngBar     = high - low
+float lowWickPct = rngBar > 0 ? (bodyBot - low) / rngBar : 0.0
+float upWickPct  = rngBar > 0 ? (high - bodyTop) / rngBar : 0.0
+
+// ── Delta proxy ─────────────────────────────────────────────────────────────
+bool useIntra = deltaMode == "Intrabar 1m CLV split"
+bool ltfOK = timeframe.in_seconds(ltf) < timeframe.in_seconds()
+// only request intrabars when that mode is selected (it is heavy, and TradingView caps intrabar history)
+array<float> loA = array.new_float()
+array<float> hiA = array.new_float()
+array<float> clA = array.new_float()
+array<float> voA = array.new_float()
+if useIntra and ltfOK
+    [lo_, hi_, cl_, vo_] = request.security_lower_tf(syminfo.tickerid, ltf, [low, high, close, volume], ignore_invalid_timeframe = true)
+    loA := lo_
+    hiA := hi_
+    clA := cl_
+    voA := vo_
+
+float buyV = 0.0
+float sellV = 0.0
+float wDeltaLo = 0.0
+float wDeltaHi = 0.0
+float maxIV = 0.0
+float maxIMid = na
+int nI = ltfOK ? voA.size() : 0
+if useIntra
+    if nI >= 2
+        for i = 0 to nI - 1
+            float h1 = nz(hiA.get(i))
+            float l1 = nz(loA.get(i))
+            float c1 = nz(clA.get(i))
+            float v1 = nz(voA.get(i))
+            float rg = h1 - l1
+            float d1 = rg > 0 ? v1 * ((c1 - l1) - (h1 - c1)) / rg : 0.0
+            float mid = (h1 + l1) / 2.0
+            buyV += (v1 + d1) / 2.0
+            sellV += (v1 - d1) / 2.0
+            if mid < bodyBot
+                wDeltaLo += d1
+            if mid > bodyTop
+                wDeltaHi += d1
+            if v1 > maxIV
+                maxIV := v1
+                maxIMid := mid
+else
+    if rngBar > 0
+        buyV := volume * (close - low) / rngBar
+        sellV := volume - buyV
+        wDeltaLo := -volume * lowWickPct
+        wDeltaHi := volume * upWickPct
+        maxIMid := lowWickPct >= 0.35 ? low : (upWickPct >= 0.35 ? high : (high + low) / 2.0)
+bool haveIntra = useIntra ? nI >= 2 : rngBar > 0
+
+float avgAbsD    = ta.sma(math.abs(buyV - sellV), 50)
+bool pocLowWick  = haveIntra and maxIMid < bodyBot
+bool pocUpWick   = haveIntra and maxIMid > bodyTop
+
+// ── Strategy state ──────────────────────────────────────────────────────────
+var int tradesToday = 0
+if tradeStart
+    tradesToday := 0
+
+var bool armedL = false
+var int aBarL = na
+var float aLowL = na
+var float aCloseL = na
+var float aZoneBotL = na
+var float aSwHighL = na
+
+var bool armedS = false
+var int aBarS = na
+var float aHighS = na
+var float aCloseS = na
+var float aZoneTopS = na
+var float aSwLowS = na
+
+var float dbgQty = na
+var float dbgDist = na
+var float dbgPx = na
+var float stopInit = na
+var float tpInit = na
+var bool reachedVA = false
+
+// funnel counters (diagnostics)
+var int cSess = 0
+var int cIntra = 0
+var int cTrend = 0
+var int cSetup = 0
+var int cVolOk = 0
+var int cZone = 0
+var int cWick = 0
+var int cDelta = 0
+var int cAbsorb = 0
+var int cTry = 0
+var int cDir = 0
+var int cHL = 0
+var int cDip = 0
+var int cImb = 0
+var int cEntry = 0
+
+bool baseOK = inTrade and strategy.position_size == 0 and tradesToday < maxTrades and haveIntra and volOK
+
+// ── Step 3b: confirm candle (evaluated BEFORE a new absorption bar can overwrite state) ──
+if baseOK and armedL and bar_index > aBarL and bar_index <= aBarL + confirmWin
+    bool b1 = close > open
+    bool b2 = b1 and low > aLowL
+    bool b3 = b2 and low < aCloseL
+    bool b4 = b3 and buyV >= imbRatio * sellV
+    cTry += 1
+    cDir += b1 ? 1 : 0
+    cHL += b2 ? 1 : 0
+    cDip += b3 ? 1 : 0
+    cImb += b4 ? 1 : 0
+    bool bOK = trendUp and b4 and low >= aZoneBotL
+    if bOK
+        float stopPx = low - stopBufTks * syminfo.mintick
+        float dist = close - stopPx
+        if dist > 0 and dist <= maxStopAtr * atr14
+            float tp = close + rr * dist
+            if tpMode != "Fixed RR"
+                float cand = pickTarget(true, close, dist, minStructRR, poc1, aSwHighL, callWall > 0 ? callWall : na)
+                tp := na(cand) ? tp : cand
+            int q = calcQty(close, stopPx, riskPct, maxQty)
+            if q >= 1
+                dbgQty := q
+                dbgDist := dist
+                dbgPx := close
+                strategy.entry("L", strategy.long, qty = q, comment = "L")
+                strategy.exit("XL", from_entry = "L", stop = stopPx, limit = tp)
+                stopInit := stopPx
+                tpInit := tp
+                reachedVA := false
+                tradesToday += 1
+                cEntry += 1
+                armedL := false
+
+if baseOK and armedS and bar_index > aBarS and bar_index <= aBarS + confirmWin
+    bool b1 = close < open
+    bool b2 = b1 and high < aHighS
+    bool b3 = b2 and high > aCloseS
+    bool b4 = b3 and sellV >= imbRatio * buyV
+    cTry += 1
+    cDir += b1 ? 1 : 0
+    cHL += b2 ? 1 : 0
+    cDip += b3 ? 1 : 0
+    cImb += b4 ? 1 : 0
+    bool bOK = trendDown and b4 and high <= aZoneTopS
+    if bOK
+        float stopPx = high + stopBufTks * syminfo.mintick
+        float dist = stopPx - close
+        if dist > 0 and dist <= maxStopAtr * atr14
+            float tp = close - rr * dist
+            if tpMode != "Fixed RR"
+                float cand = pickTarget(false, close, dist, minStructRR, poc1, aSwLowS, putWall > 0 ? putWall : na)
+                tp := na(cand) ? tp : cand
+            int q = calcQty(close, stopPx, riskPct, maxQty)
+            if q >= 1
+                dbgQty := q
+                dbgDist := dist
+                dbgPx := close
+                strategy.entry("S", strategy.short, qty = q, comment = "S")
+                strategy.exit("XS", from_entry = "S", stop = stopPx, limit = tp)
+                stopInit := stopPx
+                tpInit := tp
+                reachedVA := false
+                tradesToday += 1
+                cEntry += 1
+                armedS := false
+
+// ── Step 3a: absorption bar in the zone ─────────────────────────────────────
+bool absorbL = longSetup and inTrade and haveIntra and volOK and close > open and low <= zTopL and low >= zBotL and lowWickPct >= minWickPct and wDeltaLo <= -absorbMult * avgAbsD and (not needPoc or pocLowWick)
+bool absorbS = shortSetup and inTrade and haveIntra and volOK and close < open and high >= zBotS and high <= zTopS and upWickPct >= minWickPct and wDeltaHi >= absorbMult * avgAbsD and (not needPoc or pocUpWick)
+
+// funnel: sequential gates so each row is a subset of the one above
+bool zL = low <= zTopL and low >= zBotL
+bool zS = high >= zBotS and high <= zTopS
+bool g1 = inTrade
+bool g2 = g1 and (trendUp or trendDown)
+bool g3 = g2 and (longSetup or shortSetup)
+bool g4 = g3 and haveIntra and volOK
+bool g5 = g4 and ((longSetup and zL and close > open) or (shortSetup and zS and close < open))
+bool g6 = g5 and ((longSetup and lowWickPct >= minWickPct) or (shortSetup and upWickPct >= minWickPct))
+bool g7 = g6 and ((longSetup and wDeltaLo <= -absorbMult * avgAbsD) or (shortSetup and wDeltaHi >= absorbMult * avgAbsD))
+cSess += g1 ? 1 : 0
+cIntra += (g1 and haveIntra) ? 1 : 0
+cTrend += g2 ? 1 : 0
+cSetup += g3 ? 1 : 0
+cVolOk += g4 ? 1 : 0
+cZone += g5 ? 1 : 0
+cWick += g6 ? 1 : 0
+cDelta += g7 ? 1 : 0
+cAbsorb += (absorbL or absorbS) ? 1 : 0
+
+if absorbL
+    armedL := true
+    aBarL := bar_index
+    aLowL := low
+    aCloseL := close
+    aZoneBotL := zBotL
+    aSwHighL := lastPH
+if absorbS
+    armedS := true
+    aBarS := bar_index
+    aHighS := high
+    aCloseS := close
+    aZoneTopS := zTopS
+    aSwLowS := lastPL
+
+if armedL and bar_index > aBarL + confirmWin
+    armedL := false
+if armedS and bar_index > aBarS + confirmWin
+    armedS := false
+
+// ── Step 4: manage open positions ───────────────────────────────────────────
+trailLo = ta.lowest(low, trailBars)
+trailHi = ta.highest(high, trailBars)
+
+if strategy.position_size > 0
+    float ePx = strategy.opentrades.entry_price(0)
+    int eBar = strategy.opentrades.entry_bar_index(0)
+    float r0 = ePx - stopInit
+    int held = bar_index - eBar
+    if not na(vaLo1) and high >= vaLo1
+        reachedVA := true
+    float stopNow = stopInit
+    bool failVA = vaFailAct != "Off" and held >= vaBars and not reachedVA
+    if failVA and vaFailAct == "Breakeven"
+        stopNow := math.max(stopNow, ePx)
+    if trailOn and r0 > 0 and high >= ePx + r0
+        stopNow := math.max(stopNow, trailLo)
+    float tpNow = tpMode == "Fixed RR" ? ePx + rr * r0 : tpInit
+    strategy.exit("XL", from_entry = "L", stop = stopNow, limit = tpNow)
+    if failVA and vaFailAct == "Exit"
+        strategy.close("L", comment = "VA fail")
+    if inFlat or held >= maxHold
+        strategy.close("L", comment = "time")
+
+if strategy.position_size < 0
+    float ePx = strategy.opentrades.entry_price(0)
+    int eBar = strategy.opentrades.entry_bar_index(0)
+    float r0 = stopInit - ePx
+    int held = bar_index - eBar
+    if not na(vaHi1) and low <= vaHi1
+        reachedVA := true
+    float stopNow = stopInit
+    bool failVA = vaFailAct != "Off" and held >= vaBars and not reachedVA
+    if failVA and vaFailAct == "Breakeven"
+        stopNow := math.min(stopNow, ePx)
+    if trailOn and r0 > 0 and low <= ePx - r0
+        stopNow := math.min(stopNow, trailHi)
+    float tpNow = tpMode == "Fixed RR" ? ePx - rr * r0 : tpInit
+    strategy.exit("XS", from_entry = "S", stop = stopNow, limit = tpNow)
+    if failVA and vaFailAct == "Exit"
+        strategy.close("S", comment = "VA fail")
+    if inFlat or held >= maxHold
+        strategy.close("S", comment = "time")
+
+// ── Plots ───────────────────────────────────────────────────────────────────
+plot(vaHi1, "Yesterday VAH", color = color.new(color.blue, 20), style = plot.style_linebr)
+plot(vaLo1, "Yesterday VAL", color = color.new(color.blue, 20), style = plot.style_linebr)
+plot(poc1, "Yesterday POC", color = color.new(color.orange, 10), style = plot.style_linebr)
+plot(zeroGamma > 0 ? zeroGamma : na, "Zero gamma", color = color.purple, style = plot.style_linebr)
+plot(callWall > 0 ? callWall : na, "Call wall", color = color.red, style = plot.style_linebr)
+plot(putWall > 0 ? putWall : na, "Put wall", color = color.green, style = plot.style_linebr)
+
+pZL1 = plot(longSetup ? zTopL : na, "Long zone top", color = color.new(color.green, 70), style = plot.style_linebr)
+pZL2 = plot(longSetup ? zBotL : na, "Long zone bot", color = color.new(color.green, 70), style = plot.style_linebr)
+fill(pZL1, pZL2, color = color.new(color.green, 88), title = "Long fib zone")
+pZS1 = plot(shortSetup ? zTopS : na, "Short zone top", color = color.new(color.red, 70), style = plot.style_linebr)
+pZS2 = plot(shortSetup ? zBotS : na, "Short zone bot", color = color.new(color.red, 70), style = plot.style_linebr)
+fill(pZS1, pZS2, color = color.new(color.red, 88), title = "Short fib zone")
+
+plotshape(absorbL, "Absorption long", shape.triangleup, location.belowbar, color.new(color.teal, 0), size = size.tiny, text = "A")
+plotshape(absorbS, "Absorption short", shape.triangledown, location.abovebar, color.new(color.maroon, 0), size = size.tiny, text = "A")
+bgcolor(inTrade ? color.new(color.blue, 94) : na)
+
+// ── Info + funnel tables ────────────────────────────────────────────────────
+var table info = table.new(position.top_right, 2, 8, bgcolor = color.new(color.black, 25), frame_color = color.gray, frame_width = 1)
+var table fun = table.new(position.middle_right, 2, 15, bgcolor = color.new(color.black, 25), frame_color = color.gray, frame_width = 1)
+if barstate.islastconfirmedhistory or barstate.isrealtime
+    string trTxt = trendUp ? "UP (longs only)" : trendDown ? "DOWN (shorts only)" : "FLAT (no trades)"
+    table.cell(info, 0, 0, "Trend", text_color = color.white, text_size = size.small)
+    table.cell(info, 1, 0, trTxt, text_color = trendUp ? color.lime : trendDown ? color.red : color.gray, text_size = size.small)
+    table.cell(info, 0, 1, "Y VAH / VAL", text_color = color.white, text_size = size.small)
+    table.cell(info, 1, 1, str.tostring(vaHi1, format.mintick) + " / " + str.tostring(vaLo1, format.mintick), text_color = color.white, text_size = size.small)
+    table.cell(info, 0, 2, "Y POC", text_color = color.white, text_size = size.small)
+    table.cell(info, 1, 2, str.tostring(poc1, format.mintick), text_color = color.white, text_size = size.small)
+    table.cell(info, 0, 3, "Trades today", text_color = color.white, text_size = size.small)
+    table.cell(info, 1, 3, str.tostring(tradesToday) + " / " + str.tostring(maxTrades), text_color = color.white, text_size = size.small)
+    table.cell(info, 0, 4, "Delta proxy", text_color = color.white, text_size = size.small)
+    table.cell(info, 1, 4, useIntra ? (haveIntra ? "Intrabar OK (" + str.tostring(nI) + " x " + ltf + ")" : "Intrabar NONE") : "Bar wick x volume", text_color = haveIntra ? color.lime : color.orange, text_size = size.small)
+
+    table.cell(info, 0, 5, "Timeframe", text_color = color.white, text_size = size.small)
+    table.cell(info, 1, 5, timeframe.period == "5" ? "5m OK" : timeframe.period + " - built for 5m!", text_color = timeframe.period == "5" ? color.lime : color.orange, text_size = size.small)
+    table.cell(info, 0, 6, "Min bar volume", text_color = color.white, text_size = size.small)
+    table.cell(info, 1, 6, na(volThr) ? "n/a" : str.tostring(volThr, "#,###") + (volMode == "Absolute (contracts)" ? " (abs)" : " (rel)"), text_color = color.white, text_size = size.small)
+
+    table.cell(info, 0, 7, "Last entry qty/stop/margin", text_color = color.white, text_size = size.small)
+    table.cell(info, 1, 7, str.tostring(dbgQty) + " / " + str.tostring(dbgDist, "#.##") + " / " + str.tostring(dbgQty * dbgPx * syminfo.pointvalue * MARGIN_PCT / 100.0, "#,###"), text_color = color.white, text_size = size.small)
+
+    array<string> labs = array.from("Entry-window bars", "  with delta data", "  + VA trend up/down", "  + live setup (swing+zone)", "  + delta data & vol>=min", "  + in zone & bar color", "  + wick >= min", "  + wick delta big = ABSORB", "  + POC in wick (if required)", "Confirm-bar tries", "  + bar color", "  + higher low / lower high", "  + dip past A close", "  + buy/sell imbalance", "ENTRIES")
+    array<int> vals = array.from(cSess, cIntra, cTrend, cSetup, cVolOk, cZone, cWick, cDelta, cAbsorb, cTry, cDir, cHL, cDip, cImb, cEntry)
+    for i = 0 to 14
+        table.cell(fun, 0, i, labs.get(i), text_color = color.white, text_size = size.tiny, text_halign = text.align_left)
+        table.cell(fun, 1, i, str.tostring(vals.get(i)), text_color = color.yellow, text_size = size.tiny)

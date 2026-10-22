@@ -1,0 +1,17 @@
+C:\Users\xinyu\alpha_syndicate\scripts\opt\sweep.py:89: SyntaxWarning: invalid escape sequence '\{'
+  np.savez_compressed(f"{OUTD}\{name}_{key}_train.npz", **r)
+C:\Users\xinyu\alpha_syndicate\scripts\opt\sweep.py:91: SyntaxWarning: invalid escape sequence '\{'
+  trend_only(m).to_csv(f"{OUTD}\{name}_trend_train.csv", index=False)
+TQQQ  dipT: 336,960 configs in   5.0s  best Sharpe 1.062  median 0.325
+TQQQ  dipF: 336,960 configs in   1.5s  best Sharpe 0.948  median 0.474
+TQQQ  td: 336,960 configs in   2.1s  best Sharpe 1.148  median 0.883
+QQQ   dipT: 336,960 configs in   2.4s  best Sharpe 0.923  median 0.235
+QQQ   dipF: 336,960 configs in   2.1s  best Sharpe 0.883  median 0.401
+QQQ   td: 336,960 configs in   2.9s  best Sharpe 1.084  median 0.816
+SPXL  dipT: 336,960 configs in   2.1s  best Sharpe 0.882  median 0.229
+SPXL  dipF: 336,960 configs in   1.6s  best Sharpe 0.849  median 0.289
+SPXL  td: 336,960 configs in   2.4s  best Sharpe 0.987  median 0.677
+SPY   dipT: 336,960 configs in   2.6s  best Sharpe 0.740  median 0.122
+SPY   dipF: 336,960 configs in   2.0s  best Sharpe 0.666  median 0.206
+SPY   td: 336,960 configs in   3.2s  best Sharpe 0.871  median 0.571
+done in 32s

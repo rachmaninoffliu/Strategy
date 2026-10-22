@@ -1,0 +1,37 @@
+# Only these three folders are published; everything else in the PyCharm project stays local.
+/*
+!/.gitignore
+!/README.md
+!/alpha_syndicate/
+!/prediction_arb/
+!/15minbtcpolymarket/
+
+# python / IDE noise
+__pycache__/
+*.pyc
+.idea/
+.vscode/
+
+# credentials: never commit
+.env
+*.pem
+*.key
+*.p12
+id_rsa*
+etrade_bridge/**/tokens*.json
+
+# files above GitHub's 100 MB hard limit (they stay on this PC)
+prediction_arb/arb_data.db
+15minbtcpolymarket/data/tape/KXBTC15M.csv
+15minbtcpolymarket/data/tape/KXETH15M.csv
+
+# private runtime records: real account sizes, trade ledger, per-session P&L, pre-flight reports, local GUI state
+15minbtcpolymarket/data/live/
+15minbtcpolymarket/data/*.log
+15minbtcpolymarket/data/preflight_state.json
+alpha_syndicate/reports/live_log.jsonl
+alpha_syndicate/reports/gui_state.json
+alpha_syndicate/reports/gui_geometry.json
+alpha_syndicate/reports/preflight_*.txt
+alpha_syndicate/reports/preflight_state.json
+alpha_syndicate/reports/KILL

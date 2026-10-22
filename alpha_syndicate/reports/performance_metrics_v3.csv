@@ -1,0 +1,30 @@
+Metric,Value
+--- FULL PERIOD (2010-2024) [v3] ---,----------
+CAGR,17.17%
+Beats NDX CAGR?,[NO]   (NDX: 18.34%)
+Annualised Volatility,16.87%
+Avg Realized Vol,17.13%
+Sharpe Ratio,1.02
+Calmar Ratio,0.72
+Max Drawdown,-23.77%
+Win Rate (monthly),60.34%
+Best Month,17.90%
+Worst Month,-18.81%
+Total Return,949.99%
+--- IN-SAMPLE (2010-2018) ---,----------
+IS CAGR,20.79%
+IS Sharpe,1.14
+IS Max Drawdown,-23.77%
+--- OUT-OF-SAMPLE (2019-2024) ---,----------
+OOS CAGR,12.22%
+OOS Sharpe,0.83
+OOS Max Drawdown,-11.85%
+--- BENCHMARK (NDX) ---,----------
+NDX CAGR,18.34%
+NDX Ann. Vol,17.36%
+NDX Sharpe,1.05
+NDX Max Drawdown,-32.97%
+NDX Total Return,1117.50%
+--- RM GUARDRAILS ---,----------
+RM Max DD Budget,-25.00%
+RM Status,PASS

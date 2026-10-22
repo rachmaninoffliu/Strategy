@@ -1,0 +1,40 @@
+C:\Users\xinyu\alpha_syndicate\scripts\opt\sweep.py:89: SyntaxWarning: invalid escape sequence '\{'
+  np.savez_compressed(f"{OUTD}\{name}_{key}_train.npz", **r)
+C:\Users\xinyu\alpha_syndicate\scripts\opt\sweep.py:91: SyntaxWarning: invalid escape sequence '\{'
+  trend_only(m).to_csv(f"{OUTD}\{name}_trend_train.csv", index=False)
+TQQQ bars 29267 first 2010-02-11 09:30:00
+  TQQQ dipT done 11s
+  TQQQ dipF done 18s
+  TQQQ td done 26s
+SPXL bars 31478 first 2008-11-05 09:30:00
+  SPXL dipT done 34s
+  SPXL dipF done 41s
+  SPXL td done 50s
+passing both (of 336,960): {'dipT': 39600, 'dipF': 41517, 'td': 186660}
+
+=== TOP 1h plateau centres ===
+
+td rsiLen 6 entry<10.0 exit17 trend250 hold18d | S_smooth 0.928
+   TQQQ  Sharpe 1.01 (H1 0.93/H2 1.07) Calmar 0.81 CAGR 45.2% MDD 56.0% trades 90 expo 91.2% corr 0.84
+   SPXL  Sharpe 0.90 (H1 0.70/H2 1.10) Calmar 0.59 CAGR 30.9% MDD 52.3% trades 81 expo 87.8% corr 0.74
+
+td rsiLen 6 entry<10.0 exit17 trend250 hold16d | S_smooth 0.928
+   TQQQ  Sharpe 1.01 (H1 0.93/H2 1.07) Calmar 0.81 CAGR 45.2% MDD 56.0% trades 90 expo 91.2% corr 0.84
+   SPXL  Sharpe 0.90 (H1 0.70/H2 1.10) Calmar 0.59 CAGR 30.9% MDD 52.3% trades 81 expo 87.8% corr 0.74
+
+td rsiLen 6 entry<10.0 exit17 trend250 hold12d | S_smooth 0.928
+   TQQQ  Sharpe 1.01 (H1 0.93/H2 1.07) Calmar 0.81 CAGR 45.2% MDD 56.0% trades 90 expo 91.2% corr 0.84
+   SPXL  Sharpe 0.90 (H1 0.70/H2 1.10) Calmar 0.59 CAGR 30.9% MDD 52.3% trades 81 expo 87.8% corr 0.74
+
+td rsiLen 6 entry<10.0 exit17 trend250 hold8d | S_smooth 0.928
+   TQQQ  Sharpe 1.01 (H1 0.93/H2 1.07) Calmar 0.81 CAGR 45.2% MDD 56.0% trades 90 expo 91.2% corr 0.84
+   SPXL  Sharpe 0.90 (H1 0.70/H2 1.10) Calmar 0.59 CAGR 30.9% MDD 52.3% trades 81 expo 87.8% corr 0.74
+
+td rsiLen 6 entry<10.0 exit16 trend250 hold8d | S_smooth 0.921
+   TQQQ  Sharpe 1.01 (H1 0.93/H2 1.07) Calmar 0.81 CAGR 45.2% MDD 56.0% trades 90 expo 91.1% corr 0.84
+   SPXL  Sharpe 0.89 (H1 0.68/H2 1.10) Calmar 0.58 CAGR 30.4% MDD 52.3% trades 81 expo 87.8% corr 0.74
+
+td rsiLen 6 entry<10.0 exit16 trend250 hold10d | S_smooth 0.921
+   TQQQ  Sharpe 1.01 (H1 0.93/H2 1.07) Calmar 0.81 CAGR 45.2% MDD 56.0% trades 90 expo 91.1% corr 0.84
+   SPXL  Sharpe 0.89 (H1 0.68/H2 1.10) Calmar 0.58 CAGR 30.4% MDD 52.3% trades 81 expo 87.8% corr 0.74
+done 50s

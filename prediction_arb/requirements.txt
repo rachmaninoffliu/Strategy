@@ -1,0 +1,6 @@
+pyqt6
+aiohttp
+pydantic>=2
+matplotlib
+pandas
+numpy

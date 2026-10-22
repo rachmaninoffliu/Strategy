@@ -1,0 +1,7 @@
+fastapi>=0.115
+uvicorn[standard]>=0.32
+pydantic>=2.7
+pydantic-settings>=2.5
+python-dotenv>=1.0
+requests>=2.32
+requests-oauthlib>=2.0

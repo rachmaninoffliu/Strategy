@@ -1,0 +1,194 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0
+// Reverse-engineered from "DH: (Strategy) Super SmartSuper Trend"
+// Original by tradingview.com/u/DH (PUB;DIRpzHJU8HegldZakvBiI0liy3KXdQ29)
+//
+// DISCLAIMER: This is a best-effort recreation based on observable inputs,
+// plot values, and visual behavior. The original source is encrypted.
+// The "Dynamic Self-Adjusting" logic is inferred and may differ from the original.
+
+//@version=6
+strategy("Super SmartSuper Trend [Recreated]",
+     overlay        = true,
+     initial_capital = 10000,
+     default_qty_type = strategy.percent_of_equity,
+     default_qty_value = 100,
+     commission_type = strategy.commission.percent,
+     commission_value = 0,
+     slippage       = 0,
+     pyramiding     = 0,
+     currency       = currency.USD,
+     calc_on_every_tick = true,
+     calc_on_order_fills = true)
+
+// ──────────────────────────────────────────────────────────
+// Inputs
+// ──────────────────────────────────────────────────────────
+grp1 = "Standard SuperTrend"
+showCurrentTF  = input.bool(false, "Standard Current Time Frame SuperTrend Line (on/off)", group=grp1)
+showStdHTF     = input.bool(false, "Standard Higher Time Frame SuperTrend Line & Signals (on/off)", group=grp1)
+atrFactor      = input.float(2.2, "Super Trend Long Range Multiplier (1 to 3)", minval=1.0, maxval=3.0, step=0.1, group=grp1)
+atrPeriod      = input.int(9, "Super Trend Lookback Period (# of Candles)", minval=1, group=grp1)
+
+grp2 = "Dynamic Smart SuperTrend"
+showDynamicHTF = input.bool(true, "Dynamic Self-Adjusting Higher TF SuperTrend Line & Signals (on/off)", group=grp2)
+smartMultA     = input.float(1.7, "A. Smart SuperTrend Multiplier #1 (1 to 3)", minval=1.0, maxval=3.0, step=0.1, group=grp2)
+smartMultB     = input.float(2.5, "B. Smart SuperTrend Multiplier #2 (1 to 3)", minval=1.0, maxval=3.0, step=0.1, group=grp2)
+
+grp3 = "Backtest"
+btStandard     = input.bool(false, "BACKTEST: Checked=Standard SuperT. Unchecked=Dynamic SuperT.", group=grp3)
+btHide         = input.bool(false, "SHOW/HIDE BACKTEST: Check To Hide.", group=grp3)
+
+// ──────────────────────────────────────────────────────────
+// Higher Timeframe Auto-Detection
+// ──────────────────────────────────────────────────────────
+getHigherTF() =>
+    switch timeframe.period
+        "1"   => "5"
+        "3"   => "15"
+        "5"   => "15"
+        "15"  => "60"
+        "30"  => "120"
+        "45"  => "180"
+        "60"  => "240"
+        "120" => "D"
+        "240" => "D"
+        "D"   => "W"
+        "W"   => "M"
+        =>      "D"
+
+higherTF = getHigherTF()
+
+// ──────────────────────────────────────────────────────────
+// SuperTrend Calculation (manual for full control)
+// ──────────────────────────────────────────────────────────
+calcSuperTrend(float factor, int period) =>
+    float atr   = ta.atr(period)
+    float up    = hl2 + factor * atr
+    float dn    = hl2 - factor * atr
+
+    var float upperBand = na
+    var float lowerBand = na
+    var int   dir       = 1
+
+    float prevUpper = nz(upperBand[1], up)
+    float prevLower = nz(lowerBand[1], dn)
+
+    lowerBand := dn > prevLower or close[1] < prevLower ? dn : prevLower
+    upperBand := up < prevUpper or close[1] > prevUpper ? up : prevUpper
+
+    dir := close > prevUpper ? 1 : close < prevLower ? -1 : nz(dir[1], 1)
+
+    float st = dir == 1 ? lowerBand : upperBand
+    [st, dir]
+
+// ──────────────────────────────────────────────────────────
+// 1. Current Timeframe SuperTrend
+// ──────────────────────────────────────────────────────────
+[stCurrent, dirCurrent] = calcSuperTrend(atrFactor, atrPeriod)
+
+// ──────────────────────────────────────────────────────────
+// 2. Standard Higher Timeframe SuperTrend
+// ──────────────────────────────────────────────────────────
+[stHTF_raw, dirHTF_raw] = request.security(syminfo.tickerid, higherTF, calcSuperTrend(atrFactor, atrPeriod), lookahead=barmerge.lookahead_off)
+float stHTF  = stHTF_raw
+int   dirHTF = dirHTF_raw
+
+// ──────────────────────────────────────────────────────────
+// 3. Dynamic Self-Adjusting Higher TF SuperTrend
+//
+// Uses two multipliers (A & B). When both SuperTrends agree
+// on direction, the trend is confirmed. The "dynamic" band
+// takes the more responsive (tighter) level:
+//   - Uptrend:   max of the two lower bands (closer to price)
+//   - Downtrend: min of the two upper bands (closer to price)
+// This makes the dynamic ST faster to signal reversals than
+// either individual band alone.
+// ──────────────────────────────────────────────────────────
+[stA_raw, dirA_raw] = request.security(syminfo.tickerid, higherTF, calcSuperTrend(smartMultA, atrPeriod), lookahead=barmerge.lookahead_off)
+[stB_raw, dirB_raw] = request.security(syminfo.tickerid, higherTF, calcSuperTrend(smartMultB, atrPeriod), lookahead=barmerge.lookahead_off)
+
+float stA  = stA_raw
+int   dirA = dirA_raw
+float stB  = stB_raw
+int   dirB = dirB_raw
+
+// Dynamic direction: bullish only when both agree bullish, bearish otherwise
+int dirDynamic = dirA == 1 and dirB == 1 ? 1 : dirA == -1 and dirB == -1 ? -1 : nz(dirA[1], dirA)
+
+// Dynamic level: tighter of the two bands
+float stDynamic = dirDynamic == 1 ? math.max(stA, stB) : math.min(stA, stB)
+
+// ──────────────────────────────────────────────────────────
+// Direction Changes (for signal detection)
+// ──────────────────────────────────────────────────────────
+bool currentUpChange   = dirCurrent == 1  and dirCurrent[1] == -1
+bool currentDnChange   = dirCurrent == -1 and dirCurrent[1] == 1
+bool htfDnChange       = dirHTF == -1     and dirHTF[1] == 1
+bool dynamicUpChange   = dirDynamic == 1  and dirDynamic[1] == -1
+bool dynamicDnChange   = dirDynamic == -1 and dirDynamic[1] == 1
+
+// ──────────────────────────────────────────────────────────
+// Plots
+// ──────────────────────────────────────────────────────────
+
+// Current TF SuperTrend line
+plot(showCurrentTF ? stCurrent : na, "Super Trend Current Time Frame",
+     color = dirCurrent == 1 ? color.new(color.blue, 0) : color.new(color.fuchsia, 0),
+     linewidth = 1)
+
+// Standard Higher TF SuperTrend line
+plot(showStdHTF ? stHTF : na, "Super Trend Higher Time Frame",
+     color = dirHTF == 1 ? color.new(color.blue, 0) : color.new(color.fuchsia, 0),
+     linewidth = 2)
+
+// Dynamic Higher TF SuperTrend line
+plot(showDynamicHTF ? stDynamic : na, "Dynamic Super Trend Higher Time Frame",
+     color = dirDynamic == 1 ? color.new(color.blue, 0) : color.new(color.fuchsia, 0),
+     linewidth = 2)
+
+// Change detection plots (for data window)
+plot(currentUpChange ? 1.0 : 0.0, "Current TF Up Super Trend Change", display=display.data_window)
+plot(currentDnChange ? 1.0 : 0.0, "Current TF Down Super Trend Change", display=display.data_window)
+plot(htfDnChange ? 1.0 : 0.0, "Higher TF Down Super Trend Change", display=display.data_window)
+plot(dynamicDnChange ? 1.0 : 0.0, "Dynamic Higher TF Down Super Trend", display=display.data_window)
+
+// ──────────────────────────────────────────────────────────
+// Background Colors (Higher TF trend regime)
+// ──────────────────────────────────────────────────────────
+color bgColor = na
+if showDynamicHTF
+    bgColor := dirDynamic == -1 ? color.new(color.fuchsia, 85) : color.new(color.orange, 90)
+else if showStdHTF
+    bgColor := dirHTF == -1 ? color.new(color.fuchsia, 85) : color.new(color.orange, 90)
+bgcolor(bgColor, title="Higher TF Trend Background")
+
+// ──────────────────────────────────────────────────────────
+// Signals
+// ──────────────────────────────────────────────────────────
+// Select which SuperTrend drives the strategy
+bool useStandard = btStandard
+int  signalDir   = useStandard ? dirHTF : dirDynamic
+
+bool longSignal  = signalDir == 1  and signalDir[1] == -1
+bool shortSignal = signalDir == -1 and signalDir[1] == 1
+
+// Standard HTF signals
+if showStdHTF
+    bool htfLong  = dirHTF == 1  and dirHTF[1] == -1
+    bool htfShort = dirHTF == -1 and dirHTF[1] == 1
+    plotshape(htfLong,  title="HTF Long",  style=shape.triangleup,   location=location.belowbar, color=color.blue,    size=size.small, text="LONG")
+    plotshape(htfShort, title="HTF Short", style=shape.triangledown, location=location.abovebar, color=color.fuchsia, size=size.small, text="SHORT")
+
+// Dynamic HTF signals
+if showDynamicHTF
+    plotshape(dynamicUpChange, title="Dynamic Long",  style=shape.triangleup,   location=location.belowbar, color=color.blue,    size=size.small, text="LONG")
+    plotshape(dynamicDnChange, title="Dynamic Short", style=shape.triangledown, location=location.abovebar, color=color.fuchsia, size=size.small, text="SHORT")
+
+// ──────────────────────────────────────────────────────────
+// Strategy Entries
+// ──────────────────────────────────────────────────────────
+if not btHide
+    if longSignal
+        strategy.entry("LONG", strategy.long)
+    if shortSignal
+        strategy.entry("SHORT", strategy.short)

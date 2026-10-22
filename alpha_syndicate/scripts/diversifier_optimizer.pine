@@ -1,0 +1,224 @@
+//@version=5
+strategy("Diversifier Optimizer (Train-Test)", shorttitle = "DivOpt", overlay = true, initial_capital = 100000,
+     default_qty_type = strategy.percent_of_equity, default_qty_value = 100,
+     commission_type = strategy.commission.percent, commission_value = 0.1, slippage = 0,
+     process_orders_on_close = false, calc_on_every_tick = false, pyramiding = 0)
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════════════════
+//  Diversifier Optimizer - refactor of "TQQQ Diversifier (research)" into a Train / Test sweep framework.
+//
+//  Logic is unchanged from the research script (Dip / Trend / Trend + Dip on an unleveraged proxy, orders on the
+//  chart symbol, decisions on the bar CLOSE, fills at the NEXT bar OPEN). What is new:
+//   1. Evaluation window: In-Sample (Train) / Out-of-Sample (Test) / Full. Entries and exits happen ONLY inside the
+//      window; an open trade is liquidated AT THE CLOSE of the window's last bar (strategy.close immediately=true).
+//   2. Signal proxy auto-map: QQQ/TQQQ -> NASDAQ:QQQ, SPY/SPXL/UPRO -> AMEX:SPY (toggle + manual override).
+//   3. Dual resolution: dip signal (RSI / exit SMA) on the CHART timeframe, macro trend SMA on the chart timeframe or
+//      anchored to a higher timeframe (default D). HTF value = previous COMPLETED HTF bar via [1] + lookahead_on,
+//      the documented non-repainting form (identical on history and in realtime). The same-timeframe signal request
+//      uses lookahead_off.
+//   4. Max-hold: days (scaled to bars/day on intraday), fixed bars, or off.
+//   5. Every sweep parameter carries minval / maxval / step.
+//   6. On-chart dashboard (table). Metrics are window-only and use the SAME conventions as the research script's
+//      f_stats: compounded DAILY returns, CAGR = eq^(252/n) - 1, population-stdev Sharpe, downside-deviation Sortino,
+//      MDD = peak-to-trough of the compounded series. Daily returns make every timeframe comparable.
+//
+//  Window dates are compared as calendar dates (GMT date of the input vs exchange date of the bar), so time-of-day
+//  never matters. Inverse ETFs (SQQQ, SPXS...) also match the ticker substrings - do not use auto-proxy on them.
+// ═════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+G_WIN = "1 · Evaluation window (Train / Test)"
+G_SIG = "2 · Signal proxy"
+G_STR = "3 · Strategy (sweep these)"
+G_HLD = "4 · Max-hold (daily vs intraday)"
+G_TRD = "5 · Macro trend resolution"
+G_DSH = "6 · Dashboard"
+
+// ── Inputs ──────────────────────────────────────────────────────────────────────────────────────────────
+winMode    = input.string("In-Sample (Train)", "Evaluation window", options = ["In-Sample (Train)", "Out-of-Sample (Test)", "Full Combined History"], group = G_WIN)
+trainStart = input.time(timestamp("2010-02-11T00:00:00"), "Train start", group = G_WIN)
+trainEnd   = input.time(timestamp("2021-12-31T00:00:00"), "Train end", group = G_WIN)
+testStart  = input.time(timestamp("2022-01-01T00:00:00"), "Test start", group = G_WIN)
+testEnd    = input.time(timestamp("2099-12-31T00:00:00"), "Test end (2099 = present)", group = G_WIN)
+
+autoProxy  = input.bool(true, "Auto-detect Signal Proxy", group = G_SIG, tooltip = "QQQ / TQQQ -> NASDAQ:QQQ.  SPY / SPXL / UPRO -> AMEX:SPY.  Anything else uses the manual symbol.")
+manualSym  = input.symbol("NASDAQ:QQQ", "Manual signal symbol (auto off, or no match)", group = G_SIG)
+
+mode       = input.string("Dip", "Mode", options = ["Dip", "Trend", "Trend + Dip"], group = G_STR)
+rsiLen     = input.int(2, "RSI length", minval = 2, maxval = 14, step = 1, group = G_STR)
+rsiEntry   = input.float(20, "Dip entry: RSI below", minval = 10, maxval = 40, step = 2, group = G_STR)
+exitLen    = input.int(5, "Dip exit: signal close above SMA(n)", minval = 3, maxval = 20, step = 1, group = G_STR)
+dipTrend   = input.bool(true, "Dip entries only while signal close > trend SMA", group = G_STR)
+trendLen   = input.int(200, "Trend SMA length", minval = 50, maxval = 250, step = 25, group = G_STR)
+
+holdMode    = input.string("Adaptive (days x bars/day)", "Dip max-hold mode", options = ["Adaptive (days x bars/day)", "Fixed bars", "Off"], group = G_HLD)
+maxHold     = input.int(10, "Adaptive: max holding DAYS (daily bars = days; intraday = days x bars/day)", minval = 2, maxval = 20, step = 2, group = G_HLD)
+maxHoldBars = input.int(40, "Fixed bars: max holding BARS (intraday)", minval = 2, maxval = 260, step = 2, group = G_HLD)
+sessMin     = input.int(390, "Session length in minutes (bars/day on intraday)", minval = 60, maxval = 1440, step = 30, group = G_HLD)
+
+trendRes   = input.string("Higher timeframe", "Macro trend resolution", options = ["Chart timeframe", "Higher timeframe"], group = G_TRD)
+trendTf    = input.timeframe("D", "Higher timeframe (anchor for the trend SMA)", group = G_TRD)
+
+showDash   = input.bool(true, "Show dashboard", group = G_DSH)
+dashPos    = input.string("Top right", "Dashboard position", options = ["Top right", "Bottom right"], group = G_DSH)
+runTag     = input.string("", "Run tag (shown on dashboard)", group = G_DSH)
+
+// ── Helpers ─────────────────────────────────────────────────────────────────────────────────────────────
+f_key(t, tz) => year(t, tz) * 10000 + month(t, tz) * 100 + dayofmonth(t, tz)
+f_pct(x) => na(x) ? "n/a" : str.tostring(x * 100, "0.0") + "%"
+f_num(x) => na(x) ? "n/a" : str.tostring(x, "0.00")
+
+// ── Signal proxy auto-map ───────────────────────────────────────────────────────────────────────────────
+tkr      = syminfo.ticker
+isNdx    = str.contains(tkr, "QQQ")
+isSpx    = str.contains(tkr, "SPY") or str.contains(tkr, "SPXL") or str.contains(tkr, "UPRO")
+autoSym  = isNdx ? "NASDAQ:QQQ" : isSpx ? "AMEX:SPY" : manualSym
+sigSym   = autoProxy ? autoSym : manualSym
+
+// ── Signals: dip on the chart resolution, trend on the chart or a higher timeframe ──────────────────────
+useHtf      = trendRes == "Higher timeframe" and timeframe.in_seconds(trendTf) > timeframe.in_seconds()
+trendTfEff  = useHtf ? trendTf : timeframe.period
+
+[sC, sRsi, sExit, sTrendChart] = request.security(sigSym, timeframe.period, [close, ta.rsi(close, rsiLen), ta.sma(close, exitLen), ta.sma(close, trendLen)], barmerge.gaps_off, barmerge.lookahead_off)
+// HTF trend = previous COMPLETED HTF bar ([1] + lookahead_on): identical on history and in realtime (non-repainting)
+sTrendHtf = request.security(sigSym, trendTfEff, ta.sma(close, trendLen)[1], barmerge.gaps_off, barmerge.lookahead_on)
+sTrend    = useHtf ? sTrendHtf : sTrendChart
+
+bool upTrend = not na(sTrend) and sC > sTrend
+bool rsiLow  = not na(sRsi) and sRsi < rsiEntry
+bool dipDone = sC > sExit
+
+// ── Max-hold in bars ────────────────────────────────────────────────────────────────────────────────────
+tfMin       = timeframe.in_seconds() / 60.0
+barsPerDay  = timeframe.isintraday ? math.max(1, int(math.ceil(sessMin / tfMin))) : 1
+holdBars    = holdMode == "Fixed bars" ? maxHoldBars : holdMode == "Off" ? 0 : maxHold * barsPerDay
+int  held   = strategy.position_size > 0 and strategy.opentrades > 0 ? bar_index - strategy.opentrades.entry_bar_index(0) : 0
+bool timeUp = holdBars > 0 and held >= holdBars
+
+// ── Evaluation window (calendar-date keys: GMT date of the input vs exchange date of the bar) ──────────
+sKey   = winMode == "Out-of-Sample (Test)" ? f_key(testStart, "GMT") : f_key(trainStart, "GMT")
+eKey   = winMode == "In-Sample (Train)" ? f_key(trainEnd, "GMT") : f_key(testEnd, "GMT")
+barKey = f_key(time, syminfo.timezone)
+bool inWin        = barKey >= sKey and barKey <= eKey
+bool lastBarOfDay = timeframe.isdwm ? true : session.islastbar
+bool lastBarWin   = inWin and barKey == eKey and lastBarOfDay
+
+// ── Desired position after this close (true = long). inDip remembers whether the open trade is a dip trade ──
+var bool inDip = false
+bool wantLong = false
+if mode == "Trend"
+    wantLong := upTrend
+else if mode == "Dip"
+    wantLong := strategy.position_size > 0 ? not (dipDone or timeUp) : rsiLow and (not dipTrend or upTrend)
+else
+    if upTrend
+        wantLong := true
+    else if strategy.position_size > 0
+        wantLong := inDip and not (dipDone or timeUp)
+    else
+        wantLong := rsiLow
+
+// ── Orders: only inside the window; liquidate AT THE CLOSE of the window's last bar ─────────────────────
+bool canTrade = inWin and not lastBarWin
+if canTrade
+    if wantLong and strategy.position_size == 0
+        strategy.entry("L", strategy.long)
+        inDip := mode == "Dip" or (mode == "Trend + Dip" and not upTrend)
+    else if not wantLong and strategy.position_size > 0
+        strategy.close("L")
+    if mode == "Trend + Dip" and upTrend
+        inDip := false
+else if strategy.position_size > 0
+    strategy.close("L", comment = "window end", immediately = true)
+
+// ── Window-only performance accounting (compounded DAILY returns, research-script conventions) ──────────
+var float eqD = 1.0
+var float peakD = 1.0
+var float mddD = 0.0
+var float bhD = 1.0
+var int   tFirst = na
+var int   nWinBars = 0
+var int   nInPos = 0
+var float dayEq = na
+var float dayPx = na
+var int   nD = 0
+var float sS = 0.0
+var float sS2 = 0.0
+var float sNeg2 = 0.0
+var float sB = 0.0
+var float sB2 = 0.0
+var float sSB = 0.0
+
+bool newDay = timeframe.isdwm ? true : ta.change(time("D")) != 0
+// a day is finalized on the first bar of the next day (bar [1] is that day's last bar)
+if newDay and not na(dayEq) and not na(dayPx) and inWin[1]
+    float rS = nz(strategy.equity[1]) / dayEq - 1.0
+    float rB = nz(close[1]) / dayPx - 1.0
+    nD += 1
+    eqD *= 1.0 + rS
+    peakD := math.max(peakD, eqD)
+    mddD := math.max(mddD, (peakD - eqD) / peakD)
+    bhD *= 1.0 + rB
+    sS += rS
+    sS2 += rS * rS
+    sNeg2 += rS < 0 ? rS * rS : 0.0
+    sB += rB
+    sB2 += rB * rB
+    sSB += rS * rB
+if newDay
+    dayEq := strategy.equity[1]
+    dayPx := close[1]
+
+if inWin
+    if na(tFirst)
+        tFirst := time
+    nWinBars += 1
+    nInPos += strategy.position_size[1] > 0 ? 1 : 0
+
+// ── Plots ───────────────────────────────────────────────────────────────────────────────────────────────
+plot(sTrend, "Signal trend SMA (proxy-symbol scale, data window)", display = display.data_window)
+plot(sRsi, "Signal RSI", display = display.data_window)
+bgcolor(inWin ? color.new(color.teal, 94) : na, title = "Evaluation window")
+
+// ── Dashboard ───────────────────────────────────────────────────────────────────────────────────────────
+var table dash = table.new(dashPos == "Top right" ? position.top_right : position.bottom_right, 2, 17, bgcolor = color.new(color.black, 20), frame_color = color.gray, frame_width = 1, border_width = 1)
+
+if showDash and (barstate.islastconfirmedhistory or barstate.isrealtime)
+    // include the still-open current day so the last bar is not dropped
+    bool  addCur = inWin and not na(dayEq) and not na(dayPx)
+    float rSc    = addCur ? strategy.equity / dayEq - 1.0 : 0.0
+    float rBc    = addCur ? close / dayPx - 1.0 : 0.0
+    int   n      = nD + (addCur ? 1 : 0)
+    float eqF    = eqD * (1.0 + rSc)
+    float peakF  = math.max(peakD, eqF)
+    float mddF   = math.max(mddD, (peakF - eqF) / peakF)
+    float bhF    = bhD * (1.0 + rBc)
+    float s1     = sS + rSc
+    float s2     = sS2 + rSc * rSc
+    float sn     = sNeg2 + (rSc < 0 ? rSc * rSc : 0.0)
+    float b1     = sB + rBc
+    float b2     = sB2 + rBc * rBc
+    float sb     = sSB + rSc * rBc
+    float mean   = n > 0 ? s1 / n : na
+    float sd     = n > 1 ? math.sqrt(math.max(s2 / n - mean * mean, 0.0)) : na
+    float sharpe = sd > 0 ? mean / sd * math.sqrt(252.0) : na
+    float dnDev  = n > 0 ? math.sqrt(sn / n) : na
+    float sortino = dnDev > 0 ? mean / dnDev * math.sqrt(252.0) : na
+    float cagr   = n > 0 ? math.pow(eqF, 252.0 / n) - 1.0 : na
+    float bhCagr = n > 0 ? math.pow(bhF, 252.0 / n) - 1.0 : na
+    float calmar = mddF > 0 and not na(cagr) ? cagr / mddF : na
+    float vS     = n * s2 - s1 * s1
+    float vB     = n * b2 - b1 * b1
+    float corr   = n > 2 and vS > 0 and vB > 0 ? (n * sb - s1 * b1) / math.sqrt(vS * vB) : na
+    float winRate = strategy.closedtrades > 0 ? strategy.wintrades / strategy.closedtrades : na
+    float pf     = math.abs(strategy.grossloss) > 0 ? strategy.grossprofit / math.abs(strategy.grossloss) : na
+    float expo   = nWinBars > 0 ? nInPos / nWinBars : na
+
+    string winTxt = winMode == "In-Sample (Train)" ? "Train" : winMode == "Out-of-Sample (Test)" ? "Test" : "Full"
+    int    startTs = winMode == "Out-of-Sample (Test)" ? testStart : trainStart
+    int    endTs   = winMode == "In-Sample (Train)" ? trainEnd : testEnd
+    string dates   = str.format_time(startTs, "yyyy-MM-dd", "GMT") + " → " + (year(endTs, "GMT") >= 2090 ? "present" : str.format_time(endTs, "yyyy-MM-dd", "GMT"))
+    string[] labs = array.from("DivOpt" + (runTag == "" ? "" : " · " + runTag), "Mode / window", "Dates", "Data starts (actual)", "Chart / proxy", "TF / trend res", "Max-hold (bars)", "CAGR (B&H)", "Max drawdown", "Sharpe (daily)", "Sortino (daily)", "Calmar", "Win rate", "Profit factor", "Closed trades", "Corr vs B&H (daily)", "Exposure")
+    string[] vals = array.from("", mode + " / " + winTxt, dates, na(tFirst) ? "no bars in window" : str.format_time(tFirst, "yyyy-MM-dd", syminfo.timezone), tkr + " / " + sigSym, timeframe.period + " / " + (useHtf ? trendTf : "chart"), holdBars > 0 ? str.tostring(holdBars) + " (" + str.tostring(barsPerDay) + "/day)" : "off", f_pct(cagr) + " (" + f_pct(bhCagr) + ")", f_pct(mddF), f_num(sharpe), f_num(sortino), f_num(calmar), f_pct(winRate), f_num(pf), str.tostring(strategy.closedtrades), f_num(corr), f_pct(expo))
+    for i = 0 to 16
+        table.cell(dash, 0, i, labs.get(i), text_color = i == 0 ? color.white : color.silver, bgcolor = i == 0 ? color.new(color.teal, 30) : na, text_halign = text.align_left, text_size = size.small)
+        table.cell(dash, 1, i, vals.get(i), text_color = color.white, bgcolor = i == 0 ? color.new(color.teal, 30) : na, text_halign = text.align_right, text_size = size.small)

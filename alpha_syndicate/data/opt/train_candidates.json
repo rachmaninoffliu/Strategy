@@ -1,0 +1,242 @@
+[
+ {
+  "S_smooth": 0.7297859894255149,
+  "variant": "dipT",
+  "idx": [
+   2,
+   12,
+   5,
+   7,
+   9
+  ],
+  "params": {
+   "mode": "Dip",
+   "rsiLen": 4,
+   "rsiEntry": 34.0,
+   "exitLen": 8,
+   "trendLen": 225,
+   "maxHold": 20,
+   "dipTrend": true
+  }
+ },
+ {
+  "S_smooth": 0.7270393265530558,
+  "variant": "td",
+  "idx": [
+   0,
+   12,
+   4,
+   0,
+   7
+  ],
+  "params": {
+   "mode": "Trend + Dip",
+   "rsiLen": 2,
+   "rsiEntry": 34.0,
+   "exitLen": 7,
+   "trendLen": 50,
+   "maxHold": 16,
+   "dipTrend": true
+  }
+ },
+ {
+  "S_smooth": 0.7270393265530558,
+  "variant": "td",
+  "idx": [
+   0,
+   12,
+   4,
+   0,
+   9
+  ],
+  "params": {
+   "mode": "Trend + Dip",
+   "rsiLen": 2,
+   "rsiEntry": 34.0,
+   "exitLen": 7,
+   "trendLen": 50,
+   "maxHold": 20,
+   "dipTrend": true
+  }
+ },
+ {
+  "S_smooth": 0.7209820751272691,
+  "variant": "dipT",
+  "idx": [
+   2,
+   12,
+   5,
+   7,
+   7
+  ],
+  "params": {
+   "mode": "Dip",
+   "rsiLen": 4,
+   "rsiEntry": 34.0,
+   "exitLen": 8,
+   "trendLen": 225,
+   "maxHold": 16,
+   "dipTrend": true
+  }
+ },
+ {
+  "S_smooth": 0.7205177651938929,
+  "variant": "dipT",
+  "idx": [
+   3,
+   13,
+   5,
+   8,
+   9
+  ],
+  "params": {
+   "mode": "Dip",
+   "rsiLen": 5,
+   "rsiEntry": 36.0,
+   "exitLen": 8,
+   "trendLen": 250,
+   "maxHold": 20,
+   "dipTrend": true
+  }
+ },
+ {
+  "S_smooth": 0.7148666292406878,
+  "variant": "dipT",
+  "idx": [
+   3,
+   13,
+   5,
+   8,
+   7
+  ],
+  "params": {
+   "mode": "Dip",
+   "rsiLen": 5,
+   "rsiEntry": 36.0,
+   "exitLen": 8,
+   "trendLen": 250,
+   "maxHold": 16,
+   "dipTrend": true
+  }
+ },
+ {
+  "S_smooth": 0.7139773840664456,
+  "variant": "dipT",
+  "idx": [
+   0,
+   9,
+   5,
+   8,
+   9
+  ],
+  "params": {
+   "mode": "Dip",
+   "rsiLen": 2,
+   "rsiEntry": 28.0,
+   "exitLen": 8,
+   "trendLen": 250,
+   "maxHold": 20,
+   "dipTrend": true
+  }
+ },
+ {
+  "S_smooth": 0.7132490634829493,
+  "variant": "dipT",
+  "idx": [
+   2,
+   12,
+   5,
+   5,
+   9
+  ],
+  "params": {
+   "mode": "Dip",
+   "rsiLen": 4,
+   "rsiEntry": 34.0,
+   "exitLen": 8,
+   "trendLen": 175,
+   "maxHold": 20,
+   "dipTrend": true
+  }
+ },
+ {
+  "S_smooth": 0.7093158208938224,
+  "variant": "td",
+  "idx": [
+   0,
+   12,
+   3,
+   0,
+   7
+  ],
+  "params": {
+   "mode": "Trend + Dip",
+   "rsiLen": 2,
+   "rsiEntry": 34.0,
+   "exitLen": 6,
+   "trendLen": 50,
+   "maxHold": 16,
+   "dipTrend": true
+  }
+ },
+ {
+  "S_smooth": 0.7093158208938224,
+  "variant": "td",
+  "idx": [
+   0,
+   12,
+   3,
+   0,
+   8
+  ],
+  "params": {
+   "mode": "Trend + Dip",
+   "rsiLen": 2,
+   "rsiEntry": 34.0,
+   "exitLen": 6,
+   "trendLen": 50,
+   "maxHold": 18,
+   "dipTrend": true
+  }
+ },
+ {
+  "S_smooth": 0.7084207028840871,
+  "variant": "td",
+  "idx": [
+   5,
+   4,
+   5,
+   2,
+   8
+  ],
+  "params": {
+   "mode": "Trend + Dip",
+   "rsiLen": 7,
+   "rsiEntry": 18.0,
+   "exitLen": 8,
+   "trendLen": 100,
+   "maxHold": 18,
+   "dipTrend": true
+  }
+ },
+ {
+  "S_smooth": 0.7084207028840871,
+  "variant": "td",
+  "idx": [
+   5,
+   4,
+   5,
+   2,
+   7
+  ],
+  "params": {
+   "mode": "Trend + Dip",
+   "rsiLen": 7,
+   "rsiEntry": 18.0,
+   "exitLen": 8,
+   "trendLen": 100,
+   "maxHold": 16,
+   "dipTrend": true
+  }
+ }
+]
