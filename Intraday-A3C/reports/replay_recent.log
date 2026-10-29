@@ -1,0 +1,29 @@
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\site-packages\joblib\externals\loky\backend\context.py", line 257, in _count_physical_cores
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 548, in run
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1026, in __init__
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1538, in _execute_child
+2026-10-05 {'TSLA': (199.6, 199.6), 'SMH': (0.0, 0.0), 'NVDA': (193.1, 174.9)}
+2026-10-06 {'TSLA': (-77.5, -44.2), 'SMH': (-58.4, -41.8), 'NVDA': (-234.3, -214.4)}
+2026-10-07 {'TSLA': (-74.3, -49.8), 'SMH': (-39.7, -68.6), 'NVDA': (-50.9, -55.7)}
+2026-10-08 {'TSLA': (-224.3, -199.0), 'SMH': (-50.0, -213.0), 'NVDA': (25.4, 18.0)}
+2026-10-09 {'TSLA': (-323.4, -161.7), 'SMH': (-12.9, -38.3), 'NVDA': (-216.2, -250.9)}
+2026-10-12 {'TSLA': (14.9, 19.3), 'SMH': (-69.0, -77.9), 'NVDA': (-189.7, -189.9)}
+2026-10-13 {'TSLA': (-8.3, 70.0), 'SMH': (136.2, 173.0), 'NVDA': (224.0, 407.7)}
+2026-10-14 {'TSLA': (-289.0, -238.2), 'SMH': (304.4, 291.3), 'NVDA': (279.7, 279.9)}
+2026-10-15 {'TSLA': (-357.1, -172.3), 'SMH': (392.7, 433.6), 'NVDA': (-105.3, 5.9)}
+2026-10-16 {'TSLA': (-87.2, 308.1), 'SMH': (-57.1, -39.9), 'NVDA': (-23.1, 17.3)}
+2026-10-19 {'TSLA': (503.5, 503.5), 'SMH': (-113.6, -113.6), 'NVDA': (205.2, 205.2)}
+2026-10-20 {'TSLA': (50.8, 72.6), 'SMH': (-102.4, 25.2), 'NVDA': (66.4, 34.4)}
+2026-10-21 {'TSLA': (-354.4, -371.7), 'SMH': (91.6, -26.2), 'NVDA': (164.0, 136.9)}
+2026-10-22 {'TSLA': (695.4, 760.5), 'SMH': (891.3, 891.3), 'NVDA': (628.8, 623.5)}
+2026-10-23 {'TSLA': (-235.6, -162.9), 'SMH': (-29.7, -29.7), 'NVDA': (274.4, 274.4)}
+
+15 sessions | edge corr IEX vs SIP: mean 0.935 min 0.614
+net USD on 100,702: IEX-signal +1,035 | SIP-signal +1,368 | daily corr of the two 0.97
+lots traded per product-day: IEX 8.4, SIP 8.0
+realised cost vs bar close (last 3 sessions): 2.69 bp, half quoted spread 1.41 bp, model 1.06 bp
+      realised_cost_bp  half_spread_bp  model_cost_bp
+sym                                                  
+NVDA              2.25            0.55           0.71
+SMH               3.35            2.40           1.39
+TSLA              2.46            1.26           1.07

@@ -1,0 +1,135 @@
+﻿20:39:56 loading 292 stocks + 14 ETFs (sip) from 2015-06-11 ...
+20:40:06 factor model 'etf': betas over 252 days, residuals for 70,692 bars ...
+20:40:24 ResMomentum chosen: IS 0.37 OOS 0.60; 105 trials; DSR formal 0.43, noise-only 0.05; PSR(OOS > 0) 0.88
+20:40:37 ResMomentum | fill at bar VWAP: IS 0.36 OOS 0.62
+20:40:51 ResMomentum | +1 bar delay (free delayed SIP): IS 0.37 OOS 0.60
+20:40:51 loading 175 stocks + 14 ETFs (sip) from 2015-06-11 ...
+20:40:59 factor model 'etf': betas over 252 days, residuals for 70,692 bars ...
+20:41:13 ResMomentum | 50 names: IS 0.63 OOS 0.72
+20:41:13 loading 292 stocks + 14 ETFs (sip) from 2015-06-11 ...
+20:41:23 factor model 'pca': betas over 252 days, residuals for 70,692 bars ...
+20:43:04 ResMomentum | PCA: IS 0.51 OOS 0.43
+20:43:04 loading 292 stocks + 14 ETFs (sip) from 2015-12-25 ...
+20:43:13 factor model 'etf': betas over 126 days, residuals for 70,692 bars ...
+20:43:30 ResMeanReversion chosen: IS 0.96 OOS -0.20; 152 trials; DSR formal 0.00, noise-only 0.20; PSR(OOS > 0) 0.35
+20:43:43 ResMeanReversion | fill at bar VWAP: IS 0.99 OOS -0.19
+20:43:55 ResMeanReversion | +1 bar delay (free delayed SIP): IS 0.49 OOS -0.38
+20:43:55 loading 175 stocks + 14 ETFs (sip) from 2015-12-25 ...
+20:44:01 factor model 'etf': betas over 126 days, residuals for 70,692 bars ...
+20:44:14 ResMeanReversion | 50 names: IS 0.55 OOS -0.72
+20:44:14 loading 292 stocks + 14 ETFs (sip) from 2015-12-25 ...
+20:44:22 factor model 'pca': betas over 126 days, residuals for 70,692 bars ...
+20:45:59 ResMeanReversion | PCA: IS 0.16 OOS -0.25
+20:45:59 loading 292 stocks + 14 ETFs (sip) from 2015-05-12 ...
+20:46:11 factor model 'etf': betas over 126 days, residuals for 70,692 bars ...
+20:46:15 walk-forward forecasts from cache (wf_78f1ed0588165524.npy)
+20:46:30 ResPrediction chosen: IS 0.41 OOS -0.08; 25 trials; DSR formal 0.00, noise-only 0.15; PSR(OOS > 0) 0.44
+20:46:45 ResPrediction | fill at bar VWAP: IS 0.46 OOS -0.02
+20:46:50 walk-forward: 33 refits (quarterly), model ridge, 15 features, horizon 130 bars
+20:47:25   refit 2018-08: 648,600 training cells, forecasts to 2018-10-31 (35 s)
+20:47:25   refit 2018-11: 733,100 training cells, forecasts to 2019-01-31 (35 s)
+20:47:26   refit 2019-02: 812,256 training cells, forecasts to 2019-04-30 (35 s)
+20:47:26   refit 2019-05: 891,556 training cells, forecasts to 2019-07-31 (36 s)
+20:47:27   refit 2019-08: 974,430 training cells, forecasts to 2019-10-31 (36 s)
+20:47:27   refit 2019-11: 973,923 training cells, forecasts to 2020-01-31 (37 s)
+20:47:28   refit 2020-02: 973,713 training cells, forecasts to 2020-04-30 (37 s)
+20:47:28   refit 2020-05: 974,519 training cells, forecasts to 2020-07-31 (38 s)
+20:47:29   refit 2020-08: 973,919 training cells, forecasts to 2020-10-30 (39 s)
+20:47:30   refit 2020-11: 972,553 training cells, forecasts to 2021-01-29 (39 s)
+20:47:30   refit 2021-02: 970,901 training cells, forecasts to 2021-04-30 (40 s)
+20:47:31   refit 2021-05: 973,122 training cells, forecasts to 2021-07-30 (40 s)
+20:47:31   refit 2021-08: 971,822 training cells, forecasts to 2021-10-29 (41 s)
+20:47:32   refit 2021-11: 970,457 training cells, forecasts to 2022-01-31 (41 s)
+20:47:32   refit 2022-02: 973,054 training cells, forecasts to 2022-04-29 (42 s)
+20:47:33   refit 2022-05: 973,226 training cells, forecasts to 2022-07-29 (42 s)
+20:47:33   refit 2022-08: 970,626 training cells, forecasts to 2022-10-31 (43 s)
+20:47:34   refit 2022-11: 970,926 training cells, forecasts to 2023-01-31 (43 s)
+20:47:34   refit 2023-02: 970,731 training cells, forecasts to 2023-04-28 (44 s)
+20:47:35   refit 2023-05: 969,991 training cells, forecasts to 2023-07-31 (44 s)
+20:47:35   refit 2023-08: 968,939 training cells, forecasts to 2023-10-31 (45 s)
+20:47:36   refit 2023-11: 970,019 training cells, forecasts to 2024-01-31 (45 s)
+20:47:36   refit 2024-02: 971,671 training cells, forecasts to 2024-04-30 (46 s)
+20:47:37   refit 2024-05: 970,684 training cells, forecasts to 2024-07-31 (46 s)
+20:47:37   refit 2024-08: 970,371 training cells, forecasts to 2024-10-31 (47 s)
+20:47:38   refit 2024-11: 971,165 training cells, forecasts to 2025-01-31 (47 s)
+20:47:38   refit 2025-02: 968,503 training cells, forecasts to 2025-04-30 (48 s)
+20:47:39   refit 2025-05: 967,992 training cells, forecasts to 2025-07-31 (49 s)
+20:47:40   refit 2025-08: 969,552 training cells, forecasts to 2025-10-31 (49 s)
+20:47:40   refit 2025-11: 969,759 training cells, forecasts to 2026-01-30 (50 s)
+20:47:41   refit 2026-02: 968,732 training cells, forecasts to 2026-04-30 (50 s)
+20:47:41   refit 2026-05: 969,605 training cells, forecasts to 2026-07-31 (51 s)
+20:47:42   refit 2026-08: 969,160 training cells, forecasts to 2026-10-26 (51 s)
+20:47:46 ResPrediction | +1 bar delay (free delayed SIP): IS 0.26 OOS -0.10
+20:47:46 loading 175 stocks + 14 ETFs (sip) from 2015-05-12 ...
+20:47:51 factor model 'etf': betas over 126 days, residuals for 70,692 bars ...
+20:48:27 ResPrediction | 50 names: IS 0.02 OOS -0.45
+20:48:27 loading 292 stocks + 14 ETFs (sip) from 2015-05-12 ...
+20:48:33 factor model 'pca': betas over 126 days, residuals for 70,692 bars ...
+20:50:01 ResPrediction | PCA: IS -0.56 OOS -1.07
+        strategy                               case  sh_is  sh_oos  sh_all  gross_sh_all  cagr_is  cagr_oos    mdd    turn   dsr  dsr_noise  psr_oos
+     ResMomentum                             chosen  0.368   0.603   0.466         0.507    0.030     0.065 -0.161  21.198 0.427      0.045    0.880
+     ResMomentum           cost x0.0 (0.00 bp/side)  0.394     NaN   0.493           NaN    0.046       NaN -0.160     NaN   NaN        NaN      NaN
+     ResMomentum           cost x0.5 (0.65 bp/side)  0.381     NaN   0.479           NaN    0.044       NaN -0.160     NaN   NaN        NaN      NaN
+     ResMomentum           cost x1.0 (1.30 bp/side)  0.368     NaN   0.466           NaN    0.043       NaN -0.161     NaN   NaN        NaN      NaN
+     ResMomentum           cost x1.5 (1.94 bp/side)  0.355     NaN   0.452           NaN    0.042       NaN -0.161     NaN   NaN        NaN      NaN
+     ResMomentum           cost x2.0 (2.59 bp/side)  0.341     NaN   0.438           NaN    0.040       NaN -0.163     NaN   NaN        NaN      NaN
+     ResMomentum           cost x3.0 (3.89 bp/side)  0.315     NaN   0.411           NaN    0.037       NaN -0.171     NaN   NaN        NaN      NaN
+     ResMomentum                   fill at bar VWAP  0.360   0.620   0.468         0.507    0.030     0.067 -0.160  21.198   NaN        NaN      NaN
+     ResMomentum    +1 bar delay (free delayed SIP)  0.368   0.603   0.466         0.507    0.030     0.065 -0.161  21.198   NaN        NaN      NaN
+     ResMomentum                           50 names  0.631   0.717   0.663         0.695    0.045     0.066 -0.158  15.352   NaN        NaN      NaN
+     ResMomentum PCA factors (15), projection hedge  0.511   0.430   0.474         0.542    0.029     0.029 -0.146  16.829   NaN        NaN      NaN
+     ResMomentum                          year 2016    NaN     NaN     NaN           NaN   -0.034       NaN    NaN     NaN   NaN        NaN      NaN
+     ResMomentum                          year 2017    NaN     NaN     NaN           NaN    0.110       NaN    NaN     NaN   NaN        NaN      NaN
+     ResMomentum                          year 2018    NaN     NaN     NaN           NaN    0.108       NaN    NaN     NaN   NaN        NaN      NaN
+     ResMomentum                          year 2019    NaN     NaN     NaN           NaN   -0.029       NaN    NaN     NaN   NaN        NaN      NaN
+     ResMomentum                          year 2020    NaN     NaN     NaN           NaN    0.083       NaN    NaN     NaN   NaN        NaN      NaN
+     ResMomentum                          year 2021    NaN     NaN     NaN           NaN   -0.023       NaN    NaN     NaN   NaN        NaN      NaN
+     ResMomentum                          year 2022    NaN     NaN     NaN           NaN   -0.010       NaN    NaN     NaN   NaN        NaN      NaN
+     ResMomentum                          year 2023    NaN     NaN     NaN           NaN   -0.050       NaN    NaN     NaN   NaN        NaN      NaN
+     ResMomentum                          year 2024    NaN     NaN     NaN           NaN    0.048       NaN    NaN     NaN   NaN        NaN      NaN
+     ResMomentum                          year 2025    NaN     NaN     NaN           NaN    0.056       NaN    NaN     NaN   NaN        NaN      NaN
+     ResMomentum                          year 2026    NaN     NaN     NaN           NaN    0.207       NaN    NaN     NaN   NaN        NaN      NaN
+ResMeanReversion                             chosen  0.961  -0.204   0.467         1.126    0.090    -0.030 -0.173 543.190 0.000      0.204    0.346
+ResMeanReversion           cost x0.0 (0.00 bp/side)  1.603     NaN   1.113           NaN    0.115       NaN -0.135     NaN   NaN        NaN      NaN
+ResMeanReversion           cost x0.5 (0.61 bp/side)  1.282     NaN   0.790           NaN    0.079       NaN -0.144     NaN   NaN        NaN      NaN
+ResMeanReversion           cost x1.0 (1.22 bp/side)  0.962     NaN   0.467           NaN    0.043       NaN -0.173     NaN   NaN        NaN      NaN
+ResMeanReversion           cost x1.5 (1.83 bp/side)  0.641     NaN   0.144           NaN    0.010       NaN -0.267     NaN   NaN        NaN      NaN
+ResMeanReversion           cost x2.0 (2.44 bp/side)  0.319     NaN  -0.180           NaN   -0.023       NaN -0.359     NaN   NaN        NaN      NaN
+ResMeanReversion           cost x3.0 (3.65 bp/side) -0.323     NaN  -0.827           NaN   -0.086       NaN -0.605     NaN   NaN        NaN      NaN
+ResMeanReversion                   fill at bar VWAP  0.993  -0.193   0.489         1.126    0.093    -0.028 -0.193 543.190   NaN        NaN      NaN
+ResMeanReversion    +1 bar delay (free delayed SIP)  0.488  -0.383   0.125         0.769    0.044    -0.050 -0.360 541.497   NaN        NaN      NaN
+ResMeanReversion                           50 names  0.552  -0.724  -0.009         0.470    0.036    -0.066 -0.374 342.906   NaN        NaN      NaN
+ResMeanReversion PCA factors (15), projection hedge  0.162  -0.249  -0.010         0.800    0.009    -0.026 -0.238 363.368   NaN        NaN      NaN
+ResMeanReversion                          year 2016    NaN     NaN     NaN           NaN    0.034       NaN    NaN     NaN   NaN        NaN      NaN
+ResMeanReversion                          year 2017    NaN     NaN     NaN           NaN   -0.037       NaN    NaN     NaN   NaN        NaN      NaN
+ResMeanReversion                          year 2018    NaN     NaN     NaN           NaN    0.007       NaN    NaN     NaN   NaN        NaN      NaN
+ResMeanReversion                          year 2019    NaN     NaN     NaN           NaN    0.005       NaN    NaN     NaN   NaN        NaN      NaN
+ResMeanReversion                          year 2020    NaN     NaN     NaN           NaN    0.278       NaN    NaN     NaN   NaN        NaN      NaN
+ResMeanReversion                          year 2021    NaN     NaN     NaN           NaN    0.203       NaN    NaN     NaN   NaN        NaN      NaN
+ResMeanReversion                          year 2022    NaN     NaN     NaN           NaN    0.112       NaN    NaN     NaN   NaN        NaN      NaN
+ResMeanReversion                          year 2023    NaN     NaN     NaN           NaN   -0.007       NaN    NaN     NaN   NaN        NaN      NaN
+ResMeanReversion                          year 2024    NaN     NaN     NaN           NaN   -0.082       NaN    NaN     NaN   NaN        NaN      NaN
+ResMeanReversion                          year 2025    NaN     NaN     NaN           NaN   -0.028       NaN    NaN     NaN   NaN        NaN      NaN
+ResMeanReversion                          year 2026    NaN     NaN     NaN           NaN    0.008       NaN    NaN     NaN   NaN        NaN      NaN
+   ResPrediction                             chosen  0.412  -0.076   0.192         0.572    0.025    -0.011 -0.176 211.021 0.000      0.148    0.441
+   ResPrediction           cost x0.0 (0.00 bp/side)  0.798     NaN   0.556           NaN    0.040       NaN -0.148     NaN   NaN        NaN      NaN
+   ResPrediction           cost x0.5 (0.65 bp/side)  0.605     NaN   0.374           NaN    0.026       NaN -0.160     NaN   NaN        NaN      NaN
+   ResPrediction           cost x1.0 (1.29 bp/side)  0.413     NaN   0.192           NaN    0.012       NaN -0.176     NaN   NaN        NaN      NaN
+   ResPrediction           cost x1.5 (1.94 bp/side)  0.220     NaN   0.009           NaN   -0.002       NaN -0.196     NaN   NaN        NaN      NaN
+   ResPrediction           cost x2.0 (2.59 bp/side)  0.026     NaN  -0.173           NaN   -0.016       NaN -0.216     NaN   NaN        NaN      NaN
+   ResPrediction           cost x3.0 (3.88 bp/side) -0.360     NaN  -0.539           NaN   -0.042       NaN -0.374     NaN   NaN        NaN      NaN
+   ResPrediction                   fill at bar VWAP  0.460  -0.024   0.241         0.572    0.028    -0.006 -0.172 211.021   NaN        NaN      NaN
+   ResPrediction    +1 bar delay (free delayed SIP)  0.259  -0.099   0.100         0.471    0.015    -0.013 -0.203 209.512   NaN        NaN      NaN
+   ResPrediction                           50 names  0.017  -0.450  -0.195         0.135   -0.001    -0.051 -0.298 236.955   NaN        NaN      NaN
+   ResPrediction PCA factors (15), projection hedge -0.563  -1.071  -0.780         0.150   -0.025    -0.060 -0.348 236.635   NaN        NaN      NaN
+   ResPrediction                          year 2016    NaN     NaN     NaN           NaN    0.000       NaN    NaN     NaN   NaN        NaN      NaN
+   ResPrediction                          year 2017    NaN     NaN     NaN           NaN    0.000       NaN    NaN     NaN   NaN        NaN      NaN
+   ResPrediction                          year 2018    NaN     NaN     NaN           NaN   -0.003       NaN    NaN     NaN   NaN        NaN      NaN
+   ResPrediction                          year 2019    NaN     NaN     NaN           NaN    0.018       NaN    NaN     NaN   NaN        NaN      NaN
+   ResPrediction                          year 2020    NaN     NaN     NaN           NaN    0.099       NaN    NaN     NaN   NaN        NaN      NaN
+   ResPrediction                          year 2021    NaN     NaN     NaN           NaN    0.008       NaN    NaN     NaN   NaN        NaN      NaN
+   ResPrediction                          year 2022    NaN     NaN     NaN           NaN    0.040       NaN    NaN     NaN   NaN        NaN      NaN
+   ResPrediction                          year 2023    NaN     NaN     NaN           NaN   -0.000       NaN    NaN     NaN   NaN        NaN      NaN
+   ResPrediction                          year 2024    NaN     NaN     NaN           NaN    0.030       NaN    NaN     NaN   NaN        NaN      NaN
+   ResPrediction                          year 2025    NaN     NaN     NaN           NaN   -0.059       NaN    NaN     NaN   NaN        NaN      NaN
+   ResPrediction                          year 2026    NaN     NaN     NaN           NaN   -0.009       NaN    NaN     NaN   NaN        NaN      NaN

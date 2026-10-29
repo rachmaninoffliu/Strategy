@@ -1,0 +1,58 @@
+﻿  market: 234 symbols, 2719 sessions (8 s)
+top50+etf k10 equal @1545: Sharpe 1.18 (IS 1.25, OOS 1.09) · CAGR 18.7% vs SPY 15.0% · maxDD -19.4% · 9614 trades · win 64% · exposure 75% (9 s)
+top50+etf k10 inv_vol 0.010 max2 @1545: Sharpe 1.12 (IS 1.18, OOS 1.01) · CAGR 9.6% vs SPY 15.0% · maxDD -9.3% · 9466 trades · win 64% · exposure 62% (11 s)
+top50+etf k10 inv_vol 0.010 max3 @1545: Sharpe 1.09 (IS 1.13, OOS 1.02) · CAGR 9.2% vs SPY 15.0% · maxDD -9.6% · 9343 trades · win 64% · exposure 63% (12 s)
+top50+etf k10 inv_vol 0.015 max2 @1545: Sharpe 1.15 (IS 1.25, OOS 0.98) · CAGR 12.9% vs SPY 15.0% · maxDD -12.0% · 8960 trades · win 64% · exposure 73% (13 s)
+top50+etf k10 inv_vol 0.015 max3 @1545: Sharpe 1.12 (IS 1.23, OOS 0.93) · CAGR 12.3% vs SPY 15.0% · maxDD -11.9% · 8636 trades · win 64% · exposure 75% (14 s)
+top50+etf k10 inv_vol 0.020 max2 @1545: Sharpe 1.13 (IS 1.33, OOS 0.80) · CAGR 14.4% vs SPY 15.0% · maxDD -12.8% · 8409 trades · win 63% · exposure 78% (15 s)
+top50+etf k10 inv_vol 0.020 max3 @1545: Sharpe 1.13 (IS 1.33, OOS 0.82) · CAGR 14.2% vs SPY 15.0% · maxDD -12.8% · 7925 trades · win 64% · exposure 79% (16 s)
+top50+etf k15 equal @1545: Sharpe 1.17 (IS 1.19, OOS 1.15) · CAGR 16.4% vs SPY 15.0% · maxDD -18.2% · 13064 trades · win 63% · exposure 68% (19 s)
+top50+etf k15 inv_vol 0.010 max2 @1545: Sharpe 1.03 (IS 1.08, OOS 0.95) · CAGR 8.3% vs SPY 15.0% · maxDD -10.0% · 12801 trades · win 63% · exposure 57% (21 s)
+top50+etf k15 inv_vol 0.010 max3 @1545: Sharpe 1.01 (IS 1.01, OOS 1.02) · CAGR 8.0% vs SPY 15.0% · maxDD -9.1% · 12660 trades · win 63% · exposure 59% (23 s)
+top50+etf k15 inv_vol 0.015 max2 @1545: Sharpe 1.13 (IS 1.12, OOS 1.14) · CAGR 11.8% vs SPY 15.0% · maxDD -12.0% · 12003 trades · win 64% · exposure 68% (25 s)
+top50+etf k15 inv_vol 0.015 max3 @1545: Sharpe 1.14 (IS 1.13, OOS 1.15) · CAGR 11.7% vs SPY 15.0% · maxDD -12.6% · 11593 trades · win 64% · exposure 70% (27 s)
+top50+etf k15 inv_vol 0.020 max2 @1545: Sharpe 1.14 (IS 1.18, OOS 1.06) · CAGR 13.4% vs SPY 15.0% · maxDD -12.8% · 11135 trades · win 63% · exposure 73% (28 s)
+top50+etf k15 inv_vol 0.020 max3 @1545: Sharpe 1.18 (IS 1.23, OOS 1.10) · CAGR 13.7% vs SPY 15.0% · maxDD -12.4% · 10464 trades · win 64% · exposure 75% (30 s)
+top50+etf k20 equal @1545: Sharpe 1.21 (IS 1.23, OOS 1.19) · CAGR 15.8% vs SPY 15.0% · maxDD -14.0% · 15831 trades · win 63% · exposure 61% (33 s)
+top50+etf k20 inv_vol 0.010 max2 @1545: Sharpe 1.06 (IS 1.15, OOS 0.92) · CAGR 8.0% vs SPY 15.0% · maxDD -9.9% · 15505 trades · win 64% · exposure 52% (36 s)
+top50+etf k20 inv_vol 0.010 max3 @1545: Sharpe 1.05 (IS 1.11, OOS 0.97) · CAGR 7.9% vs SPY 15.0% · maxDD -9.9% · 15332 trades · win 64% · exposure 54% (38 s)
+top50+etf k20 inv_vol 0.015 max2 @1545: Sharpe 1.03 (IS 1.07, OOS 0.98) · CAGR 10.1% vs SPY 15.0% · maxDD -11.9% · 14442 trades · win 63% · exposure 63% (40 s)
+top50+etf k20 inv_vol 0.015 max3 @1545: Sharpe 1.05 (IS 1.06, OOS 1.04) · CAGR 10.2% vs SPY 15.0% · maxDD -12.2% · 13946 trades · win 63% · exposure 65% (42 s)
+top50+etf k20 inv_vol 0.020 max2 @1545: Sharpe 1.09 (IS 1.12, OOS 1.05) · CAGR 12.1% vs SPY 15.0% · maxDD -13.4% · 13409 trades · win 63% · exposure 68% (44 s)
+top50+etf k20 inv_vol 0.020 max3 @1545: Sharpe 1.16 (IS 1.15, OOS 1.17) · CAGR 12.7% vs SPY 15.0% · maxDD -13.7% · 12617 trades · win 63% · exposure 70% (46 s)
+top50+etf k30 equal @1545: Sharpe 1.12 (IS 1.21, OOS 1.03) · CAGR 12.4% vs SPY 15.0% · maxDD -11.8% · 19812 trades · win 63% · exposure 51% (48 s)
+top50+etf k30 inv_vol 0.010 max2 @1545: Sharpe 1.03 (IS 1.08, OOS 0.94) · CAGR 6.9% vs SPY 15.0% · maxDD -8.5% · 19424 trades · win 64% · exposure 44% (51 s)
+top50+etf k30 inv_vol 0.010 max3 @1545: Sharpe 1.03 (IS 1.09, OOS 0.94) · CAGR 6.9% vs SPY 15.0% · maxDD -8.1% · 19237 trades · win 64% · exposure 45% (53 s)
+top50+etf k30 inv_vol 0.015 max2 @1545: Sharpe 1.08 (IS 1.11, OOS 1.02) · CAGR 9.4% vs SPY 15.0% · maxDD -10.6% · 18142 trades · win 64% · exposure 54% (55 s)
+top50+etf k30 inv_vol 0.015 max3 @1545: Sharpe 1.07 (IS 1.13, OOS 0.98) · CAGR 9.3% vs SPY 15.0% · maxDD -10.5% · 17536 trades · win 64% · exposure 56% (58 s)
+top50+etf k30 inv_vol 0.020 max2 @1545: Sharpe 1.05 (IS 1.13, OOS 0.94) · CAGR 10.5% vs SPY 15.0% · maxDD -11.6% · 16920 trades · win 64% · exposure 60% (60 s)
+top50+etf k30 inv_vol 0.020 max3 @1545: Sharpe 1.05 (IS 1.12, OOS 0.93) · CAGR 10.3% vs SPY 15.0% · maxDD -11.3% · 15883 trades · win 64% · exposure 62% (63 s)
+                                 model  sh_is  sh_oos  sh_all  cagr_is  cagr_oos  cagr    mdd   vol  trades   win  expo  max_expo  beta
+top50+etf k10 inv_vol 0.020 max2 @1545  1.334   0.804   1.129    0.171     0.101 0.144 -0.128 0.126    8409 0.635 0.783     0.985 0.426
+top50+etf k10 inv_vol 0.020 max3 @1545  1.330   0.818   1.134    0.168     0.101 0.142 -0.128 0.124    7925 0.636 0.794     0.985 0.412
+             top50+etf k10 equal @1545  1.251   1.090   1.181    0.187     0.187 0.187 -0.194 0.156    9614 0.635 0.752     0.982 0.536
+top50+etf k10 inv_vol 0.015 max2 @1545  1.250   0.982   1.147    0.140     0.111 0.129 -0.120 0.111    8960 0.637 0.734     0.985 0.379
+             top50+etf k20 equal @1545  1.235   1.189   1.211    0.149     0.173 0.158 -0.140 0.128   15831 0.635 0.612     0.979 0.459
+top50+etf k10 inv_vol 0.015 max3 @1545  1.234   0.931   1.119    0.136     0.102 0.123 -0.119 0.109    8636 0.636 0.747     0.985 0.368
+top50+etf k15 inv_vol 0.020 max3 @1545  1.233   1.102   1.184    0.144     0.127 0.137 -0.124 0.114   10464 0.637 0.746     0.986 0.396
+             top50+etf k30 equal @1545  1.206   1.026   1.122    0.122     0.127 0.124 -0.118 0.109   19812 0.635 0.505     0.974 0.385
+             top50+etf k15 equal @1545  1.194   1.151   1.172    0.156     0.179 0.164 -0.182 0.138   13064 0.634 0.677     0.980 0.495
+top50+etf k15 inv_vol 0.020 max2 @1545  1.185   1.060   1.137    0.139     0.125 0.134 -0.128 0.116   11135 0.635 0.729     0.985 0.415
+top50+etf k10 inv_vol 0.010 max2 @1545  1.183   1.012   1.119    0.102     0.087 0.096 -0.093 0.085    9466 0.636 0.619     0.982 0.295
+top50+etf k20 inv_vol 0.010 max2 @1545  1.151   0.924   1.062    0.086     0.071 0.080 -0.099 0.075   15505 0.636 0.519     0.981 0.271
+top50+etf k20 inv_vol 0.020 max3 @1545  1.148   1.172   1.157    0.125     0.130 0.127 -0.137 0.108   12617 0.634 0.702     0.986 0.389
+top50+etf k10 inv_vol 0.010 max3 @1545  1.130   1.023   1.090    0.096     0.086 0.092 -0.096 0.084    9343 0.635 0.633     0.982 0.285
+top50+etf k15 inv_vol 0.015 max3 @1545  1.130   1.151   1.138    0.116     0.118 0.117 -0.126 0.102   11593 0.635 0.697     0.984 0.361
+top50+etf k30 inv_vol 0.020 max2 @1545  1.130   0.942   1.055    0.110     0.098 0.105 -0.116 0.100   16920 0.636 0.595     0.985 0.363
+top50+etf k30 inv_vol 0.015 max3 @1545  1.126   0.984   1.069    0.095     0.089 0.093 -0.105 0.087   17536 0.636 0.564     0.984 0.311
+top50+etf k30 inv_vol 0.020 max3 @1545  1.123   0.927   1.046    0.109     0.094 0.103 -0.113 0.098   15883 0.636 0.623     0.985 0.357
+top50+etf k15 inv_vol 0.015 max2 @1545  1.119   1.138   1.126    0.116     0.121 0.118 -0.120 0.103   12003 0.635 0.681     0.985 0.373
+top50+etf k20 inv_vol 0.020 max2 @1545  1.118   1.045   1.090    0.123     0.119 0.121 -0.134 0.111   13409 0.633 0.681     0.986 0.404
+top50+etf k30 inv_vol 0.015 max2 @1545  1.114   1.023   1.077    0.094     0.094 0.094 -0.106 0.087   18142 0.636 0.543     0.984 0.312
+top50+etf k20 inv_vol 0.010 max3 @1545  1.109   0.965   1.054    0.082     0.074 0.079 -0.099 0.075   15332 0.637 0.538     0.982 0.269
+top50+etf k30 inv_vol 0.010 max3 @1545  1.092   0.938   1.032    0.072     0.064 0.069 -0.081 0.067   19237 0.635 0.454     0.984 0.233
+top50+etf k30 inv_vol 0.010 max2 @1545  1.076   0.944   1.025    0.071     0.064 0.069 -0.085 0.067   19424 0.635 0.437     0.984 0.233
+top50+etf k15 inv_vol 0.010 max2 @1545  1.075   0.954   1.029    0.085     0.078 0.083 -0.100 0.080   12801 0.634 0.569     0.983 0.288
+top50+etf k20 inv_vol 0.015 max2 @1545  1.067   0.978   1.032    0.103     0.099 0.101 -0.119 0.098   14442 0.634 0.631     0.984 0.359
+top50+etf k20 inv_vol 0.015 max3 @1545  1.061   1.044   1.055    0.101     0.103 0.102 -0.122 0.096   13946 0.633 0.649     0.984 0.349
+top50+etf k15 inv_vol 0.010 max3 @1545  1.007   1.016   1.010    0.079     0.081 0.080 -0.091 0.079   12660 0.634 0.586     0.982 0.280

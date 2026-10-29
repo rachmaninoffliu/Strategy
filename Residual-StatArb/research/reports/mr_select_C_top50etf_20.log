@@ -1,0 +1,22 @@
+﻿  market: 234 symbols, 2719 sessions (9 s)
+top50+etf k20 @1530 cost 1bp: Sharpe 0.91 (IS 0.98, OOS 0.80) · CAGR 11.6% vs SPY 15.0% · maxDD -16.0% · 15588 trades · win 63% · exposure 61% (11 s)
+top50+etf k20 @1530 cost 2bp: Sharpe 0.79 (IS 0.86, OOS 0.69) · CAGR 9.9% vs SPY 15.0% · maxDD -17.6% · 15588 trades · win 62% · exposure 61% (13 s)
+top50+etf k20 @1530 cost 3bp: Sharpe 0.68 (IS 0.75, OOS 0.58) · CAGR 8.3% vs SPY 15.0% · maxDD -20.8% · 15588 trades · win 61% · exposure 61% (15 s)
+top50+etf k20 @1530 cost 5bp: Sharpe 0.45 (IS 0.52, OOS 0.34) · CAGR 5.1% vs SPY 15.0% · maxDD -28.1% · 15588 trades · win 60% · exposure 61% (17 s)
+  market: 234 symbols, 2719 sessions (7 s)
+top50+etf k20 @1545 cost 1bp: Sharpe 1.21 (IS 1.23, OOS 1.19) · CAGR 15.8% vs SPY 15.0% · maxDD -14.0% · 15831 trades · win 63% · exposure 61% (26 s)
+top50+etf k20 @1545 cost 2bp: Sharpe 1.10 (IS 1.11, OOS 1.08) · CAGR 14.1% vs SPY 15.0% · maxDD -14.1% · 15831 trades · win 63% · exposure 61% (27 s)
+top50+etf k20 @1545 cost 3bp: Sharpe 0.97 (IS 0.99, OOS 0.96) · CAGR 12.3% vs SPY 15.0% · maxDD -14.8% · 15831 trades · win 62% · exposure 61% (29 s)
+top50+etf k20 @1545 cost 5bp: Sharpe 0.74 (IS 0.74, OOS 0.74) · CAGR 8.9% vs SPY 15.0% · maxDD -19.2% · 15831 trades · win 60% · exposure 61% (31 s)
+  market: 234 symbols, 2719 sessions (8 s)
+top50+etf k20 @1600 cost 1bp (LOOK-AHEAD: decided on the close it trades at): Sharpe 1.08 (IS 1.03, OOS 1.15) · CAGR 14.1% vs SPY 15.0% · maxDD -18.2% · 15726 trades · win 63% · exposure 61% (41 s)
+                                                                       model  sh_is  sh_oos  sh_all  cagr_is  cagr_oos  cagr    mdd   vol  trades   win  expo  max_expo  beta
+                                                top50+etf k20 @1545 cost 1bp  1.235   1.189   1.211    0.149     0.173 0.158 -0.140 0.128   15831 0.635 0.612     0.979 0.459
+                                                top50+etf k20 @1545 cost 2bp  1.114   1.080   1.095    0.132     0.154 0.141 -0.141 0.128   15831 0.628 0.612     0.979 0.458
+top50+etf k20 @1600 cost 1bp (LOOK-AHEAD: decided on the close it trades at)  1.032   1.152   1.077    0.122     0.172 0.141 -0.182 0.130   15726 0.635 0.614     0.977 0.455
+                                                top50+etf k20 @1545 cost 3bp  0.989   0.965   0.975    0.116     0.135 0.123 -0.148 0.127   15831 0.620 0.611     0.978 0.458
+                                                top50+etf k20 @1530 cost 1bp  0.981   0.804   0.909    0.121     0.107 0.116 -0.160 0.130   15588 0.626 0.607     0.979 0.480
+                                                top50+etf k20 @1530 cost 2bp  0.864   0.686   0.792    0.105     0.089 0.099 -0.176 0.130   15588 0.619 0.607     0.979 0.480
+                                                top50+etf k20 @1530 cost 3bp  0.749   0.575   0.679    0.089     0.072 0.083 -0.208 0.129   15588 0.612 0.606     0.977 0.479
+                                                top50+etf k20 @1545 cost 5bp  0.739   0.743   0.738    0.083     0.100 0.089 -0.192 0.127   15831 0.602 0.611     0.978 0.457
+                                                top50+etf k20 @1530 cost 5bp  0.519   0.342   0.448    0.058     0.038 0.051 -0.281 0.129   15588 0.596 0.605     0.978 0.478

@@ -110,12 +110,9 @@ def log(event: str, **kw):
 
 
 def creds():
-    k, s = os.environ.get("ALPACA_API_KEY"), os.environ.get("ALPACA_SECRET_KEY")
-    if k and s:
-        return k, s
-    e = json.load(open(os.path.expanduser("~/.claude.json")))
-    e = e["mcpServers"]["alpaca-paper"]["env"]
-    return e["ALPACA_API_KEY"], e["ALPACA_SECRET_KEY"]
+    """Paper keys: the project's key file "Alpaca Key.txt", then the environment, then ~/.claude.json (alpaca_keys.py)."""
+    import alpaca_keys
+    return alpaca_keys.creds(True)
 
 
 # ------------------------------------------------------------- state I/O ----

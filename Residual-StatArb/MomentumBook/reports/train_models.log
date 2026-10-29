@@ -1,0 +1,36 @@
+﻿hgb_on_top150_etf_1530: building the feature table ...
+python.exe : 
+C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\site-packages\joblib\externals\loky\backend\context.py:136: 
+UserWarning: Could not find the number of physical cores for the following reason:
+At line:1 char:518
++ ... tArb\core"; & "C:\Users\xinyu\AppData\Local\Programs\Python\Python312 ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\Users\xinyu\...llowing reason::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WinError 2] The system cannot find the file specified
+Returning the number of logical cores instead. You can silence this warning by setting LOKY_MAX_CPU_COUNT to the 
+number of cores you want to use.
+  warnings.warn(
+  File 
+"C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\site-packages\joblib\externals\loky\backend\context.py", 
+line 257, in _count_physical_cores
+    cpu_info = subprocess.run(
+               ^^^^^^^^^^^^^^^
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1538, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2018: fitted on 74,561 rows 2016-01-05 .. 2017-12-28 (9.7 s)
+  2019: fitted on 120,297 rows 2016-01-05 .. 2018-12-28 (10.8 s)
+  2020: fitted on 166,738 rows 2016-01-05 .. 2019-12-30 (12.0 s)
+  2021: fitted on 213,135 rows 2016-01-05 .. 2020-12-30 (12.8 s)
+  2022: fitted on 260,062 rows 2016-01-05 .. 2021-12-30 (13.5 s)
+  2023: fitted on 306,513 rows 2016-01-05 .. 2022-12-29 (14.0 s)
+  2024: fitted on 352,586 rows 2016-01-05 .. 2023-12-28 (15.7 s)
+  2025: fitted on 399,030 rows 2016-01-05 .. 2024-12-30 (14.9 s)
+  2026: fitted on 445,731 rows 2016-01-05 .. 2025-12-30 (16.7 s)

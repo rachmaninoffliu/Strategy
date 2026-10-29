@@ -1,0 +1,1 @@
+rr_1,rr_2,cloc,rr_4,vwap_dev,rr_13,id_today,ivol,rr_26,ou_s,r2_fit,range,ou_kappa,vol_surp,hks

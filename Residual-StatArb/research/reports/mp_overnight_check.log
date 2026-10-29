@@ -1,0 +1,62 @@
+first trade vs daily open: mean -0.10 bp, median |.| 0.00, p90 |.| 3.85
+last bar trade vs daily close: mean -0.13 bp, median |.| 1.62, p90 |.| 6.20
+                                               label  sh_all  sh_is  sh_oos  cagr_all  cagr_oos  vol_all  mdd_all
+                                      SPY buy & hold   0.880  0.656   1.377     0.150     0.213    0.176   -0.338
+          top150+etf d45 top20 spy_trend | open, 1bp   1.772  2.231   1.319     0.275     0.241    0.143   -0.223
+   top150+etf d45 top20 spy_trend | first trade, 1bp   1.748  2.208   1.295     0.271     0.236    0.143   -0.227
+  top150+etf d45 top20 spy_trend | 9:45 + 3bp spread   1.187  1.166   1.259     0.186     0.246    0.153   -0.195
+          top150+etf d45 top20 spy_trend | open, 2bp   1.476  1.899   1.054     0.223     0.185    0.143   -0.239
+          top150+etf d45 top20 spy_trend | open, 3bp   1.180  1.566   0.788     0.172     0.131    0.143   -0.256
+     top150+etf d45 top20 spy_trend | 15:30 decision   1.819  2.229   1.422     0.286     0.266    0.144   -0.223
+        top150+etf res45 top20 spy_trend | open, 1bp   1.785  2.189   1.409     0.283     0.268    0.146   -0.229
+ top150+etf res45 top20 spy_trend | first trade, 1bp   1.764  2.163   1.394     0.279     0.265    0.146   -0.234
+top150+etf res45 top20 spy_trend | 9:45 + 3bp spread   1.230  1.129   1.395     0.196     0.284    0.155   -0.228
+        top150+etf res45 top20 spy_trend | open, 2bp   1.494  1.859   1.150     0.230     0.211    0.146   -0.243
+        top150+etf res45 top20 spy_trend | open, 3bp   1.204  1.529   0.892     0.179     0.155    0.146   -0.259
+   top150+etf res45 top20 spy_trend | 15:30 decision   1.740  2.138   1.363     0.275     0.256    0.146   -0.242
+          top150+etf d45 top10 spy_trend | open, 1bp   1.758  2.225   1.276     0.349     0.289    0.179   -0.305
+   top150+etf d45 top10 spy_trend | first trade, 1bp   1.739  2.207   1.258     0.344     0.284    0.179   -0.307
+  top150+etf d45 top10 spy_trend | 9:45 + 3bp spread   1.124  1.170   1.113     0.221     0.266    0.195   -0.269
+          top150+etf d45 top10 spy_trend | open, 2bp   1.522  1.964   1.062     0.293     0.231    0.179   -0.320
+          top150+etf d45 top10 spy_trend | open, 3bp   1.286  1.701   0.848     0.239     0.175    0.179   -0.335
+     top150+etf d45 top10 spy_trend | 15:30 decision   1.749  2.124   1.376     0.346     0.318    0.179   -0.322
+            top150 vsurp top20 spy_trend | open, 1bp   1.788  1.925   1.675     0.225     0.252    0.117   -0.169
+     top150 vsurp top20 spy_trend | first trade, 1bp   1.739  1.883   1.617     0.217     0.242    0.117   -0.179
+    top150 vsurp top20 spy_trend | 9:45 + 3bp spread   1.130  0.827   1.524     0.143     0.245    0.125   -0.167
+            top150 vsurp top20 spy_trend | open, 2bp   1.435  1.543   1.348     0.175     0.196    0.117   -0.189
+            top150 vsurp top20 spy_trend | open, 3bp   1.082  1.160   1.021     0.127     0.143    0.117   -0.208
+       top150 vsurp top20 spy_trend | 15:30 decision   1.772  1.947   1.617     0.226     0.246    0.119   -0.186
+        top150+etf vsurp top20 spy_trend | open, 1bp   1.750  1.916   1.577     0.204     0.213    0.110   -0.191
+ top150+etf vsurp top20 spy_trend | first trade, 1bp   1.715  1.878   1.545     0.199     0.208    0.109   -0.194
+top150+etf vsurp top20 spy_trend | 9:45 + 3bp spread   0.979  0.729   1.320     0.113     0.184    0.116   -0.210
+        top150+etf vsurp top20 spy_trend | open, 2bp   1.368  1.512   1.215     0.155     0.158    0.109   -0.224
+        top150+etf vsurp top20 spy_trend | open, 3bp   0.986  1.107   0.854     0.107     0.106    0.109   -0.260
+   top150+etf vsurp top20 spy_trend | 15:30 decision   1.738  1.975   1.467     0.202     0.195    0.109   -0.189
+                top50 d45 top5 spy_trend | open, 1bp   1.774  2.002   1.590     0.385     0.422    0.194   -0.307
+         top50 d45 top5 spy_trend | first trade, 1bp   1.756  1.975   1.582     0.380     0.419    0.194   -0.307
+        top50 d45 top5 spy_trend | 9:45 + 3bp spread   1.056  0.832   1.350     0.224     0.385    0.213   -0.349
+                top50 d45 top5 spy_trend | open, 2bp   1.556  1.756   1.396     0.328     0.357    0.194   -0.320
+                top50 d45 top5 spy_trend | open, 3bp   1.338  1.509   1.201     0.273     0.296    0.194   -0.334
+           top50 d45 top5 spy_trend | 15:30 decision   1.750  1.866   1.691     0.379     0.457    0.195   -0.304
+              top50 res45 top3 spy_trend | open, 1bp   1.777  1.761   1.858     0.475     0.627    0.234   -0.349
+       top50 res45 top3 spy_trend | first trade, 1bp   1.761  1.733   1.853     0.469     0.624    0.234   -0.352
+      top50 res45 top3 spy_trend | 9:45 + 3bp spread   1.090  0.681   1.599     0.283     0.579    0.259   -0.447
+              top50 res45 top3 spy_trend | open, 2bp   1.597  1.561   1.694     0.414     0.553    0.234   -0.362
+              top50 res45 top3 spy_trend | open, 3bp   1.416  1.360   1.529     0.355     0.482    0.234   -0.386
+         top50 res45 top3 spy_trend | 15:30 decision   1.622  1.609   1.700     0.430     0.574    0.238   -0.404
+            top150 res45 top10 spy_trend | open, 1bp   1.669  1.953   1.415     0.330     0.336    0.181   -0.298
+     top150 res45 top10 spy_trend | first trade, 1bp   1.649  1.927   1.402     0.325     0.332    0.180   -0.300
+    top150 res45 top10 spy_trend | 9:45 + 3bp spread   1.208  1.027   1.463     0.247     0.391    0.199   -0.286
+            top150 res45 top10 spy_trend | open, 2bp   1.435  1.689   1.206     0.275     0.275    0.181   -0.314
+            top150 res45 top10 spy_trend | open, 3bp   1.200  1.424   0.996     0.222     0.217    0.181   -0.329
+       top150 res45 top10 spy_trend | 15:30 decision   1.719  1.909   1.569     0.341     0.380    0.180   -0.297
+                                  2016  2017  2018  2019   2020  2021  2022  2023   2024  2025  2026
+top150+etf d45 top20 spy_trend    11.2  28.3  12.2  17.0  105.1  47.0  -8.5   9.4   36.8  25.7  20.6
+top150+etf res45 top20 spy_trend   8.0  29.2  12.4  15.6   99.0  53.5  -8.4   7.6   30.0  17.9  49.3
+top150+etf d45 top10 spy_trend    17.5  38.2  17.1  22.1  144.0  56.1 -10.9  12.2   58.5  23.7  19.2
+top150 vsurp top20 spy_trend       7.8  17.5  12.0   8.9   69.4  33.4  -5.1  10.9   41.7  22.8  21.8
+top150+etf vsurp top20 spy_trend   9.3  15.8   7.4  10.4   75.7  24.1  -3.9   5.0   36.2  18.6  22.8
+top50 d45 top5 spy_trend          14.4  48.8  28.1  16.6  140.1  36.0 -14.4   3.1  110.0  33.4  31.6
+top50 res45 top3 spy_trend        12.2  53.2  43.2  11.8  150.3  37.0 -14.5  -0.9  141.9  44.9  82.4
+top150 res45 top10 spy_trend      11.1  31.7  22.0  14.1  110.3  62.7 -14.2  15.3   51.4  11.6  54.3
+SPY                                4.0  21.7  -5.0  31.1   18.5  28.6 -18.2  26.2   24.9  17.7  12.3

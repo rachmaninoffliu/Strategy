@@ -1,0 +1,63 @@
+  30m chain/rolling/win2.0: 40 rule sets done (3s)
+  15m chain/rolling/win2.0: 40 rule sets done (5s)
+  30m chain/rolling/win5.0: 40 rule sets done (6s)
+  30m chain/rolling/win10.0: 40 rule sets done (9s)
+  15m chain/rolling/win5.0: 40 rule sets done (9s)
+  5m chain/rolling/win2.0: 40 rule sets done (11s)
+  30m chain/fixed/win2.0: 40 rule sets done (12s)
+  15m chain/rolling/win10.0: 40 rule sets done (13s)
+  30m chain/fixed/win5.0: 40 rule sets done (15s)
+  30m chain/fixed/win10.0: 40 rule sets done (18s)
+  15m chain/fixed/win2.0: 40 rule sets done (19s)
+  5m chain/rolling/win5.0: 40 rule sets done (22s)
+  30m reset/rolling/win2.0: 40 rule sets done (22s)
+  15m chain/fixed/win5.0: 40 rule sets done (25s)
+  30m reset/rolling/win5.0: 40 rule sets done (26s)
+  30m reset/rolling/win10.0: 40 rule sets done (29s)
+  15m chain/fixed/win10.0: 40 rule sets done (30s)
+  5m chain/rolling/win10.0: 40 rule sets done (32s)
+  30m reset/fixed/win2.0: 40 rule sets done (34s)
+  15m reset/rolling/win2.0: 40 rule sets done (37s)
+  30m reset/fixed/win5.0: 40 rule sets done (37s)
+  30m reset/fixed/win10.0: 40 rule sets done (41s)
+  15m reset/rolling/win5.0: 40 rule sets done (42s)
+  5m chain/fixed/win2.0: 40 rule sets done (45s)
+  15m reset/rolling/win10.0: 40 rule sets done (46s)
+  15m reset/fixed/win2.0: 40 rule sets done (51s)
+  5m chain/fixed/win5.0: 40 rule sets done (55s)
+  15m reset/fixed/win5.0: 40 rule sets done (56s)
+  15m reset/fixed/win10.0: 40 rule sets done (61s)
+  5m chain/fixed/win10.0: 40 rule sets done (64s)
+  5m reset/rolling/win2.0: 40 rule sets done (73s)
+  5m reset/rolling/win5.0: 40 rule sets done (81s)
+  5m reset/rolling/win10.0: 40 rule sets done (88s)
+  5m reset/fixed/win2.0: 40 rule sets done (96s)
+  5m reset/fixed/win5.0: 40 rule sets done (103s)
+  5m reset/fixed/win10.0: 40 rule sets done (110s)
+
+== 5m top 6 by in-sample Sharpe
+spread    beta  win  s_open  s_close  edge_ratio  hl_max  sharpe_is  sharpe_oos  trades_is  net_bp_is  gross_bp_is
+ chain   fixed 10.0     3.0      0.5         1.5     0.0      -2.44       -4.51        673      -4.65         1.55
+ chain   fixed 10.0     3.0      0.0         1.5     0.0      -2.45       -4.64        670      -5.23         0.98
+ chain   fixed 10.0     3.0      0.0         0.0     0.0      -2.47       -4.70        677      -5.22         0.98
+ chain   fixed 10.0     3.0      0.5         0.0     0.0      -2.50       -4.68        692      -4.63         1.55
+ chain rolling 10.0     3.0      0.0         1.5    60.0      -2.72       -5.08        504      -4.96         0.45
+ chain rolling 10.0     3.0      0.5         1.5    60.0      -2.75       -5.01        502      -4.68         0.72
+
+== 15m top 6 by in-sample Sharpe
+spread    beta  win  s_open  s_close  edge_ratio  hl_max  sharpe_is  sharpe_oos  trades_is  net_bp_is  gross_bp_is
+ chain   fixed 10.0     3.0      0.5         1.5    60.0      -1.60       -3.03        131      -8.11        -2.88
+ chain   fixed 10.0     3.0      0.0         1.5    60.0      -1.68       -3.06        134      -8.14        -2.90
+ chain   fixed 10.0     3.0      0.5         0.0    60.0      -1.70       -3.28        138      -7.77        -2.52
+ chain   fixed 10.0     3.0      0.0         0.0    60.0      -1.71       -3.15        137      -8.12        -2.87
+ chain rolling 10.0     3.0      0.5         1.5    60.0      -1.72       -2.60        115      -7.07        -1.79
+ chain rolling 10.0     3.0      0.5         0.0    60.0      -2.01       -2.89        123      -6.77        -1.48
+
+== 30m top 6 by in-sample Sharpe
+spread    beta  win  s_open  s_close  edge_ratio  hl_max  sharpe_is  sharpe_oos  trades_is  net_bp_is  gross_bp_is
+ reset rolling  2.0     3.0      0.5         1.5    60.0      -0.92       -0.72         88      -6.82         1.57
+ reset rolling  2.0     3.0      0.0         1.5    60.0      -1.07       -1.06        100      -6.63         1.39
+ chain rolling 10.0     3.0      0.5         1.5    60.0      -1.09       -1.26         26      -7.85        -2.60
+ chain rolling 10.0     3.0      0.0         0.0    60.0      -1.13       -1.67         29      -7.42        -2.15
+ chain rolling 10.0     3.0      0.0         1.5    60.0      -1.14       -1.41         28      -7.64        -2.39
+ chain rolling 10.0     3.0      0.5         0.0    60.0      -1.17       -1.72         29      -7.53        -2.26

@@ -1,0 +1,27 @@
+universe=broad preset='Earnings premium + OU screen (paper-trade candidate)' -> ../reports/statarb/final_broad
+3757 stocks + 20 ETFs · 2016-01-04 → 2026-10-23 · 2,718 sessions
+  building signals: 3757 names x 2718 sessions on 8 worker(s) ...
+  signals built in 106s
+ALL {'years': 9.373, 'cagr': 0.066, 'mean_ann': 0.068, 'vol': 0.095, 'sharpe': 0.717, 'sortino': 0.946, 'maxdd': -0.151, 'calmar': 0.435, 'hit': 0.385, 'skew': 1.382, 'kurt': 22.209, 'best_day': 0.066, 'worst_day': -0.044, 'worst_21d': -0.107, 'psr0': 0.988, 'total': 0.818, 'dsr': 0.483, 'sharpe_se': 0.327, 'beta': 0.075, 'alpha_ann': 0.057, 'corr': 0.14, 'bench_sharpe': 0.867, 'bench_cagr': 0.147, 'bench_maxdd': -0.32}
+IS  {'cagr': 0.048, 'vol': 0.085, 'sharpe': 0.596, 'maxdd': -0.151}
+OOS {'cagr': 0.083, 'vol': 0.104, 'sharpe': 0.819, 'maxdd': -0.15}
+RISK {'var95_1d': 0.0076, 'var99_1d': 0.0161, 'cvar95_1d': 0.013, 'cvar99_1d': 0.0239, 'var95_1d_usd': 758.2371, 'cvar99_1d_usd': 2385.4665, 'worst_day': -0.0442, 'worst_day_date': '2021-03-03', 'avg_gross': 1.3533, 'max_gross': 2.0, 'avg_beta': 0.0181, 'avg_turnover': 0.572, 'cost_per_year': 0.02, 'borrow_per_year': 0.0017, 'avg_names': 41.6583, 'avg_eap_names': 41.6583, 'pct_days_flat': 0.2282, 'ann_vol_realised': 0.0952, 'corr_spy': 0.1396}
+ablation ...
+    CURRENT SETTING: Sharpe 0.72
+    A&L 2008 rules (equal $, no filters, no overlays): Sharpe 0.07
+    no earnings-premium sleeve (reversion only): Sharpe -0.37
+    earnings sleeve unhedged: Sharpe 1.14
+    earnings sleeve: all announcers (no OU screen): Sharpe 0.65
+    no news / post-earnings filter: Sharpe 0.72
+    no earnings-window filter: Sharpe 0.72
+    no factor / sector neutrality: Sharpe 0.72
+    no style (mom / vol / size) neutrality: Sharpe 0.72
+    no macro (oil / rates / USD) neutrality: Sharpe 0.72
+    no volatility target: Sharpe 0.67
+    no geopolitical shock multiplier: Sharpe 0.55
+    equal-dollar sizing (no 1/vol): Sharpe 0.72
+    no no-trade band: Sharpe 0.70
+    costs x2: Sharpe 0.53
+    costs x0.5: Sharpe 0.81
+costs / sensitivity ...
+done ../reports/statarb/final_broad

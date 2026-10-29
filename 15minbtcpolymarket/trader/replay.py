@@ -33,7 +33,7 @@ def live_config_from(b: BacktestConfig, **live_only) -> LiveConfig:
     return LiveConfig(capital=b.capital, params=b.params, fee_model=b.fee_model, kelly_mult=b.kelly_mult, max_frac=b.max_frac, min_edge=b.min_edge, max_contracts=b.max_contracts,
                       paper_slippage=b.slippage, prob_source="manual" if manual else "history", manual_p=b.fixed_p, lookback_days=b.lookback_days, halflife_days=b.halflife_days,
                       dd_throttle=b.dd_throttle, core_hours=b.core_hours, core_k=b.core_k, near_k=b.near_k, near_width=b.near_width, p_model=b.p_model, p_basis=b.p_basis, hour_k=b.hour_k,
-                      prior_n=b.prior_n, daily_loss_limit=b.daily_loss_limit, max_drawdown_stop=b.max_drawdown_stop, min_history=b.min_history, auto=b.auto, **live_only)
+                      prior_n=b.prior_n, daily_loss_limit=b.daily_loss_limit, max_drawdown_stop=b.max_drawdown_stop, min_history=b.min_history, auto=b.auto, ev_rules=b.ev_rules, ev_min_n=b.ev_min_n, **live_only)
 
 
 def backtest_config_from(c: LiveConfig, start: date, end: date, capital: Optional[float] = None) -> BacktestConfig:
@@ -42,7 +42,8 @@ def backtest_config_from(c: LiveConfig, start: date, end: date, capital: Optiona
     return BacktestConfig(start=start, end=end, capital=c.capital if capital is None else capital, params=c.params, fee_model=c.fee_model, slippage=c.paper_slippage, kelly_mult=c.kelly_mult,
                           max_frac=c.max_frac, min_edge=c.min_edge, max_contracts=c.max_contracts, prob_mode=PROB_MODES[1] if manual else PROB_MODES[0], fixed_p=c.manual_p, prior_n=c.prior_n,
                           lookback_days=c.lookback_days, halflife_days=c.halflife_days, daily_loss_limit=c.daily_loss_limit, max_drawdown_stop=c.max_drawdown_stop, min_history=c.min_history,
-                          dd_throttle=c.dd_throttle, core_hours=c.core_hours, core_k=c.core_k, near_k=c.near_k, near_width=c.near_width, auto=c.auto, p_model=c.p_model, p_basis=c.p_basis, hour_k=c.hour_k)
+                          dd_throttle=c.dd_throttle, core_hours=c.core_hours, core_k=c.core_k, near_k=c.near_k, near_width=c.near_width, auto=c.auto, p_model=c.p_model, p_basis=c.p_basis, hour_k=c.hour_k,
+                          ev_rules=c.ev_rules, ev_min_n=c.ev_min_n)
 
 
 # ── the replay's quote source ──

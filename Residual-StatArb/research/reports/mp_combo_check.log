@@ -1,0 +1,56 @@
+07:43:48 IS-selected: d45 top20 + QQQ 30m lb20
+07:44:04 a priori: d45 top20 + QQQ 30m lb14 (paper settings)
+07:44:41 blend: d45+volume top20 + QQQ 30m lb14
+07:44:57 higher return: d45 top10 + QQQ 30m lb14
+                                                     sip_trade_days  iex_trade_days   both  same_first_entry  sip_sh  iex_sh  sip_ann  iex_ann   corr
+IS-selected: d45 top20 + QQQ 30m lb20                         208.0           206.0  206.0             198.0   0.269   0.266    0.019    0.019  0.994
+a priori: d45 top20 + QQQ 30m lb14 (paper settings)           208.0           206.0  204.0             199.0   0.691   0.506    0.045    0.034  0.959
+
+trials: 2933 in this search + 1,871 MR; IS Sharpe variance all 0.486, combo family 0.022
+                                              model  sh_is  dsr_all_trials  exp_max_all  dsr_family  exp_max_family  psr_oos>0  psr_oos>spy_sharpe  psr_oos>2
+              IS-selected: d45 top20 + QQQ 30m lb20  2.436           0.368        2.565         1.0           0.487      0.997               0.522      0.120
+a priori: d45 top20 + QQQ 30m lb14 (paper settings)  2.364           0.299        2.565         1.0           0.487      0.999               0.648      0.197
+             blend: d45+volume top20 + QQQ 30m lb14  2.173           0.152        2.565         1.0           0.487      1.000               0.783      0.319
+            higher return: d45 top10 + QQQ 30m lb14  2.367           0.298        2.565         1.0           0.487      0.999               0.592      0.156
+                                                                                         label  sh_all  sh_is  sh_oos  cagr_all  cagr_is  cagr_oos  vol_all  mdd_all  beta
+                                                                                SPY buy & hold   0.880  0.656   1.377     0.150    0.113     0.213    0.176   -0.338 1.000
+                                                         IS-selected: d45 top20 + QQQ 30m lb20   1.936  2.436   1.405     0.340    0.376     0.283    0.158   -0.172 0.321
+                                   IS-selected: d45 top20 + QQQ 30m lb20 | overnight leg alone   1.772  2.231   1.319     0.275    0.297     0.241    0.143   -0.223 0.213
+                                    IS-selected: d45 top20 + QQQ 30m lb20 | intraday leg alone   0.867  1.112   0.533     0.051    0.061     0.033    0.059   -0.090 0.107
+                 IS-selected: d45 top20 + QQQ 30m lb20 | auctions 2 bp, QQQ half spread 1.0 bp   1.588  2.047   1.096     0.268    0.305     0.209    0.158   -0.175 0.318
+                 IS-selected: d45 top20 + QQQ 30m lb20 | auctions 3 bp, QQQ half spread 1.5 bp   1.239  1.657   0.785     0.200    0.238     0.140    0.157   -0.178 0.315
+                     IS-selected: d45 top20 + QQQ 30m lb20 | overnight exit at the first trade   1.914  2.415   1.383     0.335    0.371     0.277    0.158   -0.170 0.320
+              IS-selected: d45 top20 + QQQ 30m lb20 | overnight decided at 15:30 (delayed SIP)   1.980  2.436   1.502     0.352    0.379     0.308    0.159   -0.163 0.324
+                                           a priori: d45 top20 + QQQ 30m lb14 (paper settings)   1.972  2.364   1.569     0.346    0.361     0.321    0.157   -0.169 0.315
+                     a priori: d45 top20 + QQQ 30m lb14 (paper settings) | overnight leg alone   1.772  2.231   1.319     0.275    0.297     0.241    0.143   -0.223 0.213
+                      a priori: d45 top20 + QQQ 30m lb14 (paper settings) | intraday leg alone   0.970  0.926   1.039     0.055    0.050     0.064    0.057   -0.054 0.102
+   a priori: d45 top20 + QQQ 30m lb14 (paper settings) | auctions 2 bp, QQQ half spread 1.0 bp   1.620  1.968   1.257     0.273    0.290     0.245    0.157   -0.172 0.312
+   a priori: d45 top20 + QQQ 30m lb14 (paper settings) | auctions 3 bp, QQQ half spread 1.5 bp   1.267  1.572   0.945     0.204    0.223     0.174    0.156   -0.188 0.309
+       a priori: d45 top20 + QQQ 30m lb14 (paper settings) | overnight exit at the first trade   1.950  2.342   1.546     0.341    0.356     0.315    0.157   -0.168 0.315
+a priori: d45 top20 + QQQ 30m lb14 (paper settings) | overnight decided at 15:30 (delayed SIP)   2.016  2.363   1.665     0.357    0.364     0.346    0.158   -0.160 0.318
+                                                        blend: d45+volume top20 + QQQ 30m lb14   1.970  2.173   1.766     0.312    0.302     0.328    0.143   -0.146 0.297
+                                  blend: d45+volume top20 + QQQ 30m lb14 | overnight leg alone   1.761  2.017   1.512     0.243    0.241     0.248    0.128   -0.228 0.194
+                                   blend: d45+volume top20 + QQQ 30m lb14 | intraday leg alone   0.970  0.926   1.039     0.055    0.050     0.064    0.057   -0.054 0.102
+                blend: d45+volume top20 + QQQ 30m lb14 | auctions 2 bp, QQQ half spread 1.0 bp   1.584  1.749   1.418     0.241    0.235     0.252    0.143   -0.162 0.294
+                blend: d45+volume top20 + QQQ 30m lb14 | auctions 3 bp, QQQ half spread 1.5 bp   1.196  1.322   1.069     0.174    0.170     0.180    0.143   -0.197 0.290
+                    blend: d45+volume top20 + QQQ 30m lb14 | overnight exit at the first trade   1.937  2.138   1.736     0.306    0.296     0.321    0.143   -0.151 0.296
+             blend: d45+volume top20 + QQQ 30m lb14 | overnight decided at 15:30 (delayed SIP)   1.973  2.095   1.871     0.313    0.290     0.353    0.143   -0.144 0.298
+                                                       higher return: d45 top10 + QQQ 30m lb14   1.942  2.367   1.493     0.423    0.455     0.372    0.191   -0.207 0.345
+                                 higher return: d45 top10 + QQQ 30m lb14 | overnight leg alone   1.758  2.225   1.276     0.349    0.386     0.289    0.179   -0.305 0.243
+                                  higher return: d45 top10 + QQQ 30m lb14 | intraday leg alone   0.970  0.926   1.039     0.055    0.050     0.064    0.057   -0.054 0.102
+               higher return: d45 top10 + QQQ 30m lb14 | auctions 2 bp, QQQ half spread 1.0 bp   1.653  2.043   1.237     0.346    0.379     0.293    0.191   -0.239 0.342
+               higher return: d45 top10 + QQQ 30m lb14 | auctions 3 bp, QQQ half spread 1.5 bp   1.363  1.719   0.980     0.274    0.307     0.219    0.191   -0.271 0.339
+                   higher return: d45 top10 + QQQ 30m lb14 | overnight exit at the first trade   1.925  2.350   1.477     0.418    0.449     0.366    0.191   -0.209 0.345
+            higher return: d45 top10 + QQQ 30m lb14 | overnight decided at 15:30 (delayed SIP)   1.937  2.271   1.593     0.420    0.432     0.402    0.191   -0.226 0.339
+                                                     2016  2017  2018  2019   2020  2021  2022  2023  2024  2025  2026
+IS-selected: d45 top20 + QQQ 30m lb20                11.8  32.8  19.5  19.1  117.1  56.3   5.1  18.4  41.2  27.1  21.0
+a priori: d45 top20 + QQQ 30m lb14 (paper settings)  12.0  31.0  17.7  23.3  109.1  56.6   0.8  22.8  42.6  33.7  22.6
+blend: d45+volume top20 + QQQ 30m lb14               12.4  26.9  12.0  22.0   95.6  35.6   2.9  22.5  48.3  34.6  19.9
+higher return: d45 top10 + QQQ 30m lb14              18.4  41.1  22.8  28.6  148.8  66.2  -1.8  25.9  65.3  31.5  21.2
+SPY                                                   4.0  21.7  -5.0  31.1   18.5  28.6 -18.2  26.2  24.9  17.7  12.3
+
+rolling 12-month Sharpe: share of windows above 2 / above 1 / below 0, min
+  IS-selected: d45 top20 + QQQ 30m lb20: 44% / 86% / 0%, min -0.03
+  a priori: d45 top20 + QQQ 30m lb14 (paper settings): 50% / 85% / 2%, min -0.39
+  blend: d45+volume top20 + QQQ 30m lb14: 53% / 79% / 1%, min -0.37
+  higher return: d45 top10 + QQQ 30m lb14: 55% / 81% / 5%, min -0.74

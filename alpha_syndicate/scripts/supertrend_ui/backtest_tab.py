@@ -73,8 +73,8 @@ class BacktestTab(QWidget):
         self.strict.setChecked(True)
         self.strict.setToolTip("ON (default): a trade is only taken when a live order COULD have known to take it - the trend, volatility regime and ADX as of the PREVIOUS bar's close, and the "
                                "re-entry limit priced off the previous bar. This is what the live engine does, and the replay check proves the two then trade identically.\n"
-                               "OFF: the original backtest, which lets a flat re-entry use the entry bar's own close (about 5% of its trades could not have been placed live, and they were "
-                               "unusually good: +3.3% on average).")
+                               "OFF: the original backtest, which lets a flat re-entry use the entry bar's own close (about 13% of its trades - 210 of 1,580 - have no live equivalent, and they were "
+                               "unusually good: +2.35% on average).")
         self.v_months = QSpinBox(); self.v_months.setRange(1, 12); self.v_months.setValue(2); self.v_months.setSuffix(" months")
         self.v_months.setToolTip("How far back from the end of the window to replay (about 25 s per month).")
         self.v_route = QComboBox(); self.v_route.addItems(["SOXL short", "long SOXS"])
@@ -323,6 +323,8 @@ class BacktestTab(QWidget):
             note += "  ⚠ " + "; ".join(res.notes)
         if s.symbol != "SOXL":
             note += "  ⚠ the live engine only trades SOXL: this is a what-if on another symbol"
+        note += ("  · live-accurate entries ON: the classic backtest shows far higher returns because it lets a flat re-entry use the entry bar's own close (untick the box to see it)" if s.strict else
+                 "  ⚠ CLASSIC entries (look-ahead): about 13% of these trades could not have been placed live; tick 'Live-accurate entries' for what the live engine can reproduce")
         self.info.setText(note)
         self.perf.show_result(res.eq, res.bh, res.trades, res.metrics, s.capital, "No trades in this window under these settings", bh_label=f"{s.symbol} buy & hold")
         self.perf.show_open(res.open_trade, f"Open position at the end of the window ({res.last_bar:%Y-%m-%d %H:%M})",
@@ -393,7 +395,7 @@ class BacktestTab(QWidget):
     def save(self) -> None:
         q = self.qs
         q.setValue("backtest/symbol", self.symbol.currentText()); q.setValue("backtest/tf", self.tf.currentText()); q.setValue("backtest/capital", self.cap.value())
-        q.setValue("backtest/prime", self.prime.isChecked()); q.setValue("backtest/bench", self.bench.isChecked()); q.setValue("backtest/refresh", self.refresh_chk.isChecked())
+        q.setValue("backtest/prime", self.prime.isChecked()); q.setValue("backtest/bench", self.bench.isChecked()); q.setValue("backtest/refresh", self.refresh_chk.isChecked()); q.setValue("backtest/strict", self.strict.isChecked())
         q.setValue("backtest/from_pinned", self._from_pinned); q.setValue("backtest/from", self.d0.date().toString("yyyy-MM-dd"))
 
     def load(self) -> None:
@@ -407,7 +409,7 @@ class BacktestTab(QWidget):
             self.cap.setValue(float(q.value("backtest/capital", self.cap.value())))
         except (TypeError, ValueError):
             pass
-        self.prime.setChecked(tb("backtest/prime", True)); self.bench.setChecked(tb("backtest/bench", True)); self.refresh_chk.setChecked(tb("backtest/refresh", True))
+        self.prime.setChecked(tb("backtest/prime", True)); self.bench.setChecked(tb("backtest/bench", True)); self.refresh_chk.setChecked(tb("backtest/refresh", True)); self.strict.setChecked(tb("backtest/strict", True))
         if tb("backtest/from_pinned", False):
             d = QDate.fromString(str(q.value("backtest/from", "")), "yyyy-MM-dd")
             if d.isValid():

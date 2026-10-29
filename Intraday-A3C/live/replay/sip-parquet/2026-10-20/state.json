@@ -1,0 +1,32 @@
+{
+ "date": "2026-10-20",
+ "equity": 100701.79,
+ "halted": false,
+ "closed_out": true,
+ "lines": {
+  "TSLA": {
+   "pos": 0,
+   "traded": 6,
+   "last_j": 71,
+   "px_prev": 374.97,
+   "pnl_est": 21.28727735263679,
+   "ffilled": 0
+  },
+  "SMH": {
+   "pos": -1,
+   "traded": 7,
+   "last_j": 71,
+   "px_prev": 547.57,
+   "pnl_est": 1.9562513219302495,
+   "ffilled": 0
+  },
+  "NVDA": {
+   "pos": 0,
+   "traded": 6,
+   "last_j": 71,
+   "px_prev": 216.3,
+   "pnl_est": 12.546989149763613,
+   "ffilled": 0
+  }
+ }
+}

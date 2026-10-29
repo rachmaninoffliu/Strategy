@@ -8,6 +8,7 @@ from typing import Optional
 
 from .adaptive import AutoConfig
 from .backtest import BacktestConfig
+from .evfilter import DEFAULT_MIN_N
 from .strategy import StrategyParams, parse_int_list
 
 PRESETS = {
@@ -27,6 +28,14 @@ PRESETS = {
                                                        pmodel=1, pbasis=0, look=45),
     "Favourite only — high win rate (experimental)": dict(hours="0-23", minutes="5-11", dog=False, cmin=0.15, cmax=0.35, fav=True, fmin=0.85, fmax=0.97,
                                                          pmodel=1, pbasis=0, look=45),
+    "FILTER-14 · Trade only hours whose 14 d net EV > 10c": dict(hours="0-23", minutes="12,13", dog=True, cmin=0.15, cmax=0.35, fav=False, fmin=0.85, fmax=0.97,
+                                                                    pmodel=0, pbasis=0, look=0, half=0, evr=((14, 0.10),), evn=8),
+    "FILTER-28 · Trade only hours whose 28 d net EV > 5c": dict(hours="0-23", minutes="12,13", dog=True, cmin=0.15, cmax=0.35, fav=False, fmin=0.85, fmax=0.97,
+                                                                   pmodel=0, pbasis=0, look=0, half=0, evr=((28, 0.05),), evn=8),
+    "FILTER-BOTH · Trade only hours with 14 d net EV > 10c AND 28 d > 5c": dict(hours="0-23", minutes="12,13", dog=True, cmin=0.15, cmax=0.35, fav=False, fmin=0.85, fmax=0.97,
+                                                                                   pmodel=0, pbasis=0, look=0, half=0, evr=((14, 0.10), (28, 0.05)), evn=8),
+    "PROJ-EV · Trade any hour while its projected EV > 0, stop when it turns negative": dict(hours="0-23", minutes="12,13", dog=True, cmin=0.15, cmax=0.35, fav=False, fmin=0.85, fmax=0.97,
+                                                                                             pmodel=1, pbasis=0, look=45, half=14, hourk=100, edge=0.0),
     "Custom": None,
 }
 
@@ -53,6 +62,9 @@ def preset_config(name: str, start: date, end: date, capital: float = 1_000.0, a
     half = v.get("half", 0)
     kw = dict(start=start, end=end, capital=capital, params=preset_params(v), p_model="by_hour" if v["pmodel"] == 1 else "overall", p_basis="win_rate" if v["pbasis"] == 1 else "edge",
               hour_k=float(v.get("hourk", 40)), lookback_days=int(v.get("look", 45)), halflife_days=0.0 if half <= 0 else max(3.0, float(half)), core_hours=core, core_k=float(v.get("corek", 0)),
-              near_k=float(v.get("near", 0)) if core else 0.0, near_width=int(v.get("nearw", 2)), auto=(auto or AutoConfig()) if v.get("auto") else None)
+              near_k=float(v.get("near", 0)) if core else 0.0, near_width=int(v.get("nearw", 2)), auto=(auto or AutoConfig()) if v.get("auto") else None,
+              ev_rules=tuple((int(d), float(t)) for d, t in v.get("evr", ())), ev_min_n=int(v.get("evn", DEFAULT_MIN_N)))
+    if "edge" in v:                                      # a preset may carry its own conviction hurdle (PROJ-EV: any positive projected EV)
+        kw["min_edge"] = float(v["edge"])
     kw.update(overrides)
     return BacktestConfig(**kw)

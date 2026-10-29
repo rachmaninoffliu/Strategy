@@ -16,6 +16,7 @@ import pandas as pd
 
 from .adaptive import VOLUME_FALLBACK, AdaptiveStats, AutoConfig, decide, resolve_volume, snapshot
 from .data import SETTLE_DELAY, WINDOW, extract_signals
+from .evfilter import DEFAULT_MIN_N, TrailingEVStats
 from .broker import Broker, BrokerError, Fill, InsufficientFunds, NotPlaced, PaperBroker      # noqa: F401  (re-exported: tests and the GUI import them from here)
 from .probmodel import SignalStats
 from .strategy import MIN_HISTORY, StrategyParams, evaluate_quote_all, size_bet, throttled_sizing
@@ -51,6 +52,8 @@ class LiveConfig:
     min_history: int = MIN_HISTORY           # refuse to trade a leg whose probability rests on fewer historical signals (history mode only)
     auto_fund: bool = False                  # LIVE: before orders, move cash from your other Kalshi exchange shards onto the shard BTC 15m orders are funded from (what the Kalshi app does for you); never moves money out of the account
     fund_max: float = 0.0                    # ... keeping at most this much there (0 = the session's equity)
+    ev_rules: tuple = ()                     # EV-regime filter (trader.evfilter): ((days, threshold), ...) - an hour trades only while its trailing net EV beats EVERY rule; () = off
+    ev_min_n: int = DEFAULT_MIN_N            # signals an hour needs inside a rule's window before its EV counts
     grace_s: float = 25.0                    # how long after a decision instant we still try to evaluate it
     auto: Optional[AutoConfig] = None        # Auto mode (trader.adaptive): regime-aware memory, evidence-aware Kelly, equity ladder, liquidity cap; replaces kelly_mult / max_frac / max_contracts / halflife
 
@@ -97,12 +100,14 @@ def trades_frame(rows: list) -> pd.DataFrame:
 
 def auto_active(cfg: LiveConfig) -> bool:
     """Auto mode needs the learned (history) probability, like the backtest's expanding mode."""
-    return cfg.auto is not None and cfg.auto.enabled and cfg.prob_source == "history"
+    return cfg.auto is not None and cfg.auto.enabled and cfg.prob_source == "history" and not cfg.ev_rules
 
 
 def build_stats(rows: pd.DataFrame, cfg: LiveConfig):
     """Probability model from the local history (all hours: the leg/hour estimate needs them)."""
     sig = extract_signals(rows, cfg.params)
+    if cfg.ev_rules and cfg.prob_source == "history":
+        return TrailingEVStats.from_signals(sig, cfg.ev_rules, cfg.ev_min_n, cfg.paper_slippage, cfg.fee_model)
     if auto_active(cfg):
         return AdaptiveStats.from_signals(sig, cfg.auto, mode=cfg.p_model, hour_k=cfg.hour_k, prior_n=cfg.prior_n, basis=cfg.p_basis, core_hours=cfg.core_hours, core_k=cfg.core_k, near_k=cfg.near_k, near_width=cfg.near_width)
     return SignalStats.from_signals(sig, mode=cfg.p_model, hour_k=cfg.hour_k, prior_n=cfg.prior_n, lookback_days=cfg.lookback_days, basis=cfg.p_basis, halflife_days=cfg.halflife_days, core_hours=cfg.core_hours, core_k=cfg.core_k, near_k=cfg.near_k, near_width=cfg.near_width)
@@ -144,6 +149,10 @@ class LiveEngine:
         self.session_id = session_id or f"{datetime.now():%Y%m%d_%H%M%S}_{cfg.mode}"
         self._beat: Optional[int] = None                      # window of the last session heartbeat written to the ledger
         self._fund_window: Optional[int] = None               # window of the last auto-fund top-up
+        self._warm_window: Optional[int] = None               # window whose market was already looked up ahead of its decision
+        self._retry_at: dict[tuple[int, int], float] = {}     # (window, minute) -> do not try that decision again before this time (backoff after a failed quote read)
+        self._retry_n: dict[tuple[int, int], int] = {}
+        self._last_bp: Optional[tuple[float, float]] = None   # (cash, time) of the last successful cash read
         self._session_closed = False
         self.venue = getattr(broker, "venue", "kalshi" if broker.mode == "live" else "paper")
         self.auto_on = auto_active(cfg) and isinstance(stats, AdaptiveStats)
@@ -275,8 +284,8 @@ class LiveEngine:
             w = base + k * WINDOW
             if datetime.fromtimestamp(w, timezone.utc).hour in self.cfg.params.hours and not self._window_done(w):
                 for m in self.cfg.params.minutes:
-                    t = w + 60 * m
-                    if t + self.cfg.grace_s > now and (w, m) not in self._evaluated:
+                    t = max(w + 60 * m, self._retry_at.get((w, m), 0.0))
+                    if w + 60 * m + self.cfg.grace_s > now and (w, m) not in self._evaluated:
                         return max(0.0, t - now)
         return None
 
@@ -311,12 +320,54 @@ class LiveEngine:
         sec = now - window
         hour = datetime.fromtimestamp(window, timezone.utc).hour
         self._prefund(now, window, sec)
+        self._warm(window, sec, hour)
         if hour in self.cfg.params.hours and not self._window_done(window):
             for m in self.cfg.params.minutes:
-                if 60 * m <= sec < 60 * m + self.cfg.grace_s and (window, m) not in self._evaluated:
+                if 60 * m <= sec < 60 * m + self.cfg.grace_s and (window, m) not in self._evaluated and now >= self._retry_at.get((window, m), 0.0):
                     self._on_decision(window, m, hour, now)
                     if self._window_done(window) or self.halted:
                         break
+
+    def _warm(self, window: int, sec: float, hour: int) -> None:
+        """Look the window's market up early (one public request) so that the decision second itself only has to read the book."""
+        if window == self._warm_window or not 20 <= sec < 300 or hour not in self.cfg.params.hours:
+            return
+        self._warm_window = window
+        try:
+            self.quotes.window_ticker(window)
+        except Exception:                                     # noqa: BLE001
+            pass
+
+    def _backoff(self, window: int, minute: int, now: float) -> None:
+        """A quote could not be read at the decision instant: try again after 0.25 s, 0.5 s, then every second (inside the grace period) - not every few milliseconds, which would only trigger Kalshi's rate limit."""
+        key = (window, minute)
+        n = self._retry_n.get(key, 0)
+        self._retry_n[key] = n + 1
+        self._retry_at[key] = now + min(1.0, 0.25 * (2 ** n))
+        if len(self._retry_at) > 64:
+            for k in sorted(self._retry_at)[:-16]:
+                self._retry_at.pop(k, None); self._retry_n.pop(k, None)
+
+    def _read_bp(self) -> tuple[bool, Optional[float]]:
+        """(ok, cash available to this market) read with two quick re-tries.  A transient API error (rate limit, 5xx, network) must not halt trading: fall back to the last known figure (under 2 h old), else
+        report that the cash is unknown and let the caller skip this order."""
+        err: Optional[Exception] = None
+        for pause in (0.0, 0.4, 0.8):
+            if pause:
+                time.sleep(pause)
+            try:
+                bp = self.broker.buying_power()
+            except Exception as e:                            # noqa: BLE001
+                err = e
+                continue
+            if bp is not None:
+                self._last_bp = (float(bp), self.clock())
+            return True, bp
+        if self._last_bp is not None and self.clock() - self._last_bp[1] < 7200:
+            self.log(f"  ⚠ could not read the cash ({err}) - using the last known ${self._last_bp[0]:,.2f}")
+            return True, self._last_bp[0]
+        self.log(f"  ⚠ could not read the cash available ({type(err).__name__}: {err})")
+        return False, None
 
     # ── auto-fund (live only) ──
     def _fund_target(self) -> float:
@@ -373,14 +424,21 @@ class LiveEngine:
     def _on_decision(self, window: int, minute: int, hour: int, now: float) -> None:
         ticker = self.quotes.window_ticker(window)
         if not ticker:
+            self._backoff(window, minute, now)
             return
         t_read = time.perf_counter()
         book_fn = getattr(self.quotes, "book", None)
         book = book_fn(ticker) if book_fn is not None else None             # the order book: one request gives the signal quote AND the depth the order is checked against
-        q = book.top() if book is not None else self.quotes.quote(ticker)
+        if book is not None:
+            q = book.top()
+        elif book_fn is not None and hasattr(self.quotes, "market_quote"):
+            q = self.quotes.market_quote(ticker)                            # the book could not be read: the lagging market quote, WITHOUT asking for the book a second time
+        else:
+            q = self.quotes.quote(ticker)
         read_ms = (time.perf_counter() - t_read) * 1000.0
         if q is None:
-            return                                        # transient: retry on the next tick while inside the grace period
+            self._backoff(window, minute, now)            # transient: retry shortly, still inside the grace period
+            return
         self._evaluated.add((window, minute))
         bid, ask = q
         done = self._leg_done.setdefault(window, set())
@@ -390,12 +448,10 @@ class LiveEngine:
             return
         slip = self.cfg.paper_slippage                    # the SAME assumed slippage as the backtest and paper mode sizes the bet; max_slippage only sets the live order's limit price
         bankroll = self.equity
+        cash_unknown = False
         if self.broker.mode == "live":
-            try:
-                bp = self.broker.buying_power()
-            except Exception as e:
-                self.halt(f"cannot read buying power ({type(e).__name__})")
-                return
+            ok, bp = self._read_bp()
+            cash_unknown = not ok
             if bp is not None:
                 bankroll = min(bankroll, bp)
                 if bp < 1.0 and self.cfg.auto_fund and self.ensure_cash("no cash at the decision instant", wait_s=8.0):
@@ -437,9 +493,14 @@ class LiveEngine:
                 sz = size_bet(bankroll, p, px, self.cfg.fee_model, mult_u, cap_u, self.cfg.max_contracts, self.cfg.min_edge)
             if sz.contracts < 1:
                 self.log(f"  {s.leg}: Kelly no bet ({sz.reason}); p={p * 100:.1f}% vs all-in cost {sz.cost_all * 100:.1f}c")
+                if hasattr(self.stats, "explain"):
+                    self.log("  " + self.stats.explain(hour, now))
                 continue
             sized.append((sz.edge, s, p, sz, regime, mult_u, cap_u))
         if not sized:
+            return
+        if cash_unknown:
+            self.log("  ⚠ the cash available could not be read (Kalshi API problem) - this signal is tracked but no order is sent")
             return
         if window in self._traded:
             self.log("  already traded this window - extra signals tracked only")

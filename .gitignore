@@ -1,10 +1,16 @@
-# Only these three folders are published; everything else in the PyCharm project stays local.
+# Only these project folders are published; everything else in the PyCharm project (key files, IDE / Claude settings, did.bin) stays local.
 /*
 !/.gitignore
 !/README.md
 !/alpha_syndicate/
 !/prediction_arb/
 !/15minbtcpolymarket/
+!/Stats-arb/
+!/LevETF-Pairs/
+!/Residual-StatArb/
+!/Intraday-A3C/
+!/Scripts/
+!/tv_editor_backups/
 
 # python / IDE noise
 __pycache__/
@@ -19,11 +25,27 @@ __pycache__/
 *.p12
 id_rsa*
 etrade_bridge/**/tokens*.json
+Alpaca Key*
+Alpaca Kay*
+Polymarket Key*
 
 # files above GitHub's 100 MB hard limit (they stay on this PC)
 prediction_arb/arb_data.db
 15minbtcpolymarket/data/tape/KXBTC15M.csv
 15minbtcpolymarket/data/tape/KXETH15M.csv
+
+# cached bars, features and result pickles of the newer projects (~13 GB; rebuilt by each project's download / research scripts)
+/Stats-arb/**/*.parquet
+/Stats-arb/**/*.pkl
+/LevETF-Pairs/**/*.parquet
+/LevETF-Pairs/**/*.pkl
+/Residual-StatArb/**/*.parquet
+/Residual-StatArb/**/*.pkl
+/Residual-StatArb/**/*.npy
+/Residual-StatArb/**/*.npz
+/Intraday-A3C/**/*.parquet
+/Intraday-A3C/**/*.npy
+/Scripts/cache/
 
 # private runtime records: real account sizes, trade ledger, per-session P&L, pre-flight reports, local GUI state
 15minbtcpolymarket/data/live/
@@ -35,3 +57,9 @@ alpha_syndicate/reports/gui_geometry.json
 alpha_syndicate/reports/preflight_*.txt
 alpha_syndicate/reports/preflight_state.json
 alpha_syndicate/reports/KILL
+LevETF-Pairs/reports/levpairs_*_paper.*
+LevETF-Pairs/reports/levpairs_state_dry.json
+LevETF-Pairs/reports/levpairs_daily_*.log
+Residual-StatArb/*/reports/*state_paper.json
+Residual-StatArb/*/reports/*journal_paper.jsonl
+Residual-StatArb/*/reports/*.lock

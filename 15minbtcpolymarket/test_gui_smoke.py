@@ -319,7 +319,7 @@ lv.auto_pf.setChecked(False)
 rows_ok = TP.make_rows(lambda o: True)
 rep_go = TP.run(rows_ok)
 rep_caution = TP.run(TP.make_rows(lambda o: o < TP.TS(2026, 10, 8) or np.random.default_rng(int(o)).random() < 0.45, end=(2026, 10, 9, 23, 45)), now=TP.TS(2026, 10, 10, 21, 46))
-rep_nogo = TP.run(TP.make_rows(lambda o: o < TP.TS(2026, 9, 1)))
+rep_nogo = TP.run(rows_ok, http_get=TP.down_get)                                         # a TECHNICAL failure blocks live (the Kalshi feed is down); weak evidence alone never does
 assert (rep_go.verdict, rep_caution.verdict, rep_nogo.verdict) == ("GO", "CAUTION", "NO-GO")
 d = PreflightDialog(lv, live=True, then_start=True, cap_now=0.02); d.set_report(rep_go)
 assert d.btn_go.isEnabled() and "LIVE confirmation" in d.btn_go.text() and d._go_action == "start" and d.btn_paper.isHidden()
@@ -465,6 +465,38 @@ sp.auto_on.setChecked(False)
 assert sp.mult.isEnabled() and not sp.auto_ladder.isEnabled() and sp.preset.currentText() == "Custom" and bt.config().auto is None and lv.make_config().auto is None
 sp.apply_preset(next(iter(PRESETS)))
 assert not sp.auto_on.isChecked() and sp.mult.isEnabled() and bt.config().auto is None
+# ── EV-regime filter presets: the three rules are in the settings, both tabs use them, the learned-probability boxes step aside ──
+fb = [n for n in PRESETS if n.startswith("FILTER-BOTH")][0]
+sp.apply_preset(fb)
+assert sp.ev_rules() == ((14, 0.1), (28, 0.05)) and bt.config().ev_rules == lv.make_config().ev_rules == sp.ev_rules() and sp.evn.value() == 8
+assert bt.config().auto is None and lv.make_config().auto is None and not sp.pmodel.isEnabled() and not sp.hourk.isEnabled() and not sp.auto_on.isEnabled() and sp.mult.isEnabled() and sp.ev14.isEnabled()
+sp.apply_preset([n for n in PRESETS if n.startswith("FILTER-14")][0]); assert sp.ev_rules() == ((14, 0.1),)
+sp.apply_preset([n for n in PRESETS if n.startswith("FILTER-28")][0]); assert sp.ev_rules() == ((28, 0.05),)
+sp.apply_preset(fb)
+sp.ev14.setValue(12.0)
+assert sp.preset.currentText() == "Custom" and sp.ev_rules() == ((14, 0.12), (28, 0.05))                       # editing a rule makes it a custom preset
+sp.apply_preset(fb)
+w.radar.refresh(); app.processEvents()
+assert w.radar.table.rowCount() == 25 and {w.radar.table.item(i, 10).text() for i in range(25)} <= {"TRADE", "cold"} and "radar unavailable" not in w.radar.summary.text()
+for view in (bt.params_view, lv.params_view):
+    view.refresh()
+    prow = {view.table.item(i, 0).text(): (view.table.item(i, 1).text(), view.table.item(i, 2).text()) for i in range(view.table.rowCount()) if view.table.item(i, 0)}
+    assert "14 d net EV > 10c AND 28 d net EV > 5c" in prow["Trade an hour only if"][0] and prow["Trade an hour only if"][0] == prow["Trade an hour only if"][1]
+w.grab().save(str(out / "ev_filter_preset.png"))
+sp.apply_preset(next(iter(PRESETS)))
+assert sp.ev_rules() == () and sp.pmodel.isEnabled() and sp.hourk.isEnabled() and sp.auto_on.isEnabled() and bt.config().ev_rules == ()
+# ── PROJ-EV: the preset carries its own conviction hurdle (any positive projected EV) and hands yours back when you leave ──
+pe = [n for n in PRESETS if n.startswith("PROJ-EV")][0]
+sp.edge.setValue(3.0)                                                                                 # your own Min edge
+sp.apply_preset(pe)
+assert sp.edge.value() == 0.0 and bt.config().min_edge == lv.make_config().min_edge == 0.0 and sp.ev_rules() == () and sp.pmodel.isEnabled() and sp.hourk.value() == 100 and sp.half.value() == 14
+sp.apply_preset(next(iter(PRESETS)))
+assert abs(sp.edge.value() - 3.0) < 1e-9 and abs(bt.config().min_edge - 0.03) < 1e-9                  # your value is back
+sp.apply_preset(pe); sp.edge.setValue(2.0)                                                            # you change it while the preset is on: that choice stays
+sp.apply_preset(next(iter(PRESETS)))
+assert abs(sp.edge.value() - 2.0) < 1e-9
+sp.edge.setValue(4.0)
+w.radar.refresh(); app.processEvents()
 w.grab().save(str(out / "auto_settings.png"))
 # ── "Verify live = backtest" (Backtest tab) and "Compare with backtest" (Live tab) on the real data ──
 import time as _tv

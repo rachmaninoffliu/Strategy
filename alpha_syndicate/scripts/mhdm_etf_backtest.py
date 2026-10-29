@@ -93,23 +93,12 @@ def load_credentials():
 
     Never prints or returns secrets to stdout.
     """
-    key    = os.environ.get("ALPACA_API_KEY")
-    secret = os.environ.get("ALPACA_SECRET_KEY")
-    if key and secret:
-        return key, secret, "environment"
-
-    cfg = os.path.expanduser("~/.claude.json")
-    if os.path.exists(cfg):
-        with open(cfg, "r", encoding="utf-8") as fh:
-            servers = json.load(fh).get("mcpServers", {})
-        env = servers.get("alpaca-paper", {}).get("env", {})
-        key, secret = env.get("ALPACA_API_KEY"), env.get("ALPACA_SECRET_KEY")
-        if key and secret and not key.startswith("YOUR_"):
-            return key, secret, "alpaca-paper MCP config"
-
-    raise SystemExit(
-        "No Alpaca credentials found. Set ALPACA_API_KEY / ALPACA_SECRET_KEY, "
-        "or populate the alpaca-paper entry in ~/.claude.json"
+    import alpaca_keys                      # "Alpaca Key.txt" in the project folder, then the environment, then ~/.claude.json
+    try:
+        key, secret = alpaca_keys.creds(True)
+        return key, secret, alpaca_keys.describe(True)
+    except RuntimeError as e:
+        raise SystemExit(f"No Alpaca credentials found: {e}"
     )
 
 

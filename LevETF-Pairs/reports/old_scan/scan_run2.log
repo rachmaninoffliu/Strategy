@@ -1,0 +1,52 @@
+  1m reset/fixed/win5.0: 6 rule sets done (6s)
+  1m reset/rolling/win5.0: 6 rule sets done (10s)
+  1m chain/fixed/win5.0: 6 rule sets done (15s)
+
+== 1m top 6 by in-sample Sharpe
+spread    beta  win  s_open  s_close  edge_ratio  hl_max  sharpe_is  sharpe_oos  trades_is  net_bp_is  gross_bp_is
+ chain   fixed  5.0     3.0      0.5         1.5    60.0      -4.24       -6.93       2375      -3.77         2.22
+ reset rolling  5.0     3.0      0.5         1.5    60.0      -4.36       -6.66       1662      -3.40         2.33
+ chain   fixed  5.0     3.0      0.5         0.0    60.0      -4.84       -8.68       2706      -3.79         2.13
+ reset rolling  5.0     3.0      0.5         0.0    60.0      -5.51       -7.55       2218      -3.36         2.27
+ reset   fixed  5.0     3.0      0.5         1.5    60.0      -6.24       -7.55       2685      -2.52         3.27
+ reset rolling  5.0     1.5      0.5         1.5    60.0      -7.65       -9.58       7400      -1.12         5.34
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\process.py", line 258, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\process.py", line 207, in _process_chunk
+    return [fn(*args) for args in chunk]
+            ^^^^^^^^^
+  File "C:\Users\xinyu\PycharmProjects\pythonProject\LevETF-Pairs\scripts\levpairs_scan.py", line 47, in scan_tf
+    res = simulate(sigs, c)
+          ^^^^^^^^^^^^^^^^^
+  File "C:\Users\xinyu\PycharmProjects\pythonProject\LevETF-Pairs\scripts\levpairs_sim.py", line 228, in simulate
+    r = simulate_pair(sigs[k], c)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xinyu\PycharmProjects\pythonProject\LevETF-Pairs\scripts\levpairs_sim.py", line 158, in simulate_pair
+    gross[:, t] = h * sig.eps_body[:, t] + hold_prev * sig.eps_gap[:, t] if c.fill == "next_open" else h * sig.eps[:, t]
+                      ^^^^^^^^^^^^
+AttributeError: 'PairSignals' object has no attribute 'eps_body'
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\xinyu\PycharmProjects\pythonProject\LevETF-Pairs\scripts\levpairs_scan.py", line 69, in <module>
+    for df in ex.map(scan_tf, [(tf, small if tf == 1 else False, "sip") for tf in tfs]):
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\process.py", line 608, in _chain_from_iterable_of_lists
+    for element in iterable:
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+AttributeError: 'PairSignals' object has no attribute 'eps_body'

@@ -1,0 +1,46 @@
+SPY ok 9
+QQQ ok 9
+IWM ok 9
+DIA ok 9
+XLF ok 9
+XLE ok 9
+XLK ok 9
+SMH ok 9
+XBI ok 9
+GLD ok 9
+TLT ok 9
+TQQQ ok 9
+SQQQ ok 9
+SOXL ok 9
+UPRO ok 9
+AAPL ok 9
+MSFT ok 9
+NVDA ok 9
+AMZN ok 9
+TSLA ok 9
+META ok 9
+AMD ok 9
+        spread_bp  spread_cents      px  quotes_per_min
+symbol                                                 
+SPY          0.26           2.0  768.80         10574.0
+QQQ          0.28           2.0  718.32         15976.0
+IWM          0.36           1.0  275.38          9508.0
+GLD          0.54           2.0  375.48          2689.0
+DIA          0.57           3.0  523.74          4525.0
+AAPL         0.87           3.0  343.20          1796.0
+NVDA         0.92           2.0  216.96          6113.0
+XLK          1.04           2.0  185.78         12994.0
+TLT          1.25           1.0   80.10          1561.0
+TQQQ         1.42           1.0   70.62         14427.0
+XLE          1.48           1.0   67.50          2060.0
+AMZN         1.52           4.0  254.44          1730.0
+TSLA         1.63           6.0  375.05           912.0
+XLF          1.80           1.0   55.66          1651.0
+MSFT         2.04          11.0  531.48          1351.0
+UPRO         2.06           3.0  149.50          3636.0
+SMH          2.28          12.0  548.24          3397.0
+META         2.57          19.0  690.00           586.0
+SOXL         2.63           3.0   99.17          6068.0
+XBI          2.65           4.0  151.12           931.0
+SQQQ         2.66           1.0   37.54          5764.0
+AMD          6.48          37.0  539.55           550.0

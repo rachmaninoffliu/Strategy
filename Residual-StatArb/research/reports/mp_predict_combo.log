@@ -1,0 +1,28 @@
+                                                           label  sh_all  sh_is  sh_oos  cagr_all  cagr_is  cagr_oos  vol_all  mdd_all  beta
+                                                  SPY buy & hold   0.810  0.524   1.377     0.143    0.092     0.213    0.187   -0.338 1.000
+                        RULE today's move top20 | overnight only   1.657  2.038   1.319     0.271    0.294     0.241    0.152   -0.223 0.210
+                        RULE today's move top20 + QQQ noise area   1.878  2.208   1.569     0.347    0.368     0.321    0.166   -0.169 0.312
+                       ML y_on_ridge_rank top20 | overnight only   1.280  1.316   1.321     0.264    0.206     0.345    0.198   -0.245 0.316
+                       ML y_on_ridge_rank top20 + QQQ noise area   1.503  1.558   1.524     0.340    0.275     0.431    0.209   -0.166 0.418
+ ML y_on_ridge_rank + rule (rank average) top20 | overnight only   1.626  1.971   1.382     0.289    0.287     0.290    0.164   -0.244 0.258
+ ML y_on_ridge_rank + rule (rank average) top20 + QQQ noise area   1.846  2.157   1.611     0.366    0.362     0.373    0.178   -0.168 0.361
+ rule top20 among ML top half (y_on_ridge_rank) | overnight only   1.737  2.179   1.380     0.294    0.315     0.268    0.156   -0.231 0.240
+ rule top20 among ML top half (y_on_ridge_rank) + QQQ noise area   1.950  2.335   1.618     0.372    0.390     0.349    0.170   -0.164 0.342
+                         ML y_on_hgb_rank top20 | overnight only   1.672  1.776   1.699     0.311    0.241     0.410    0.171   -0.181 0.270
+                         ML y_on_hgb_rank top20 + QQQ noise area   1.891  1.996   1.902     0.390    0.312     0.500    0.183   -0.154 0.372
+   ML y_on_hgb_rank + rule (rank average) top20 | overnight only   1.575  1.951   1.325     0.254    0.253     0.256    0.151   -0.231 0.230
+   ML y_on_hgb_rank + rule (rank average) top20 + QQQ noise area   1.809  2.139   1.568     0.330    0.325     0.336    0.165   -0.145 0.333
+   rule top20 among ML top half (y_on_hgb_rank) | overnight only   1.649  2.032   1.364     0.259    0.265     0.251    0.146   -0.235 0.221
+   rule top20 among ML top half (y_on_hgb_rank) + QQQ noise area   1.876  2.205   1.610     0.335    0.338     0.331    0.161   -0.156 0.323
+                      ML y_on_hgbraw_rank top20 | overnight only   1.675  1.849   1.597     0.299    0.262     0.349    0.164   -0.232 0.260
+                      ML y_on_hgbraw_rank top20 + QQQ noise area   1.898  2.052   1.819     0.377    0.334     0.435    0.177   -0.143 0.363
+ML y_on_hgbraw_rank + rule (rank average) top20 | overnight only   1.916  2.246   1.693     0.308    0.296     0.325    0.146   -0.215 0.220
+ML y_on_hgbraw_rank + rule (rank average) top20 + QQQ noise area   2.126  2.392   1.927     0.387    0.370     0.410    0.160   -0.140 0.323
+rule top20 among ML top half (y_on_hgbraw_rank) | overnight only   1.923  2.275   1.653     0.295    0.294     0.296    0.139   -0.187 0.211
+rule top20 among ML top half (y_on_hgbraw_rank) + QQQ noise area   2.132  2.410   1.897     0.373    0.368     0.379    0.154   -0.141 0.313
+                          ML y_on_hgb_raw top20 | overnight only   1.228  1.511   1.062     0.213    0.206     0.222    0.169   -0.266 0.271
+                          ML y_on_hgb_raw top20 + QQQ noise area   1.476  1.745   1.302     0.286    0.275     0.300    0.182   -0.207 0.374
+    ML y_on_hgb_raw + rule (rank average) top20 | overnight only   1.456  1.811   1.204     0.235    0.240     0.229    0.153   -0.240 0.228
+    ML y_on_hgb_raw + rule (rank average) top20 + QQQ noise area   1.699  2.014   1.456     0.310    0.311     0.308    0.167   -0.204 0.331
+    rule top20 among ML top half (y_on_hgb_raw) | overnight only   1.451  1.905   1.076     0.224    0.252     0.188    0.147   -0.260 0.216
+    rule top20 among ML top half (y_on_hgb_raw) + QQQ noise area   1.696  2.091   1.345     0.298    0.324     0.264    0.161   -0.206 0.318

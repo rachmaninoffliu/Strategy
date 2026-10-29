@@ -10,6 +10,7 @@ Usage:  python collect.py markets | markets_full | batch [since_ts] | gapfill [d
 from __future__ import annotations
 
 import csv
+import os
 import sys
 import threading
 import time
@@ -27,7 +28,7 @@ DATA.mkdir(exist_ok=True)
 _lock = threading.Lock()
 _last = [0.0]
 _pause_until = [0.0]
-RPS = 5.0          # unauthenticated Kalshi read limit bites above ~6 rps (HTTP 429); stay under it
+RPS = float(os.environ.get("COLLECT_RPS", "5.0"))          # unauthenticated Kalshi read limit bites above ~6 rps (HTTP 429); stay under it (the app lowers it while a live session runs)
 
 
 def _throttle() -> None:

@@ -1,0 +1,117 @@
+﻿20:24:18 loading 292 stocks + 14 ETFs (sip) from 2015-12-25 ...
+20:24:26 factor model 'etf': betas over 126 days, residuals for 70,692 bars ...
+20:24:56 [MR xs 1/24] k=1 15min rate=0.1: IS -3.13 OOS -4.02 gross IS 0.85 turn 1008x
+20:25:19 [MR xs 2/24] k=1 15min rate=0.25: IS -5.85 OOS -7.99 gross IS 1.89 turn 2591x
+20:25:43 [MR xs 3/24] k=1 15min rate=0.5: IS -10.34 OOS -12.95 gross IS 2.17 turn 5557x
+20:25:57 [MR xs 4/24] k=1 1h rate=0.1: IS -0.28 OOS -1.48 gross IS 0.66 turn 235x
+20:26:11 [MR xs 5/24] k=1 1h rate=0.25: IS -1.45 OOS -2.65 gross IS 0.47 turn 601x
+20:26:25 [MR xs 6/24] k=1 1h rate=0.5: IS -2.31 OOS -3.59 gross IS 0.80 turn 1286x
+20:26:47 [MR xs 7/24] k=2 15min rate=0.1: IS -2.18 OOS -3.75 gross IS 1.16 turn 988x
+20:27:09 [MR xs 8/24] k=2 15min rate=0.25: IS -4.93 OOS -6.79 gross IS 1.91 turn 2466x
+20:27:32 [MR xs 9/24] k=2 15min rate=0.5: IS -7.72 OOS -10.91 gross IS 2.53 turn 4968x
+20:27:45 [MR xs 10/24] k=2 1h rate=0.1: IS -0.26 OOS -1.25 gross IS 0.78 turn 234x
+20:28:00 [MR xs 11/24] k=2 1h rate=0.25: IS -0.70 OOS -1.98 gross IS 1.19 turn 599x
+20:28:15 [MR xs 12/24] k=2 1h rate=0.5: IS -0.99 OOS -3.19 gross IS 1.89 turn 1283x
+20:28:41 [MR xs 13/24] k=4 15min rate=0.1: IS -1.99 OOS -2.60 gross IS 0.83 turn 953x
+20:29:04 [MR xs 14/24] k=4 15min rate=0.25: IS -3.53 OOS -5.59 gross IS 1.58 turn 2246x
+20:29:30 [MR xs 15/24] k=4 15min rate=0.5: IS -5.58 OOS -8.19 gross IS 1.79 turn 4127x
+20:29:45 [MR xs 16/24] k=4 1h rate=0.1: IS -0.55 OOS -0.91 gross IS 0.30 turn 233x
+20:29:59 [MR xs 17/24] k=4 1h rate=0.25: IS -0.77 OOS -1.59 gross IS 0.94 turn 598x
+20:30:14 [MR xs 18/24] k=4 1h rate=0.5: IS -1.81 OOS -2.62 gross IS 0.88 turn 1279x
+20:30:42 [MR xs 19/24] k=13 15min rate=0.1: IS -1.28 OOS -1.16 gross IS 0.51 turn 815x
+20:31:08 [MR xs 20/24] k=13 15min rate=0.25: IS -2.53 OOS -3.44 gross IS 0.42 turn 1630x
+20:31:32 [MR xs 21/24] k=13 15min rate=0.5: IS -3.38 OOS -4.36 gross IS 0.61 turn 2537x
+20:31:50 [MR xs 22/24] k=13 1h rate=0.1: IS -0.10 OOS -0.70 gross IS 0.54 turn 225x
+20:32:09 [MR xs 23/24] k=13 1h rate=0.25: IS -0.61 OOS -0.55 gross IS 0.53 turn 539x
+20:32:23 [MR xs 24/24] k=13 1h rate=0.5: IS -1.36 OOS -1.52 gross IS 0.38 turn 1022x
+20:32:51 [MR ou 1/4] W=26 rate=0.1: IS -3.99 OOS -5.53 gross IS 0.91 turn 484x
+20:33:11 [MR ou 2/4] W=26 rate=0.25: IS -5.76 OOS -7.23 gross IS 0.91 turn 887x
+20:33:40 [MR ou 3/4] W=130 rate=0.1: IS -1.67 OOS -1.91 gross IS -0.22 turn 285x
+20:34:01 [MR ou 4/4] W=130 rate=0.25: IS -2.24 OOS -2.48 gross IS -0.42 turn 408x
+20:34:01 walk-forward forecasts from cache (wf_8d3f7dc3732d3698.npy)
+20:34:24 [Pred 1/12] h=4 15min rate=0.1: IS -1.12 OOS -2.45 gross IS 0.71 turn 634x
+20:34:24 walk-forward forecasts from cache (wf_8d3f7dc3732d3698.npy)
+20:34:47 [Pred 2/12] h=4 15min rate=0.25: IS -3.25 OOS -6.06 gross IS 1.00 turn 1570x
+20:34:47 walk-forward forecasts from cache (wf_8d3f7dc3732d3698.npy)
+20:35:00 [Pred 3/12] h=4 1h rate=0.1: IS 0.03 OOS -0.55 gross IS 0.46 turn 154x
+20:35:00 walk-forward forecasts from cache (wf_8d3f7dc3732d3698.npy)
+20:35:12 [Pred 4/12] h=4 1h rate=0.25: IS -0.48 OOS -1.44 gross IS 0.57 turn 386x
+20:35:12 walk-forward forecasts from cache (wf_31b179610428cf9f.npy)
+20:35:35 [Pred 5/12] h=13 15min rate=0.1: IS -0.92 OOS -1.80 gross IS 0.57 turn 565x
+20:35:35 walk-forward forecasts from cache (wf_31b179610428cf9f.npy)
+20:35:58 [Pred 6/12] h=13 15min rate=0.25: IS -2.52 OOS -4.35 gross IS 0.75 turn 1354x
+20:35:58 walk-forward forecasts from cache (wf_31b179610428cf9f.npy)
+20:36:12 [Pred 7/12] h=13 1h rate=0.1: IS 0.14 OOS -0.31 gross IS 0.54 turn 143x
+20:36:12 walk-forward forecasts from cache (wf_31b179610428cf9f.npy)
+20:36:29 [Pred 8/12] h=13 1h rate=0.25: IS -0.47 OOS -0.93 gross IS 0.40 turn 348x
+20:36:29 walk-forward forecasts from cache (wf_9e68dfb97e72c6eb.npy)
+20:36:53 [Pred 9/12] h=26 15min rate=0.1: IS -0.70 OOS -1.19 gross IS 0.49 turn 466x
+20:36:53 walk-forward forecasts from cache (wf_9e68dfb97e72c6eb.npy)
+20:37:15 [Pred 10/12] h=26 15min rate=0.25: IS -1.79 OOS -2.95 gross IS 0.55 turn 1039x
+20:37:15 walk-forward forecasts from cache (wf_9e68dfb97e72c6eb.npy)
+20:37:27 [Pred 11/12] h=26 1h rate=0.1: IS 0.16 OOS -0.30 gross IS 0.53 turn 127x
+20:37:27 walk-forward forecasts from cache (wf_9e68dfb97e72c6eb.npy)
+20:37:40 [Pred 12/12] h=26 1h rate=0.25: IS -0.18 OOS -0.72 gross IS 0.56 turn 295x
+20:37:40 loading 292 stocks + 14 ETFs (sip) from 2015-06-11 ...
+20:37:47 factor model 'etf': betas over 252 days, residuals for 70,692 bars ...
+20:38:01 [Mom 1/6] F=63 daily rate=0.1: IS 0.00 OOS 0.59 gross IS 0.06 turn 25x
+20:38:12 [Mom 2/6] F=63 daily rate=0.25: IS 0.03 OOS 0.58 gross IS 0.10 turn 39x
+20:38:25 [Mom 3/6] F=126 daily rate=0.1: IS -0.13 OOS 0.36 gross IS -0.10 turn 18x
+20:38:38 [Mom 4/6] F=126 daily rate=0.25: IS -0.16 OOS 0.33 gross IS -0.12 turn 25x
+20:38:50 [Mom 5/6] F=252 daily rate=0.1: IS -0.11 OOS 0.25 gross IS -0.09 turn 13x
+20:39:05 [Mom 6/6] F=252 daily rate=0.25: IS -0.08 OOS 0.35 gross IS -0.05 turn 18x
+
+== ResMeanReversion ==
+        strategy mode  xs_bars     W   reb  trade_rate  q_in  q_out   sh_is  sh_oos  sh_all  gross_sh_is  gross_sh_all  cagr_is  cagr_oos   vol    mdd     turn  hold_d  cost_yr   beta  names  s_open  s_close
+ResMeanReversion   xs     13.0   NaN    1h        0.10   0.1   0.25  -0.103  -0.696  -0.336        0.540         0.354   -0.007    -0.039 0.053 -0.255  224.959   1.552    0.035  0.030 76.715     NaN      NaN
+ResMeanReversion   xs      2.0   NaN    1h        0.10   0.1   0.25  -0.261  -1.247  -0.678        0.777         0.364   -0.009    -0.051 0.037 -0.250  233.870   1.467    0.037  0.004 81.747     NaN      NaN
+ResMeanReversion   xs      1.0   NaN    1h        0.10   0.1   0.25  -0.284  -1.479  -0.775        0.662         0.202   -0.011    -0.062 0.039 -0.302  234.633   1.465    0.037  0.002 82.378     NaN      NaN
+ResMeanReversion   xs      4.0   NaN    1h        0.10   0.1   0.25  -0.555  -0.911  -0.695        0.305         0.220   -0.023    -0.040 0.042 -0.272  233.407   1.470    0.037  0.016 81.483     NaN      NaN
+ResMeanReversion   xs     13.0   NaN    1h        0.25   0.1   0.25  -0.610  -0.547  -0.585        0.533         0.646   -0.042    -0.040 0.068 -0.393  539.471   0.684    0.083  0.046 60.720     NaN      NaN
+ResMeanReversion   xs      2.0   NaN    1h        0.25   0.1   0.25  -0.703  -1.982  -1.252        1.188         0.607   -0.032    -0.112 0.051 -0.490  598.798   0.584    0.094  0.022 69.006     NaN      NaN
+ResMeanReversion   xs      4.0   NaN    1h        0.25   0.1   0.25  -0.774  -1.585  -1.098        0.942         0.711   -0.039    -0.086 0.052 -0.446  597.508   0.583    0.093  0.031 68.174     NaN      NaN
+ResMeanReversion   xs      2.0   NaN    1h        0.50   0.1   0.25  -0.990  -3.195  -1.893        1.893         1.063   -0.061    -0.210 0.066 -0.726 1283.362   0.285    0.195  0.010 51.166     NaN      NaN
+ResMeanReversion   xs     13.0   NaN 15min        0.10   0.1   0.25  -1.278  -1.165  -1.234        0.511         0.704   -0.086    -0.084 0.070 -0.600  814.804   0.473    0.135  0.038 64.815     NaN      NaN
+ResMeanReversion   xs     13.0   NaN    1h        0.50   0.1   0.25  -1.358  -1.520  -1.421        0.379         0.432   -0.106    -0.127 0.083 -0.713 1021.879   0.395    0.152  0.034 45.451     NaN      NaN
+ResMeanReversion   xs      1.0   NaN    1h        0.25   0.1   0.25  -1.447  -2.647  -1.952        0.471        -0.052   -0.064    -0.142 0.050 -0.640  601.099   0.583    0.094  0.012 69.213     NaN      NaN
+ResMeanReversion   ou      NaN 130.0 15min        0.10   NaN    NaN  -1.666  -1.908  -1.761       -0.224        -0.259   -0.048    -0.062 0.031 -0.426  284.646   0.753    0.046  0.006 42.482     1.5      0.5
+ResMeanReversion   xs      4.0   NaN    1h        0.50   0.1   0.25  -1.808  -2.621  -2.121        0.875         0.780   -0.115    -0.168 0.067 -0.770 1278.839   0.284    0.194  0.016 50.600     NaN      NaN
+ResMeanReversion   xs      4.0   NaN 15min        0.10   0.1   0.25  -1.990  -2.603  -2.231        0.832         0.785   -0.099    -0.138 0.053 -0.704  952.828   0.369    0.160  0.026 75.107     NaN      NaN
+ResMeanReversion   xs      2.0   NaN 15min        0.10   0.1   0.25  -2.175  -3.753  -2.794        1.157         0.775   -0.095    -0.171 0.047 -0.739  987.793   0.349    0.167  0.020 78.901     NaN      NaN
+ResMeanReversion   ou      NaN 130.0 15min        0.25   NaN    NaN  -2.241  -2.476  -2.332       -0.419        -0.426   -0.070    -0.085 0.033 -0.552  407.623   0.527    0.063  0.006 33.053     1.5      0.5
+ResMeanReversion   xs      1.0   NaN    1h        0.50   0.1   0.25  -2.313  -3.591  -2.836        0.799         0.307   -0.126    -0.225 0.063 -0.840 1286.293   0.286    0.196  0.004 51.573     NaN      NaN
+ResMeanReversion   xs     13.0   NaN 15min        0.25   0.1   0.25  -2.533  -3.441  -2.888        0.424         0.260   -0.188    -0.265 0.084 -0.919 1629.557   0.269    0.263  0.019 51.670     NaN      NaN
+ResMeanReversion   xs      1.0   NaN 15min        0.10   0.1   0.25  -3.134  -4.016  -3.486        0.850         0.626   -0.115    -0.170 0.042 -0.773 1008.461   0.339    0.170  0.012 80.590     NaN      NaN
+ResMeanReversion   xs     13.0   NaN 15min        0.50   0.1   0.25  -3.375  -4.360  -3.761        0.606         0.432   -0.267    -0.359 0.095 -0.974 2537.444   0.188    0.396  0.019 42.360     NaN      NaN
+ResMeanReversion   xs      4.0   NaN 15min        0.25   0.1   0.25  -3.527  -5.585  -4.319        1.584         1.185   -0.207    -0.324 0.067 -0.948 2245.839   0.168    0.369  0.008 59.293     NaN      NaN
+ResMeanReversion   ou      NaN  26.0 15min        0.10   NaN    NaN  -3.992  -5.528  -4.596        0.908         0.584   -0.058    -0.089 0.016 -0.520  483.738   0.299    0.081  0.003 46.841     1.5      0.5
+ResMeanReversion   xs      2.0   NaN 15min        0.25   0.1   0.25  -4.930  -6.793  -5.657        1.912         1.516   -0.235    -0.343 0.057 -0.963 2466.168   0.145    0.409  0.011 64.139     NaN      NaN
+ResMeanReversion   xs      4.0   NaN 15min        0.50   0.1   0.25  -5.582  -8.188  -6.584        1.793         1.170   -0.363    -0.521 0.084 -0.996 4126.522   0.101    0.652 -0.011 44.666     NaN      NaN
+ResMeanReversion   ou      NaN  26.0 15min        0.25   NaN    NaN  -5.758  -7.229  -6.324        0.910         0.811   -0.110    -0.147 0.021 -0.739  887.140   0.185    0.149  0.000 38.338     1.5      0.5
+ResMeanReversion   xs      1.0   NaN 15min        0.25   0.1   0.25  -5.853  -7.994  -6.679        1.888         1.460   -0.256    -0.366 0.053 -0.973 2591.320   0.134    0.431  0.013 67.846     NaN      NaN
+ResMeanReversion   xs      2.0   NaN 15min        0.50   0.1   0.25  -7.721 -10.909  -8.915        2.530         1.805   -0.421    -0.581 0.074 -0.999 4968.086   0.077    0.797  0.001 47.733     NaN      NaN
+ResMeanReversion   xs      1.0   NaN 15min        0.50   0.1   0.25 -10.342 -12.947 -11.290        2.165         1.805   -0.491    -0.614 0.069 -1.000 5557.028   0.065    0.899 -0.008 50.385     NaN      NaN
+
+== ResMomentum ==
+   strategy   reb  trade_rate  q_in  q_out  sh_is  sh_oos  sh_all  gross_sh_is  gross_sh_all  cagr_is  cagr_oos   vol    mdd   turn  hold_d  cost_yr   beta  names  form  skip
+ResMomentum daily        0.25   0.1   0.25  0.032   0.582   0.264        0.105         0.336   -0.001     0.055 0.090 -0.205 38.939  12.844    0.005 -0.007 51.258  63.0  21.0
+ResMomentum daily        0.10   0.1   0.25  0.003   0.586   0.250        0.058         0.304   -0.003     0.053 0.086 -0.205 24.771  19.337    0.003 -0.009 67.444  63.0  21.0
+ResMomentum daily        0.25   0.1   0.25 -0.082   0.350   0.095       -0.051         0.125   -0.015     0.037 0.116 -0.286 17.874  27.456    0.002  0.004 38.734 252.0  21.0
+ResMomentum daily        0.10   0.1   0.25 -0.114   0.252   0.038       -0.087         0.064   -0.017     0.024 0.112 -0.286 13.285  36.893    0.001  0.003 46.397 252.0  21.0
+ResMomentum daily        0.10   0.1   0.25 -0.135   0.359   0.077       -0.099         0.111   -0.018     0.037 0.106 -0.367 17.518  28.578    0.002 -0.003 55.576 126.0  21.0
+ResMomentum daily        0.25   0.1   0.25 -0.163   0.329   0.046       -0.120         0.087   -0.021     0.034 0.111 -0.385 25.388  19.810    0.003 -0.003 43.963 126.0  21.0
+
+== ResPrediction ==
+     strategy   reb  trade_rate  q_in  q_out  sh_is  sh_oos  sh_all  gross_sh_is  gross_sh_all  cagr_is  cagr_oos   vol    mdd     turn  hold_d  cost_yr   beta  names model features  horizon
+ResPrediction    1h        0.10   0.2    0.3  0.160  -0.296  -0.057        0.525         0.298    0.007    -0.026 0.064 -0.232  127.462   2.836    0.021  0.015 78.551 ridge selected     26.0
+ResPrediction    1h        0.10   0.2    0.3  0.144  -0.308  -0.056        0.541         0.389    0.006    -0.023 0.057 -0.213  142.981   2.411    0.024  0.008 80.377 ridge selected     13.0
+ResPrediction    1h        0.10   0.2    0.3  0.028  -0.554  -0.207        0.464         0.325    0.000    -0.032 0.052 -0.208  154.359   2.028    0.026  0.001 80.484 ridge selected      4.0
+ResPrediction    1h        0.25   0.2    0.3 -0.176  -0.718  -0.419        0.560         0.331   -0.012    -0.060 0.067 -0.343  294.515   1.248    0.050  0.015 71.808 ridge selected     26.0
+ResPrediction    1h        0.25   0.2    0.3 -0.470  -0.925  -0.662        0.405         0.348   -0.026    -0.064 0.060 -0.414  348.268   1.003    0.060  0.005 75.722 ridge selected     13.0
+ResPrediction    1h        0.25   0.2    0.3 -0.480  -1.436  -0.866        0.571         0.415   -0.025    -0.080 0.052 -0.396  386.395   0.818    0.066  0.002 76.314 ridge selected      4.0
+ResPrediction 15min        0.10   0.2    0.3 -0.699  -1.193  -0.911        0.493         0.350   -0.042    -0.095 0.068 -0.511  465.706   0.798    0.085  0.012 74.984 ridge selected     26.0
+ResPrediction 15min        0.10   0.2    0.3 -0.925  -1.796  -1.291        0.568         0.453   -0.050    -0.118 0.060 -0.569  564.940   0.620    0.104  0.009 78.687 ridge selected     13.0
+ResPrediction 15min        0.10   0.2    0.3 -1.123  -2.446  -1.648        0.712         0.630   -0.055    -0.127 0.052 -0.592  633.865   0.499    0.117  0.004 79.316 ridge selected      4.0
+ResPrediction 15min        0.25   0.2    0.3 -1.790  -2.955  -2.278        0.554         0.369   -0.110    -0.220 0.072 -0.822 1039.169   0.375    0.188  0.006 68.300 ridge selected     26.0
+ResPrediction 15min        0.25   0.2    0.3 -2.519  -4.353  -3.265        0.746         0.627   -0.140    -0.267 0.064 -0.883 1353.819   0.270    0.248  0.005 73.645 ridge selected     13.0
+ResPrediction 15min        0.25   0.2    0.3 -3.250  -6.059  -4.352        1.002         0.868   -0.158    -0.302 0.055 -0.914 1570.029   0.210    0.288 -0.002 74.804 ridge selected      4.0

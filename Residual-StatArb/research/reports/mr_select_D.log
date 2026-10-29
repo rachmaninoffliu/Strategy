@@ -1,0 +1,40 @@
+﻿  market: 59 symbols, 2719 sessions (4 s)
+SHORT etf ibs>0.8 k5 @1545: Sharpe -0.10 (IS 0.24, OOS -0.78) · CAGR -2.3% vs SPY 15.0% · maxDD -41.9% · 3284 trades · win 56% · exposure 58% (5 s)
+SHORT etf ibs>0.8 k10 @1545: Sharpe 0.01 (IS 0.35, OOS -0.77) · CAGR -0.5% vs SPY 15.0% · maxDD -31.4% · 4792 trades · win 57% · exposure 42% (6 s)
+SHORT etf ibs>0.8 k20 @1545: Sharpe 0.08 (IS 0.32, OOS -0.51) · CAGR 0.4% vs SPY 15.0% · maxDD -17.8% · 6188 trades · win 57% · exposure 27% (7 s)
+SHORT etf ibs>0.9 k5 @1545: Sharpe -0.01 (IS 0.28, OOS -0.60) · CAGR -0.8% vs SPY 15.0% · maxDD -38.6% · 2331 trades · win 57% · exposure 42% (7 s)
+SHORT etf ibs>0.9 k10 @1545: Sharpe 0.03 (IS 0.42, OOS -0.87) · CAGR -0.1% vs SPY 15.0% · maxDD -27.0% · 3202 trades · win 57% · exposure 29% (8 s)
+SHORT etf ibs>0.9 k20 @1545: Sharpe 0.03 (IS 0.32, OOS -0.77) · CAGR -0.0% vs SPY 15.0% · maxDD -16.1% · 3974 trades · win 57% · exposure 18% (8 s)
+  market: 176 symbols, 2719 sessions (6 s)
+SHORT top50 ibs>0.8 k5 @1545: Sharpe -0.35 (IS 0.01, OOS -0.91) · CAGR -9.0% vs SPY 15.0% · maxDD -67.9% · 3272 trades · win 59% · exposure 59% (15 s)
+SHORT top50 ibs>0.8 k10 @1545: Sharpe -0.34 (IS 0.23, OOS -1.34) · CAGR -6.4% vs SPY 15.0% · maxDD -63.5% · 4638 trades · win 59% · exposure 42% (16 s)
+SHORT top50 ibs>0.8 k20 @1545: Sharpe -0.17 (IS 0.33, OOS -1.41) · CAGR -2.7% vs SPY 15.0% · maxDD -48.2% · 5594 trades · win 59% · exposure 25% (17 s)
+SHORT top50 ibs>0.9 k5 @1545: Sharpe -0.40 (IS 0.08, OOS -1.21) · CAGR -8.4% vs SPY 15.0% · maxDD -63.7% · 2253 trades · win 59% · exposure 43% (18 s)
+SHORT top50 ibs>0.9 k10 @1545: Sharpe -0.22 (IS 0.28, OOS -1.33) · CAGR -3.7% vs SPY 15.0% · maxDD -46.0% · 2937 trades · win 59% · exposure 28% (18 s)
+SHORT top50 ibs>0.9 k20 @1545: Sharpe -0.13 (IS 0.26, OOS -1.22) · CAGR -1.5% vs SPY 15.0% · maxDD -28.0% · 3400 trades · win 59% · exposure 16% (19 s)
+  market: 293 symbols, 2719 sessions (7 s)
+SHORT top100 ibs>0.8 k5 @1545: Sharpe -0.53 (IS -0.18, OOS -1.13) · CAGR -13.2% vs SPY 15.0% · maxDD -77.3% · 4259 trades · win 59% · exposure 75% (27 s)
+SHORT top100 ibs>0.8 k10 @1545: Sharpe -0.27 (IS 0.10, OOS -0.97) · CAGR -6.5% vs SPY 15.0% · maxDD -55.0% · 7071 trades · win 60% · exposure 63% (28 s)
+SHORT top100 ibs>0.8 k20 @1545: Sharpe -0.36 (IS 0.08, OOS -1.23) · CAGR -6.0% vs SPY 15.0% · maxDD -53.1% · 9793 trades · win 59% · exposure 44% (29 s)
+SHORT top100 ibs>0.9 k5 @1545: Sharpe -0.62 (IS -0.18, OOS -1.36) · CAGR -13.5% vs SPY 15.0% · maxDD -78.6% · 3272 trades · win 59% · exposure 60% (30 s)
+SHORT top100 ibs>0.9 k10 @1545: Sharpe -0.34 (IS 0.16, OOS -1.25) · CAGR -6.4% vs SPY 15.0% · maxDD -57.1% · 4976 trades · win 59% · exposure 46% (31 s)
+SHORT top100 ibs>0.9 k20 @1545: Sharpe -0.20 (IS 0.27, OOS -1.29) · CAGR -3.0% vs SPY 15.0% · maxDD -41.0% · 6305 trades · win 59% · exposure 29% (31 s)
+                         model  sh_is  sh_oos  sh_all  cagr_is  cagr_oos   cagr    mdd   vol  trades   win  expo  max_expo   beta
+   SHORT etf ibs>0.9 k10 @1545  0.420  -0.867   0.032    0.038    -0.063 -0.001 -0.270 0.090    3202 0.567 0.289     1.084 -0.260
+   SHORT etf ibs>0.8 k10 @1545  0.348  -0.766   0.014    0.036    -0.068 -0.005 -0.314 0.111    4792 0.568 0.421     1.085 -0.357
+ SHORT top50 ibs>0.8 k20 @1545  0.326  -1.407  -0.171    0.035    -0.121 -0.027 -0.482 0.118    5594 0.588 0.253     1.181 -0.384
+   SHORT etf ibs>0.9 k20 @1545  0.325  -0.770   0.028    0.022    -0.037 -0.000 -0.161 0.068    3974 0.569 0.182     1.092 -0.194
+   SHORT etf ibs>0.8 k20 @1545  0.315  -0.506   0.084    0.027    -0.034  0.004 -0.178 0.088    6188 0.567 0.272     1.089 -0.280
+    SHORT etf ibs>0.9 k5 @1545  0.279  -0.598  -0.009    0.028    -0.066 -0.008 -0.386 0.120    2331 0.567 0.421     1.100 -0.326
+ SHORT top50 ibs>0.9 k10 @1545  0.277  -1.325  -0.222    0.030    -0.138 -0.037 -0.460 0.130    2937 0.589 0.278     1.242 -0.381
+SHORT top100 ibs>0.9 k20 @1545  0.270  -1.289  -0.197    0.027    -0.119 -0.030 -0.410 0.119    6305 0.590 0.293     1.158 -0.374
+ SHORT top50 ibs>0.9 k20 @1545  0.262  -1.221  -0.134    0.021    -0.074 -0.015 -0.280 0.088    3400 0.591 0.161     1.174 -0.251
+    SHORT etf ibs>0.8 k5 @1545  0.240  -0.783  -0.098    0.025    -0.098 -0.023 -0.419 0.140    3284 0.564 0.575     1.155 -0.422
+ SHORT top50 ibs>0.8 k10 @1545  0.226  -1.338  -0.337    0.024    -0.193 -0.064 -0.635 0.158    4638 0.589 0.418     1.243 -0.509
+SHORT top100 ibs>0.9 k10 @1545  0.157  -1.249  -0.336    0.012    -0.180 -0.064 -0.571 0.160    4976 0.589 0.462     1.228 -0.482
+SHORT top100 ibs>0.8 k10 @1545  0.104  -0.966  -0.275    0.002    -0.168 -0.065 -0.550 0.185    7071 0.597 0.626     1.227 -0.623
+  SHORT top50 ibs>0.9 k5 @1545  0.081  -1.211  -0.400   -0.002    -0.207 -0.084 -0.637 0.180    2253 0.588 0.427     1.397 -0.492
+SHORT top100 ibs>0.8 k20 @1545  0.076  -1.227  -0.358   -0.000    -0.153 -0.060 -0.531 0.145    9793 0.588 0.438     1.155 -0.502
+  SHORT top50 ibs>0.8 k5 @1545  0.010  -0.913  -0.345   -0.019    -0.197 -0.090 -0.679 0.209    3272 0.595 0.592     1.396 -0.637
+ SHORT top100 ibs>0.8 k5 @1545 -0.179  -1.129  -0.532   -0.062    -0.237 -0.132 -0.773 0.220    4259 0.594 0.750     1.212 -0.701
+ SHORT top100 ibs>0.9 k5 @1545 -0.180  -1.360  -0.617   -0.056    -0.253 -0.135 -0.786 0.203    3272 0.592 0.601     1.452 -0.558

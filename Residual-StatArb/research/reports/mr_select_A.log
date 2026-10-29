@@ -1,0 +1,106 @@
+﻿  market: 234 symbols, 2719 sessions (8 s)
+top50+etf k5 signal: Sharpe 0.95 (IS 1.06, OOS 0.79) · CAGR 17.4% vs SPY 15.0% · maxDD -37.2% · 5293 trades · win 63% · exposure 84% (9 s)
+top50+etf k5 vol_low: Sharpe 0.91 (IS 1.28, OOS 0.31) · CAGR 11.9% vs SPY 15.0% · maxDD -25.3% · 5441 trades · win 63% · exposure 84% (10 s)
+top50+etf k10 signal: Sharpe 0.86 (IS 1.06, OOS 0.56) · CAGR 13.3% vs SPY 15.0% · maxDD -31.6% · 9552 trades · win 62% · exposure 75% (12 s)
+top50+etf k10 vol_low: Sharpe 0.66 (IS 0.89, OOS 0.27) · CAGR 7.9% vs SPY 15.0% · maxDD -28.5% · 9751 trades · win 62% · exposure 75% (13 s)
+top50+etf k15 signal: Sharpe 0.87 (IS 1.07, OOS 0.58) · CAGR 12.2% vs SPY 15.0% · maxDD -21.1% · 12853 trades · win 63% · exposure 67% (15 s)
+top50+etf k15 vol_low: Sharpe 0.79 (IS 1.02, OOS 0.41) · CAGR 9.0% vs SPY 15.0% · maxDD -25.0% · 13037 trades · win 62% · exposure 67% (16 s)
+top50+etf k20 signal: Sharpe 0.91 (IS 0.98, OOS 0.80) · CAGR 11.6% vs SPY 15.0% · maxDD -16.0% · 15588 trades · win 63% · exposure 61% (18 s)
+top50+etf k20 vol_low: Sharpe 0.84 (IS 1.00, OOS 0.59) · CAGR 9.1% vs SPY 15.0% · maxDD -16.3% · 15734 trades · win 62% · exposure 60% (20 s)
+top50+etf k30 signal: Sharpe 0.90 (IS 0.94, OOS 0.85) · CAGR 10.1% vs SPY 15.0% · maxDD -15.0% · 19616 trades · win 62% · exposure 50% (23 s)
+top50+etf k30 vol_low: Sharpe 0.89 (IS 0.91, OOS 0.86) · CAGR 8.8% vs SPY 15.0% · maxDD -14.9% · 19711 trades · win 63% · exposure 50% (26 s)
+  market: 351 symbols, 2719 sessions (11 s)
+top100+etf k5 signal: Sharpe 0.73 (IS 0.84, OOS 0.55) · CAGR 13.3% vs SPY 15.0% · maxDD -42.3% · 5411 trades · win 62% · exposure 88% (39 s)
+top100+etf k5 vol_low: Sharpe 0.89 (IS 1.28, OOS 0.14) · CAGR 11.6% vs SPY 15.0% · maxDD -25.0% · 5634 trades · win 63% · exposure 88% (40 s)
+top100+etf k10 signal: Sharpe 0.70 (IS 0.93, OOS 0.35) · CAGR 11.4% vs SPY 15.0% · maxDD -33.4% · 10262 trades · win 62% · exposure 82% (42 s)
+top100+etf k10 vol_low: Sharpe 0.79 (IS 0.96, OOS 0.47) · CAGR 10.0% vs SPY 15.0% · maxDD -23.1% · 10518 trades · win 62% · exposure 82% (45 s)
+top100+etf k15 signal: Sharpe 0.72 (IS 0.97, OOS 0.35) · CAGR 11.1% vs SPY 15.0% · maxDD -30.4% · 14468 trades · win 63% · exposure 77% (47 s)
+top100+etf k15 vol_low: Sharpe 0.68 (IS 0.90, OOS 0.30) · CAGR 8.2% vs SPY 15.0% · maxDD -20.9% · 14690 trades · win 62% · exposure 76% (50 s)
+top100+etf k20 signal: Sharpe 0.79 (IS 1.00, OOS 0.47) · CAGR 11.5% vs SPY 15.0% · maxDD -29.3% · 18047 trades · win 63% · exposure 71% (52 s)
+top100+etf k20 vol_low: Sharpe 0.72 (IS 0.95, OOS 0.34) · CAGR 8.5% vs SPY 15.0% · maxDD -24.1% · 18287 trades · win 62% · exposure 71% (55 s)
+top100+etf k30 signal: Sharpe 0.79 (IS 0.88, OOS 0.65) · CAGR 10.4% vs SPY 15.0% · maxDD -17.9% · 23702 trades · win 62% · exposure 62% (58 s)
+top100+etf k30 vol_low: Sharpe 0.77 (IS 0.93, OOS 0.51) · CAGR 8.4% vs SPY 15.0% · maxDD -20.1% · 23931 trades · win 62% · exposure 61% (62 s)
+  market: 59 symbols, 2719 sessions (3 s)
+etf k5 signal: Sharpe 0.92 (IS 0.99, OOS 0.80) · CAGR 11.7% vs SPY 15.0% · maxDD -21.4% · 4600 trades · win 62% · exposure 69% (65 s)
+etf k5 vol_low: Sharpe 0.53 (IS 0.55, OOS 0.51) · CAGR 5.4% vs SPY 15.0% · maxDD -23.1% · 4617 trades · win 61% · exposure 69% (66 s)
+etf k10 signal: Sharpe 0.84 (IS 0.96, OOS 0.62) · CAGR 8.4% vs SPY 15.0% · maxDD -17.8% · 7484 trades · win 62% · exposure 56% (66 s)
+etf k10 vol_low: Sharpe 0.66 (IS 0.74, OOS 0.51) · CAGR 5.7% vs SPY 15.0% · maxDD -17.1% · 7490 trades · win 61% · exposure 56% (67 s)
+etf k15 signal: Sharpe 0.82 (IS 0.92, OOS 0.67) · CAGR 7.3% vs SPY 15.0% · maxDD -15.8% · 9513 trades · win 62% · exposure 48% (68 s)
+etf k15 vol_low: Sharpe 0.65 (IS 0.69, OOS 0.56) · CAGR 5.2% vs SPY 15.0% · maxDD -17.1% · 9561 trades · win 62% · exposure 47% (69 s)
+etf k20 signal: Sharpe 0.80 (IS 0.83, OOS 0.74) · CAGR 6.3% vs SPY 15.0% · maxDD -15.5% · 11012 trades · win 62% · exposure 41% (70 s)
+etf k20 vol_low: Sharpe 0.68 (IS 0.75, OOS 0.56) · CAGR 5.1% vs SPY 15.0% · maxDD -15.5% · 11053 trades · win 62% · exposure 41% (71 s)
+etf k30 signal: Sharpe 0.83 (IS 0.88, OOS 0.77) · CAGR 5.4% vs SPY 15.0% · maxDD -10.7% · 12777 trades · win 62% · exposure 32% (72 s)
+etf k30 vol_low: Sharpe 0.79 (IS 0.84, OOS 0.71) · CAGR 4.9% vs SPY 15.0% · maxDD -10.7% · 12780 trades · win 62% · exposure 32% (73 s)
+  market: 176 symbols, 2719 sessions (5 s)
+top50 k5 signal: Sharpe 0.82 (IS 0.86, OOS 0.77) · CAGR 16.6% vs SPY 15.0% · maxDD -37.4% · 4589 trades · win 64% · exposure 75% (79 s)
+top50 k5 vol_low: Sharpe 0.70 (IS 0.76, OOS 0.61) · CAGR 11.2% vs SPY 15.0% · maxDD -33.1% · 4685 trades · win 64% · exposure 75% (80 s)
+top50 k10 signal: Sharpe 0.88 (IS 0.98, OOS 0.78) · CAGR 15.2% vs SPY 15.0% · maxDD -27.7% · 7708 trades · win 64% · exposure 62% (81 s)
+top50 k10 vol_low: Sharpe 0.87 (IS 0.99, OOS 0.71) · CAGR 12.8% vs SPY 15.0% · maxDD -23.4% · 7740 trades · win 63% · exposure 62% (82 s)
+top50 k15 signal: Sharpe 0.86 (IS 0.91, OOS 0.81) · CAGR 12.9% vs SPY 15.0% · maxDD -21.4% · 9603 trades · win 63% · exposure 51% (83 s)
+top50 k15 vol_low: Sharpe 0.87 (IS 0.89, OOS 0.87) · CAGR 11.8% vs SPY 15.0% · maxDD -23.8% · 9621 trades · win 63% · exposure 51% (84 s)
+top50 k20 signal: Sharpe 0.85 (IS 0.81, OOS 0.92) · CAGR 11.2% vs SPY 15.0% · maxDD -17.3% · 10707 trades · win 63% · exposure 43% (86 s)
+top50 k20 vol_low: Sharpe 0.82 (IS 0.81, OOS 0.85) · CAGR 10.0% vs SPY 15.0% · maxDD -17.1% · 10692 trades · win 63% · exposure 42% (87 s)
+top50 k30 signal: Sharpe 0.78 (IS 0.71, OOS 0.87) · CAGR 7.6% vs SPY 15.0% · maxDD -13.1% · 11500 trades · win 63% · exposure 30% (88 s)
+top50 k30 vol_low: Sharpe 0.77 (IS 0.70, OOS 0.88) · CAGR 7.5% vs SPY 15.0% · maxDD -13.0% · 11506 trades · win 63% · exposure 30% (89 s)
+  market: 293 symbols, 2719 sessions (7 s)
+top100 k5 signal: Sharpe 0.64 (IS 0.64, OOS 0.65) · CAGR 12.7% vs SPY 15.0% · maxDD -42.3% · 5106 trades · win 63% · exposure 84% (97 s)
+top100 k5 vol_low: Sharpe 0.67 (IS 0.88, OOS 0.32) · CAGR 10.3% vs SPY 15.0% · maxDD -29.8% · 5188 trades · win 63% · exposure 85% (98 s)
+top100 k10 signal: Sharpe 0.56 (IS 0.83, OOS 0.18) · CAGR 9.4% vs SPY 15.0% · maxDD -38.4% · 9431 trades · win 63% · exposure 77% (100 s)
+top100 k10 vol_low: Sharpe 0.77 (IS 0.94, OOS 0.49) · CAGR 11.2% vs SPY 15.0% · maxDD -22.2% · 9610 trades · win 63% · exposure 77% (101 s)
+top100 k15 signal: Sharpe 0.79 (IS 0.92, OOS 0.60) · CAGR 13.2% vs SPY 15.0% · maxDD -27.6% · 13041 trades · win 63% · exposure 70% (103 s)
+top100 k15 vol_low: Sharpe 0.76 (IS 0.82, OOS 0.66) · CAGR 10.5% vs SPY 15.0% · maxDD -27.2% · 13153 trades · win 63% · exposure 70% (104 s)
+top100 k20 signal: Sharpe 0.71 (IS 0.91, OOS 0.45) · CAGR 10.9% vs SPY 15.0% · maxDD -27.5% · 15786 trades · win 63% · exposure 63% (106 s)
+top100 k20 vol_low: Sharpe 0.83 (IS 0.98, OOS 0.61) · CAGR 11.1% vs SPY 15.0% · maxDD -19.8% · 15860 trades · win 63% · exposure 63% (108 s)
+top100 k30 signal: Sharpe 0.72 (IS 0.80, OOS 0.63) · CAGR 9.6% vs SPY 15.0% · maxDD -20.6% · 19463 trades · win 63% · exposure 51% (110 s)
+top100 k30 vol_low: Sharpe 0.76 (IS 0.81, OOS 0.69) · CAGR 9.3% vs SPY 15.0% · maxDD -20.2% · 19501 trades · win 63% · exposure 51% (112 s)
+                 model  sh_is  sh_oos  sh_all  cagr_is  cagr_oos  cagr    mdd   vol  trades   win  expo  max_expo  beta
+  top50+etf k5 vol_low  1.280   0.309   0.914    0.174     0.033 0.119 -0.253 0.133    5441 0.627 0.838     0.986 0.410
+ top100+etf k5 vol_low  1.278   0.145   0.888    0.184     0.010 0.116 -0.250 0.133    5634 0.627 0.882     0.985 0.415
+  top50+etf k15 signal  1.072   0.579   0.872    0.148     0.081 0.122 -0.211 0.144   12853 0.625 0.673     0.980 0.534
+  top50+etf k10 signal  1.059   0.558   0.855    0.163     0.085 0.133 -0.316 0.161    9552 0.624 0.754     0.984 0.573
+   top50+etf k5 signal  1.059   0.790   0.950    0.191     0.148 0.174 -0.372 0.188    5293 0.629 0.843     0.988 0.571
+ top50+etf k15 vol_low  1.019   0.405   0.786    0.119     0.042 0.090 -0.250 0.118   13037 0.622 0.666     0.980 0.458
+ top100+etf k20 signal  0.998   0.469   0.787    0.147     0.065 0.115 -0.293 0.153   18047 0.625 0.715     0.980 0.588
+ top50+etf k20 vol_low  0.996   0.594   0.839    0.107     0.064 0.091 -0.163 0.111   15734 0.623 0.601     0.979 0.429
+     top50 k10 vol_low  0.993   0.708   0.869    0.137     0.111 0.128 -0.234 0.151    7740 0.634 0.621     0.983 0.553
+         etf k5 signal  0.987   0.800   0.920    0.132     0.093 0.117 -0.214 0.129    4600 0.622 0.690     0.989 0.359
+    top100 k20 vol_low  0.985   0.608   0.832    0.128     0.082 0.111 -0.198 0.137   15860 0.629 0.631     0.980 0.535
+  top50+etf k20 signal  0.981   0.804   0.909    0.121     0.107 0.116 -0.160 0.130   15588 0.626 0.607     0.979 0.480
+      top50 k10 signal  0.980   0.778   0.882    0.153     0.151 0.152 -0.277 0.179    7708 0.637 0.621     0.986 0.622
+ top100+etf k15 signal  0.972   0.347   0.723    0.151     0.046 0.111 -0.304 0.164   14468 0.626 0.768     0.984 0.623
+        etf k10 signal  0.965   0.619   0.835    0.099     0.060 0.084 -0.178 0.103    7484 0.620 0.561     0.982 0.325
+top100+etf k10 vol_low  0.965   0.474   0.790    0.130     0.053 0.100 -0.231 0.132   10518 0.621 0.821     0.984 0.494
+top100+etf k20 vol_low  0.946   0.344   0.724    0.116     0.035 0.085 -0.241 0.124   18287 0.622 0.708     0.979 0.495
+  top50+etf k30 signal  0.943   0.851   0.904    0.100     0.102 0.101 -0.150 0.113   19616 0.624 0.503     0.976 0.415
+    top100 k10 vol_low  0.940   0.492   0.771    0.140     0.066 0.112 -0.222 0.152    9610 0.627 0.773     0.984 0.597
+top100+etf k30 vol_low  0.929   0.509   0.768    0.103     0.054 0.084 -0.201 0.114   23931 0.622 0.615     0.974 0.457
+ top100+etf k10 signal  0.929   0.352   0.704    0.156     0.049 0.114 -0.334 0.176   10262 0.623 0.825     0.985 0.641
+     top100 k15 signal  0.924   0.603   0.788    0.150     0.104 0.132 -0.276 0.178   13041 0.632 0.702     0.980 0.664
+        etf k15 signal  0.915   0.670   0.822    0.081     0.059 0.073 -0.158 0.090    9513 0.617 0.476     0.980 0.289
+      top50 k15 signal  0.910   0.813   0.857    0.121     0.142 0.129 -0.214 0.156    9603 0.629 0.511     0.980 0.530
+ top50+etf k30 vol_low  0.908   0.856   0.886    0.087     0.090 0.088 -0.149 0.101   19711 0.626 0.500     0.975 0.383
+     top100 k20 signal  0.906   0.447   0.710    0.134     0.068 0.109 -0.275 0.165   15786 0.629 0.633     0.981 0.609
+top100+etf k15 vol_low  0.899   0.303   0.685    0.115     0.030 0.082 -0.209 0.127   14690 0.618 0.763     0.981 0.502
+ top50+etf k10 vol_low  0.892   0.271   0.662    0.112     0.027 0.079 -0.285 0.128    9751 0.619 0.746     0.984 0.473
+     top50 k15 vol_low  0.888   0.874   0.874    0.107     0.137 0.118 -0.238 0.139    9621 0.632 0.511     0.980 0.493
+ top100+etf k30 signal  0.884   0.651   0.792    0.114     0.086 0.104 -0.179 0.136   23702 0.623 0.619     0.975 0.516
+     top100 k5 vol_low  0.881   0.324   0.671    0.142     0.041 0.103 -0.298 0.167    5188 0.630 0.846     0.990 0.591
+        etf k30 signal  0.877   0.771   0.833    0.054     0.053 0.054 -0.107 0.065   12777 0.623 0.315     0.974 0.203
+       top50 k5 signal  0.858   0.774   0.818    0.162     0.174 0.166 -0.374 0.217    4589 0.637 0.753     0.989 0.716
+  top100+etf k5 signal  0.839   0.551   0.730    0.157     0.094 0.133 -0.423 0.198    5411 0.622 0.883     0.990 0.641
+       etf k30 vol_low  0.836   0.711   0.786    0.051     0.046 0.049 -0.107 0.064   12780 0.622 0.315     0.975 0.200
+     top100 k10 signal  0.828   0.176   0.562    0.145     0.015 0.094 -0.384 0.194    9431 0.632 0.774     0.986 0.724
+        etf k20 signal  0.828   0.744   0.796    0.065     0.060 0.063 -0.155 0.081   11012 0.618 0.412     0.979 0.262
+    top100 k15 vol_low  0.823   0.658   0.761    0.114     0.089 0.105 -0.272 0.144   13153 0.629 0.700     0.981 0.573
+    top100 k30 vol_low  0.813   0.686   0.757    0.093     0.092 0.093 -0.202 0.128   19501 0.628 0.514     0.975 0.478
+     top50 k20 vol_low  0.811   0.847   0.820    0.088     0.120 0.100 -0.171 0.126   10692 0.631 0.424     0.977 0.429
+      top50 k20 signal  0.808   0.920   0.850    0.094     0.142 0.112 -0.173 0.136   10707 0.633 0.425     0.977 0.457
+     top100 k30 signal  0.796   0.634   0.724    0.099     0.092 0.096 -0.206 0.141   19463 0.628 0.514     0.973 0.502
+      top50 k5 vol_low  0.761   0.610   0.698    0.118     0.102 0.112 -0.331 0.173    4685 0.639 0.751     0.985 0.599
+       etf k20 vol_low  0.754   0.559   0.682    0.057     0.040 0.051 -0.155 0.077   11053 0.619 0.410     0.978 0.253
+       etf k10 vol_low  0.745   0.505   0.658    0.067     0.041 0.057 -0.171 0.091    7490 0.612 0.557     0.984 0.295
+      top50 k30 signal  0.714   0.872   0.777    0.063     0.099 0.076 -0.131 0.101   11500 0.631 0.302     0.975 0.332
+     top50 k30 vol_low  0.703   0.875   0.772    0.061     0.099 0.075 -0.130 0.100   11506 0.632 0.301     0.975 0.330
+       etf k15 vol_low  0.694   0.562   0.645    0.056     0.043 0.052 -0.171 0.083    9561 0.617 0.474     0.981 0.276
+      top100 k5 signal  0.635   0.646   0.639    0.124     0.132 0.127 -0.423 0.228    5106 0.627 0.845     0.988 0.792
+        etf k5 vol_low  0.548   0.507   0.533    0.058     0.046 0.054 -0.231 0.109    4617 0.611 0.689     0.988 0.314

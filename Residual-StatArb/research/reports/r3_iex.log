@@ -1,0 +1,161 @@
+﻿19:59:51 loading 292 stocks + 14 ETFs (sip) from 2015-12-25 ...
+20:00:00 factor model 'etf': betas over 126 days, residuals for 70,692 bars ...
+20:00:04 306 symbols · 70,692 bars · 2016-01-04 .. 2026-10-26
+20:00:36 [ou 1/64] W=26 1.25/0.5 15min eod=False: IS -6.75 OOS -9.18 gross IS 1.49 turn 2073x
+20:00:57 [ou 2/64] W=26 1.25/0.5 15min eod=True: IS -9.38 OOS -11.67 gross IS 0.49 turn 2154x
+20:01:14 [ou 3/64] W=26 1.25/0.5 1h eod=False: IS -2.67 OOS -4.13 gross IS 1.55 turn 767x
+20:01:29 [ou 4/64] W=26 1.25/0.5 1h eod=True: IS -6.22 OOS -7.35 gross IS 0.96 turn 823x
+20:01:49 [ou 5/64] W=26 1.5/0.5 15min eod=False: IS -6.26 OOS -8.49 gross IS 1.19 turn 1613x
+20:02:09 [ou 6/64] W=26 1.5/0.5 15min eod=True: IS -7.97 OOS -9.88 gross IS 0.54 turn 1640x
+20:02:22 [ou 7/64] W=26 1.5/0.5 1h eod=False: IS -2.35 OOS -2.99 gross IS 1.10 turn 471x
+20:02:36 [ou 8/64] W=26 1.5/0.5 1h eod=True: IS -4.81 OOS -5.21 gross IS 0.75 turn 494x
+20:02:56 [ou 9/64] W=26 2.0/0.75 15min eod=False: IS -5.76 OOS -7.42 gross IS 0.28 turn 815x
+20:03:19 [ou 10/64] W=26 2.0/0.75 15min eod=True: IS -6.08 OOS -7.41 gross IS 0.16 turn 811x
+20:03:35 [ou 11/64] W=26 2.0/0.75 1h eod=False: IS -1.10 OOS -2.03 gross IS 1.12 turn 119x
+20:03:52 [ou 12/64] W=26 2.0/0.75 1h eod=True: IS -1.59 OOS -2.75 gross IS 1.34 turn 120x
+20:04:18 [ou 13/64] W=26 2.0/0.25 15min eod=False: IS -5.10 OOS -6.10 gross IS 0.13 turn 818x
+20:04:40 [ou 14/64] W=26 2.0/0.25 15min eod=True: IS -5.66 OOS -6.46 gross IS 0.01 turn 820x
+20:04:55 [ou 15/64] W=26 2.0/0.25 1h eod=False: IS -1.32 OOS -1.14 gross IS 0.49 turn 119x
+20:05:09 [ou 16/64] W=26 2.0/0.25 1h eod=True: IS -1.70 OOS -1.94 gross IS 0.87 turn 122x
+20:05:42 [ou 17/64] W=52 1.25/0.5 15min eod=False: IS -4.29 OOS -5.32 gross IS 0.64 turn 1281x
+20:06:07 [ou 18/64] W=52 1.25/0.5 15min eod=True: IS -6.60 OOS -8.32 gross IS 0.23 turn 1423x
+20:06:23 [ou 19/64] W=52 1.25/0.5 1h eod=False: IS -2.40 OOS -3.08 gross IS 0.44 turn 651x
+20:06:39 [ou 20/64] W=52 1.25/0.5 1h eod=True: IS -4.62 OOS -6.19 gross IS 0.81 turn 725x
+20:06:58 [ou 21/64] W=52 1.5/0.5 15min eod=False: IS -4.38 OOS -4.57 gross IS 0.22 turn 978x
+20:07:18 [ou 22/64] W=52 1.5/0.5 15min eod=True: IS -6.01 OOS -6.81 gross IS 0.04 turn 1051x
+20:07:35 [ou 23/64] W=52 1.5/0.5 1h eod=False: IS -2.36 OOS -2.71 gross IS 0.20 turn 451x
+20:07:49 [ou 24/64] W=52 1.5/0.5 1h eod=True: IS -3.69 OOS -5.09 gross IS 0.96 turn 487x
+20:08:03 [ou 25/64] W=52 2.0/0.75 15min eod=False: IS -3.75 OOS -3.98 gross IS 0.05 turn 502x
+20:08:23 [ou 26/64] W=52 2.0/0.75 15min eod=True: IS -4.48 OOS -4.79 gross IS -0.08 turn 510x
+20:08:39 [ou 27/64] W=52 2.0/0.75 1h eod=False: IS -1.21 OOS -1.61 gross IS 0.65 turn 144x
+20:08:53 [ou 28/64] W=52 2.0/0.75 1h eod=True: IS -2.32 OOS -2.88 gross IS 0.47 turn 148x
+20:09:13 [ou 29/64] W=52 2.0/0.25 15min eod=False: IS -3.44 OOS -2.78 gross IS -0.35 turn 488x
+20:09:30 [ou 30/64] W=52 2.0/0.25 15min eod=True: IS -3.98 OOS -4.36 gross IS -0.06 turn 498x
+20:09:43 [ou 31/64] W=52 2.0/0.25 1h eod=False: IS -1.41 OOS -0.99 gross IS 0.01 turn 141x
+20:09:57 [ou 32/64] W=52 2.0/0.25 1h eod=True: IS -1.87 OOS -2.42 gross IS 0.58 turn 146x
+20:10:22 [ou 33/64] W=130 1.25/0.5 15min eod=False: IS -2.58 OOS -2.77 gross IS -0.32 turn 632x
+20:10:42 [ou 34/64] W=130 1.25/0.5 15min eod=True: IS -3.95 OOS -5.06 gross IS 0.17 turn 831x
+20:10:56 [ou 35/64] W=130 1.25/0.5 1h eod=False: IS -2.08 OOS -1.85 gross IS -0.64 turn 396x
+20:11:10 [ou 36/64] W=130 1.25/0.5 1h eod=True: IS -2.91 OOS -4.57 gross IS 0.45 turn 501x
+20:11:26 [ou 37/64] W=130 1.5/0.5 15min eod=False: IS -2.13 OOS -2.69 gross IS -0.16 turn 475x
+20:11:43 [ou 38/64] W=130 1.5/0.5 15min eod=True: IS -3.17 OOS -4.43 gross IS 0.29 turn 585x
+20:11:54 [ou 39/64] W=130 1.5/0.5 1h eod=False: IS -1.77 OOS -1.82 gross IS -0.51 turn 296x
+20:12:06 [ou 40/64] W=130 1.5/0.5 1h eod=True: IS -2.82 OOS -4.03 gross IS 0.09 turn 343x
+20:12:23 [ou 41/64] W=130 2.0/0.75 15min eod=False: IS -1.97 OOS -2.40 gross IS -0.24 turn 231x
+20:12:42 [ou 42/64] W=130 2.0/0.75 15min eod=True: IS -2.27 OOS -2.81 gross IS 0.20 turn 249x
+20:13:00 [ou 43/64] W=130 2.0/0.75 1h eod=False: IS -1.62 OOS -2.06 gross IS -0.60 turn 121x
+20:13:18 [ou 44/64] W=130 2.0/0.75 1h eod=True: IS -2.12 OOS -2.18 gross IS -0.12 turn 127x
+20:13:42 [ou 45/64] W=130 2.0/0.25 15min eod=False: IS -1.94 OOS -1.78 gross IS -0.59 turn 224x
+20:14:07 [ou 46/64] W=130 2.0/0.25 15min eod=True: IS -2.31 OOS -2.66 gross IS 0.04 turn 241x
+20:14:22 [ou 47/64] W=130 2.0/0.25 1h eod=False: IS -1.35 OOS -1.74 gross IS -0.54 turn 119x
+20:14:38 [ou 48/64] W=130 2.0/0.25 1h eod=True: IS -2.02 OOS -2.10 gross IS -0.13 turn 125x
+20:15:21 [ou 49/64] W=260 1.25/0.5 15min eod=False: IS -1.12 OOS -1.63 gross IS 0.16 turn 368x
+20:16:07 [ou 50/64] W=260 1.25/0.5 15min eod=True: IS -2.51 OOS -3.67 gross IS 0.59 turn 602x
+20:16:32 [ou 51/64] W=260 1.25/0.5 1h eod=False: IS -0.73 OOS -1.09 gross IS 0.13 turn 252x
+20:16:57 [ou 52/64] W=260 1.25/0.5 1h eod=True: IS -1.64 OOS -3.87 gross IS 1.36 turn 400x
+20:17:36 [ou 53/64] W=260 1.5/0.5 15min eod=False: IS -1.02 OOS -1.55 gross IS 0.09 turn 272x
+20:18:16 [ou 54/64] W=260 1.5/0.5 15min eod=True: IS -2.03 OOS -3.40 gross IS 0.68 turn 408x
+20:18:45 [ou 55/64] W=260 1.5/0.5 1h eod=False: IS -0.79 OOS -1.17 gross IS -0.03 turn 190x
+20:19:14 [ou 56/64] W=260 1.5/0.5 1h eod=True: IS -1.59 OOS -3.43 gross IS 0.99 turn 265x
+20:19:40 [ou 57/64] W=260 2.0/0.75 15min eod=False: IS -0.74 OOS -1.88 gross IS 0.17 turn 131x
+20:19:58 [ou 58/64] W=260 2.0/0.75 15min eod=True: IS -0.97 OOS -2.65 gross IS 0.80 turn 158x
+20:20:11 [ou 59/64] W=260 2.0/0.75 1h eod=False: IS -0.54 OOS -1.04 gross IS 0.08 turn 85x
+20:20:25 [ou 60/64] W=260 2.0/0.75 1h eod=True: IS -0.84 OOS -1.88 gross IS 0.78 turn 95x
+20:20:44 [ou 61/64] W=260 2.0/0.25 15min eod=False: IS -0.49 OOS -1.37 gross IS 0.27 turn 128x
+20:21:04 [ou 62/64] W=260 2.0/0.25 15min eod=True: IS -1.03 OOS -2.54 gross IS 0.72 turn 155x
+20:21:17 [ou 63/64] W=260 2.0/0.25 1h eod=False: IS -0.30 OOS -0.72 gross IS 0.22 turn 85x
+20:21:29 [ou 64/64] W=260 2.0/0.25 1h eod=True: IS -0.89 OOS -1.82 gross IS 0.69 turn 95x
+20:21:50 [xs 1/72] k=1 q=0.1/0.25 15min eod=False: IS -15.07 OOS -19.05 gross IS 2.77 turn 14008x
+20:22:10 [xs 2/72] k=1 q=0.1/0.25 15min eod=True: IS -17.74 OOS -21.10 gross IS 2.56 turn 13834x
+20:22:25 [xs 3/72] k=1 q=0.1/0.25 1h eod=False: IS -3.45 OOS -4.57 gross IS 0.86 turn 3220x
+20:22:38 [xs 4/72] k=1 q=0.1/0.25 1h eod=True: IS -6.07 OOS -7.49 gross IS 1.61 turn 3602x
+20:22:52 [xs 5/72] k=1 q=0.1/0.25 daily eod=False: IS 0.16 OOS -0.11 gross IS 0.84 turn 549x
+20:23:19 [xs 7/72] k=1 q=0.2/0.35 15min eod=False: IS -18.98 OOS -25.08 gross IS 2.94 turn 10947x
+20:23:47 [xs 8/72] k=1 q=0.2/0.35 15min eod=True: IS -22.15 OOS -27.90 gross IS 2.53 turn 10887x
+20:24:03 [xs 9/72] k=1 q=0.2/0.35 1h eod=False: IS -4.38 OOS -5.74 gross IS 1.01 turn 2502x
+20:24:20 [xs 10/72] k=1 q=0.2/0.35 1h eod=True: IS -8.42 OOS -10.11 gross IS 1.48 turn 2873x
+20:24:34 [xs 11/72] k=1 q=0.2/0.35 daily eod=False: IS 0.21 OOS -0.28 gross IS 1.08 turn 423x
+20:24:58 [xs 13/72] k=2 q=0.1/0.25 15min eod=False: IS -11.32 OOS -14.91 gross IS 2.78 turn 10883x
+20:25:19 [xs 14/72] k=2 q=0.1/0.25 15min eod=True: IS -14.00 OOS -17.31 gross IS 2.47 turn 10967x
+20:25:33 [xs 15/72] k=2 q=0.1/0.25 1h eod=False: IS -2.08 OOS -4.51 gross IS 2.12 turn 3206x
+20:25:47 [xs 16/72] k=2 q=0.1/0.25 1h eod=True: IS -5.49 OOS -7.59 gross IS 2.06 turn 3581x
+20:25:59 [xs 17/72] k=2 q=0.1/0.25 daily eod=False: IS 0.21 OOS -0.11 gross IS 0.87 turn 548x
+20:26:19 [xs 19/72] k=2 q=0.2/0.35 15min eod=False: IS -14.91 OOS -19.06 gross IS 2.94 turn 8714x
+20:26:39 [xs 20/72] k=2 q=0.2/0.35 15min eod=True: IS -17.68 OOS -22.40 gross IS 2.60 turn 8852x
+20:26:53 [xs 21/72] k=2 q=0.2/0.35 1h eod=False: IS -3.15 OOS -5.76 gross IS 2.35 turn 2493x
+20:27:06 [xs 22/72] k=2 q=0.2/0.35 1h eod=True: IS -7.33 OOS -10.07 gross IS 2.36 turn 2861x
+20:27:17 [xs 23/72] k=2 q=0.2/0.35 daily eod=False: IS -0.14 OOS -0.24 gross IS 0.68 turn 423x
+20:27:38 [xs 25/72] k=4 q=0.1/0.25 15min eod=False: IS -7.62 OOS -10.22 gross IS 2.04 turn 7609x
+20:27:59 [xs 26/72] k=4 q=0.1/0.25 15min eod=True: IS -9.63 OOS -12.64 gross IS 1.70 turn 7950x
+20:28:14 [xs 27/72] k=4 q=0.1/0.25 1h eod=False: IS -2.94 OOS -4.31 gross IS 1.24 turn 3206x
+20:28:29 [xs 28/72] k=4 q=0.1/0.25 1h eod=True: IS -5.53 OOS -7.54 gross IS 1.52 turn 3578x
+20:28:42 [xs 29/72] k=4 q=0.1/0.25 daily eod=False: IS 0.96 OOS -0.20 gross IS 1.62 turn 543x
+20:29:04 [xs 31/72] k=4 q=0.2/0.35 15min eod=False: IS -9.63 OOS -13.07 gross IS 2.47 turn 6205x
+20:29:27 [xs 32/72] k=4 q=0.2/0.35 15min eod=True: IS -12.50 OOS -16.12 gross IS 1.85 turn 6539x
+20:29:42 [xs 33/72] k=4 q=0.2/0.35 1h eod=False: IS -3.49 OOS -5.51 gross IS 1.69 turn 2507x
+20:29:56 [xs 34/72] k=4 q=0.2/0.35 1h eod=True: IS -7.36 OOS -10.28 gross IS 1.32 turn 2874x
+20:30:08 [xs 35/72] k=4 q=0.2/0.35 daily eod=False: IS 0.57 OOS -0.41 gross IS 1.38 turn 420x
+20:30:33 [xs 37/72] k=13 q=0.1/0.25 15min eod=False: IS -4.04 OOS -5.03 gross IS 0.77 turn 3797x
+20:30:58 [xs 38/72] k=13 q=0.1/0.25 15min eod=True: IS -6.19 OOS -7.42 gross IS 0.08 turn 4421x
+20:31:12 [xs 39/72] k=13 q=0.1/0.25 1h eod=False: IS -1.84 OOS -2.31 gross IS 0.59 turn 1976x
+20:31:27 [xs 40/72] k=13 q=0.1/0.25 1h eod=True: IS -3.75 OOS -4.53 gross IS 0.79 turn 2390x
+20:31:41 [xs 41/72] k=13 q=0.1/0.25 daily eod=False: IS 0.11 OOS 0.04 gross IS 0.73 turn 538x
+20:32:07 [xs 43/72] k=13 q=0.2/0.35 15min eod=False: IS -5.22 OOS -6.46 gross IS 0.94 turn 3225x
+20:32:28 [xs 44/72] k=13 q=0.2/0.35 15min eod=True: IS -8.15 OOS -9.42 gross IS 0.28 turn 3784x
+20:32:43 [xs 45/72] k=13 q=0.2/0.35 1h eod=False: IS -2.37 OOS -3.20 gross IS 0.68 turn 1605x
+20:32:57 [xs 46/72] k=13 q=0.2/0.35 1h eod=True: IS -5.01 OOS -6.03 gross IS 0.78 turn 1998x
+20:33:07 [xs 47/72] k=13 q=0.2/0.35 daily eod=False: IS 0.27 OOS 0.03 gross IS 1.04 turn 414x
+20:33:29 [xs 49/72] k=26 q=0.1/0.25 15min eod=False: IS -2.77 OOS -3.50 gross IS -0.29 turn 2046x
+20:33:52 [xs 50/72] k=26 q=0.1/0.25 15min eod=True: IS -3.48 OOS -5.33 gross IS 0.55 turn 2904x
+20:34:05 [xs 51/72] k=26 q=0.1/0.25 1h eod=False: IS -1.56 OOS -1.84 gross IS -0.23 turn 1172x
+20:34:19 [xs 52/72] k=26 q=0.1/0.25 1h eod=True: IS -1.93 OOS -3.47 gross IS 1.03 turn 1635x
+20:34:32 [xs 53/72] k=26 q=0.1/0.25 daily eod=False: IS -0.51 OOS -0.32 gross IS 0.01 turn 535x
+20:34:54 [xs 55/72] k=26 q=0.2/0.35 15min eod=False: IS -3.17 OOS -3.96 gross IS -0.02 turn 1813x
+20:35:14 [xs 56/72] k=26 q=0.2/0.35 15min eod=True: IS -4.79 OOS -6.87 gross IS 0.55 turn 2569x
+20:35:29 [xs 57/72] k=26 q=0.2/0.35 1h eod=False: IS -1.63 OOS -1.89 gross IS 0.03 turn 980x
+20:35:44 [xs 58/72] k=26 q=0.2/0.35 1h eod=True: IS -2.94 OOS -4.27 gross IS 1.05 turn 1434x
+20:35:56 [xs 59/72] k=26 q=0.2/0.35 daily eod=False: IS -0.38 OOS -0.14 gross IS 0.27 turn 419x
+20:36:20 [xs 61/72] k=130 q=0.1/0.25 15min eod=False: IS -0.44 OOS -0.36 gross IS 0.35 turn 691x
+20:36:44 [xs 62/72] k=130 q=0.1/0.25 15min eod=True: IS -2.06 OOS -2.41 gross IS 0.15 turn 1662x
+20:36:58 [xs 63/72] k=130 q=0.1/0.25 1h eod=False: IS -0.04 OOS 0.18 gross IS 0.44 turn 449x
+20:37:13 [xs 64/72] k=130 q=0.1/0.25 1h eod=True: IS -1.11 OOS -2.45 gross IS 1.00 turn 1241x
+20:37:24 [xs 65/72] k=130 q=0.1/0.25 daily eod=False: IS 0.16 OOS 0.67 gross IS 0.40 turn 252x
+20:37:44 [xs 67/72] k=130 q=0.2/0.35 15min eod=False: IS -0.86 OOS -0.53 gross IS 0.18 turn 654x
+20:38:05 [xs 68/72] k=130 q=0.2/0.35 15min eod=True: IS -2.90 OOS -3.29 gross IS 0.01 turn 1491x
+20:38:20 [xs 69/72] k=130 q=0.2/0.35 1h eod=False: IS -0.35 OOS 0.12 gross IS 0.26 turn 392x
+20:38:36 [xs 70/72] k=130 q=0.2/0.35 1h eod=True: IS -1.87 OOS -3.43 gross IS 0.96 turn 1088x
+20:38:49 [xs 71/72] k=130 q=0.2/0.35 daily eod=False: IS 0.35 OOS 0.71 gross IS 0.65 turn 208x
+mode     W  s_open  s_close   reb  flat_eod  sh_is  sh_oos  sh_all  gross_sh_is  gross_sh_all  cagr_is  cagr_oos   vol    mdd    turn  hold_d  cost_yr   beta  names  xs_bars  q_in  q_out
+  xs   NaN     NaN      NaN daily     False  0.961  -0.204   0.467        1.617         1.126    0.090    -0.030 0.102 -0.173 543.190   0.805    0.066 -0.008 19.987      4.0   0.1   0.25
+  xs   NaN     NaN      NaN daily     False  0.568  -0.408   0.155        1.384         0.982    0.034    -0.033 0.067 -0.177 419.697   0.980    0.054 -0.007 36.912      4.0   0.2   0.35
+  xs   NaN     NaN      NaN daily     False  0.352   0.710   0.497        0.646         0.799    0.027     0.066 0.089 -0.202 208.473   2.350    0.026  0.050 48.709    130.0   0.2   0.35
+  xs   NaN     NaN      NaN daily     False  0.266   0.028   0.167        1.043         0.966    0.015    -0.001 0.069 -0.249 414.400   0.992    0.054  0.027 36.898     13.0   0.2   0.35
+  xs   NaN     NaN      NaN daily     False  0.214  -0.281  -0.001        1.076         0.846    0.011    -0.024 0.066 -0.133 423.411   0.974    0.054  0.001 37.044      1.0   0.2   0.35
+  xs   NaN     NaN      NaN daily     False  0.206  -0.110   0.070        0.868         0.722    0.015    -0.020 0.104 -0.414 548.187   0.800    0.067  0.009 20.035      2.0   0.1   0.25
+  xs   NaN     NaN      NaN daily     False  0.159   0.674   0.368        0.398         0.612    0.012     0.086 0.126 -0.246 252.302   1.972    0.029  0.074 27.210    130.0   0.1   0.25
+  xs   NaN     NaN      NaN daily     False  0.158  -0.114   0.042        0.839         0.717    0.010    -0.019 0.100 -0.252 549.030   0.801    0.067  0.001 20.100      1.0   0.1   0.25
+  xs   NaN     NaN      NaN daily     False  0.105   0.038   0.077        0.734         0.710    0.006    -0.002 0.106 -0.341 537.657   0.814    0.066  0.042 20.068     13.0   0.1   0.25
+  xs   NaN     NaN      NaN    1h     False -0.037   0.184   0.052        0.443         0.542   -0.011     0.016 0.123 -0.262 448.736   1.122    0.059  0.081 29.525    130.0   0.1   0.25
+  xs   NaN     NaN      NaN daily     False -0.142  -0.239  -0.183        0.685         0.642   -0.011    -0.021 0.067 -0.269 422.520   0.974    0.054  0.007 36.902      2.0   0.2   0.35
+  ou 260.0    2.00     0.25    1h     False -0.303  -0.723  -0.468        0.217         0.074   -0.006    -0.015 0.020 -0.110  84.514   1.045    0.010  0.008 10.514      NaN   NaN    NaN
+  xs   NaN     NaN      NaN    1h     False -0.347   0.124  -0.155        0.256         0.464   -0.033     0.007 0.090 -0.288 392.494   1.281    0.054  0.061 51.814    130.0   0.2   0.35
+  xs   NaN     NaN      NaN daily     False -0.384  -0.144  -0.290        0.268         0.405   -0.032    -0.015 0.079 -0.350 418.759   0.969    0.054  0.031 36.172     26.0   0.2   0.35
+  xs   NaN     NaN      NaN 15min     False -0.435  -0.363  -0.406        0.353         0.405   -0.057    -0.055 0.124 -0.550 690.615   0.730    0.099  0.074 30.346    130.0   0.1   0.25
+  ou 260.0    2.00     0.25 15min     False -0.490  -1.373  -0.843        0.273        -0.053   -0.011    -0.033 0.023 -0.190 128.090   0.808    0.018  0.006 12.320      NaN   NaN    NaN
+  xs   NaN     NaN      NaN daily     False -0.513  -0.320  -0.435        0.009         0.107   -0.064    -0.049 0.122 -0.562 535.402   0.809    0.065  0.037 19.792     26.0   0.1   0.25
+  ou 260.0    2.00     0.75    1h     False -0.538  -1.044  -0.735        0.081        -0.085   -0.009    -0.018 0.016 -0.131  85.378   0.675    0.011  0.005  6.856      NaN   NaN    NaN
+  ou 260.0    1.25     0.50    1h     False -0.729  -1.094  -0.871        0.125         0.029   -0.027    -0.043 0.038 -0.317 252.383   0.914    0.033  0.017 27.460      NaN   NaN    NaN
+  ou 260.0    2.00     0.75 15min     False -0.744  -1.883  -1.193        0.175        -0.237   -0.014    -0.037 0.019 -0.219 131.361   0.518    0.018  0.004  8.104      NaN   NaN    NaN
+  ou 260.0    1.50     0.50    1h     False -0.794  -1.173  -0.942       -0.034        -0.149   -0.025    -0.039 0.032 -0.290 190.454   0.902    0.025  0.014 20.453      NaN   NaN    NaN
+  ou 260.0    2.00     0.75    1h      True -0.843  -1.877  -1.261        0.784         0.385   -0.005    -0.014 0.007 -0.084  95.427   0.259    0.011 -0.000  2.945      NaN   NaN    NaN
+  xs   NaN     NaN      NaN 15min     False -0.860  -0.525  -0.725        0.180         0.357   -0.076    -0.054 0.091 -0.572 653.639   0.771    0.097  0.057 52.551    130.0   0.2   0.35
+  ou 260.0    2.00     0.25    1h      True -0.894  -1.824  -1.267        0.695         0.349   -0.006    -0.013 0.007 -0.085  94.915   0.266    0.011 -0.000  3.007      NaN   NaN    NaN
+  ou 260.0    2.00     0.75 15min      True -0.969  -2.653  -1.634        0.796         0.190   -0.010    -0.031 0.011 -0.172 158.287   0.271    0.020  0.001  5.103      NaN   NaN    NaN
+
+124 variants; IS Sharpe mean -3.90 sd 4.23; OOS of the IS-best: -0.20
+best gross (zero-cost) IS Sharpe: mode   W  xs_bars   reb  gross_sh_is      sh_is         turn
+  xs NaN      1.0 15min     2.944119 -18.984989 10946.856389
+  xs NaN      2.0 15min     2.942606 -14.914779  8714.475288
+  xs NaN      2.0 15min     2.778981 -11.320512 10883.228863
+  xs NaN      1.0 15min     2.765869 -15.066154 14008.092207
+  xs NaN      2.0 15min     2.596752 -17.676534  8851.731851

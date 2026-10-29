@@ -567,14 +567,9 @@ SIP_REALTIME_GUARD = pd.Timedelta(minutes=16)   # stay clear of the SIP delay wi
 
 
 def data_client():
-    """Alpaca historical client from env vars, falling back to ~/.claude.json."""
-    key = os.environ.get("ALPACA_API_KEY")
-    sec = os.environ.get("ALPACA_SECRET_KEY")
-    if not (key and sec):
-        env = json.load(open(os.path.expanduser("~/.claude.json")))
-        env = env["mcpServers"]["alpaca-paper"]["env"]
-        key, sec = env["ALPACA_API_KEY"], env["ALPACA_SECRET_KEY"]
-    return StockHistoricalDataClient(key, sec)
+    """Alpaca historical client with the project's keys ("Alpaca Key.txt", then the environment, then ~/.claude.json - alpaca_keys.py)."""
+    import alpaca_keys
+    return StockHistoricalDataClient(*alpaca_keys.creds(True))
 
 
 def request_window(start: str, end: str):

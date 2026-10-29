@@ -29,7 +29,7 @@ entry + (best price − entry) × trailing factor (0 = breakeven) and never loos
 <h2>The tabs</h2>
 <h3>Live trading</h3>
 <ul>
-<li><b>Connect and test</b> - read-only: keys, account status, market clock, whether SOXL is shortable, open positions / orders. Sends nothing. Keys are read from <code>~/.claude.json</code>
+<li><b>Connect and test</b> - read-only: keys, account status, market clock, whether SOXL is shortable, open positions / orders. Sends nothing. Keys are read from the project's key file <code>Alpaca Key.txt</code> (then the environment, then <code>~/.claude.json</code>)
 (<code>alpaca-paper</code> / <code>alpaca-live</code>). The app <b>always starts on Paper + DRY RUN</b>.</li>
 <li><b>Orders: DRY RUN / ARMED.</b> A dry run does everything except send: each order the engine <i>would</i> send is listed once in the <b>Orders</b> tab. ARMED sends to the account you picked;
 a PAPER session asks for a yes, a LIVE session asks you to type <code>TRADE REAL MONEY</code>.</li>
@@ -53,7 +53,7 @@ what the <i>live-accurate backtest</i> holds on the very same bars, with a verdi
 <h3>Backtest</h3>
 <ul>
 <li><b>Live-accurate entries</b> (default ON). The classic backtest lets a flat re-entry use the entry bar's <i>own close</i> (trend, volatility regime, ADX) - information a live order does not have when it is placed.
-About 5% of its trades could not have been taken live, and they were unusually good (+3.3% on average). With the box ticked the backtest only uses what a live order could know (the previous bar's close) and the live engine reproduces it trade for trade;
+About 13% of its trades (210 of 1,580 over 2016-2026) have no live equivalent - 185 of them enter on a bar whose own close flips the trend - and they were unusually good (+2.35% on average, about 24x when compounded at full size). That is why the classic CAGR (128%) is so much higher than the live-accurate one (86%). With the box ticked the backtest only uses what a live order could know (the previous bar's close) and the live engine reproduces it trade for trade;
 untick it to see the classic numbers. The two give different trade counts and returns.</li>
 <li><b>Open position</b> (strip above the tabs): the position the backtest still holds after its last bar, with its frozen take-profit, run-up target and trailing stop - or "FLAT". The Live tab shows the same strip for the account, next to this one.</li>
 <li><b>Verify live = backtest:</b> replays the <i>real</i> live engine bar by bar (two polls per bar) against a simulated broker over the last 1-12 months of the window and compares every trade, and the position still open at the end, with this backtest.

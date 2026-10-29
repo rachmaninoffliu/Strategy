@@ -1,0 +1,36 @@
+07:37:32 M1 top100: 242 trials
+07:38:11 M1 top150: 482 trials
+07:39:02 M1 top500: 722 trials
+07:39:54 M2 all59: 1172 trials
+07:41:23 M2 core12: 1622 trials
+07:41:43 M3: 1702 trials
+
+==== M1: 720 variants; in-sample Sharpe mean 0.51, sd 0.21
+ M1 top150 hi52 top5 stock_trend weekly   0.892  1.637   0.077     0.164    0.282    -0.009    0.191   -0.411 0.417
+ M1 top100 hi52 top5 stock_trend weekly   0.731  1.283   0.127     0.130    0.215     0.002    0.193   -0.319 0.431
+M1 top150 hi52 top10 stock_trend weekly   0.845  1.114   0.555     0.135    0.159     0.096    0.166   -0.215 0.405
+M1 top100 hi52 top10 stock_trend weekly   0.817  1.081   0.531     0.133    0.158     0.092    0.171   -0.275 0.432
+M1 top100 hi52 top20 stock_trend weekly   0.831  0.972   0.668     0.125    0.134     0.110    0.156   -0.183 0.449
+M1 top150 sharpe12_1 top5 none weekly   1.094  1.031   1.204     0.483     0.662   -0.458
+M1 top500 sharpe12_1 top5 none weekly   0.972  0.923   1.051     0.441     0.554   -0.499
+
+==== M2: 904 variants; in-sample Sharpe mean 0.24, sd 0.23
+ M2 core12 13612W top10 abs safe=cash weekly   0.864  0.782   0.987     0.063    0.052     0.080    0.074   -0.091 0.240
+M2 core12 13612W top10 abs safe=cash monthly   0.762  0.731   0.814     0.056    0.049     0.067    0.075   -0.188 0.257
+M2 core12 3m top5 abs safe=best_bond monthly   0.850  0.720   1.050     0.099    0.080     0.131    0.119   -0.194 0.378
+M2 core12 3m top3 abs safe=best_bond monthly   0.802  0.697   0.966     0.104    0.087     0.134    0.135   -0.196 0.359
+ M2 core12 13612W top5 abs safe=cash monthly   0.846  0.694   1.084     0.092    0.072     0.127    0.112   -0.179 0.380
+ M2 core12 3m top10 canary safe=cash monthly   0.559  0.694   0.451     0.030    0.030     0.030    0.056   -0.107 0.139
+M2 core12 13612W top5 abs safe=best_bond monthly   0.853  0.580   1.303     0.100     0.163   -0.223
+
+==== M3: 76 variants; in-sample Sharpe mean 0.75, sd 0.16
+M3 QQQ vol target 10% + SMA200 safe=cash   1.128  1.041   1.266     0.113    0.101     0.132    0.099   -0.115 0.338
+M3 QQQ vol target 15% + SMA200 safe=cash   1.109  1.018   1.249     0.148    0.128     0.183    0.133   -0.163 0.466
+M3 QQQ vol target 20% + SMA200 safe=cash   1.087  0.966   1.270     0.166    0.138     0.212    0.152   -0.206 0.545
+M3 QQQ vol target 10% (cap 1x) safe=cash   1.119  0.954   1.394     0.123    0.103     0.157    0.109   -0.149 0.493
+M3 SPY vol target 10% + SMA200 safe=cash   0.991  0.928   1.089     0.090    0.080     0.106    0.091   -0.141 0.332
+M3 QQQ vol target 15% (cap 1x) safe=cash   1.088  0.903   1.381     0.162    0.128     0.221    0.148   -0.214 0.696
+M3 SPY vol target 10% (cap 1x) safe=cash   1.026  0.885   1.255     0.105    0.088     0.134    0.103   -0.130 0.512
+M3 QQQ vol target 10% + SMA200 safe=cash   1.128  1.041   1.266     0.113     0.132   -0.115
+M3 QQQ vol target 10% (cap 1x) safe=cash   1.119  0.954   1.394     0.123     0.157   -0.149
+M3 QQQ vol target 15% + SMA200 safe=cash   1.109  1.018   1.249     0.148     0.183   -0.163

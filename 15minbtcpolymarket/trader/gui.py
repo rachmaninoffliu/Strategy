@@ -587,7 +587,7 @@ def app_settings() -> QSettings:
     return QSettings(f, QSettings.Format.IniFormat) if f else QSettings("AlphaSyndicate", "BTC15mTrader")
 
 
-PRESET_KEYS = ("auto", "hours", "minutes", "dog", "cmin", "cmax", "fav", "fmin", "fmax", "pmodel", "pbasis", "look", "half", "hourk", "corehours", "corek", "neark", "nearw")      # the fields a preset sets
+PRESET_KEYS = ("auto", "hours", "minutes", "dog", "cmin", "cmax", "fav", "fmin", "fmax", "pmodel", "pbasis", "look", "half", "hourk", "corehours", "corek", "neark", "nearw", "ev14", "ev28", "evn")      # the fields a preset sets
 
 
 class SettingsPanel(QWidget):
@@ -597,6 +597,7 @@ class SettingsPanel(QWidget):
     def __init__(self):
         super().__init__()
         self._applying = False
+        self._edge_saved: Optional[float] = None         # the Min edge you had before a preset that sets its own (PROJ-EV: 0c); restored when you pick another preset
         lay = QVBoxLayout(self)
         lay.setContentsMargins(0, 0, 0, 0)
         banner = QLabel("SHARED SETTINGS — every field in this panel is used by BOTH the Backtest and the Live / paper session. "
@@ -744,6 +745,21 @@ class SettingsPanel(QWidget):
         f.addRow("Memory half-life", self.half)
         lay.addWidget(g)
 
+        g = QGroupBox("EV-regime filter — trade only the hours whose trailing EV is high enough")
+        f = QFormLayout(g)
+        self.ev14 = spin(-50, 100, -50, 1, 1, " c"); self.ev14.setSpecialValueText("off")
+        self.ev14.setToolTip("An hour of the day trades only while its net EV per contract over the last 14 days (the radar's 'Net EV 14 d': win - price - slippage - fee, signals settled before the decision) "
+                             "is ABOVE this. 'off' = no 14-day rule.")
+        self.ev28 = spin(-50, 100, -50, 1, 1, " c"); self.ev28.setSpecialValueText("off")
+        self.ev28.setToolTip("Same with the last 28 days ('Net EV 28 d'). With both rules on, an hour must pass BOTH; with neither on, the filter is off.")
+        self.evn = QSpinBox(); self.evn.setRange(1, 60); self.evn.setValue(8); self.evn.setSuffix(" signals")
+        self.evn.setToolTip("An hour needs at least this many signals inside a rule's window before its EV counts (one lucky trade must not open an hour).")
+        self.ev_note = QLabel("When on, the learned win probability (basis / model / shrinkage / lookback / memory) and Auto are NOT used: a passing hour is sized off its own trailing gross edge, "
+                              "a failing hour is skipped (its signal is still recorded).")
+        self.ev_note.setObjectName("muted"); self.ev_note.setWordWrap(True)
+        f.addRow("14-day net EV above", self.ev14); f.addRow("28-day net EV above", self.ev28); f.addRow("Min signals per hour", self.evn); f.addRow(self.ev_note)
+        lay.addWidget(g)
+
         g = QGroupBox("Risk limits (same rules in Backtest and Live)")
         f = QFormLayout(g)
         self.dloss = spin(1, 100, 10, 0, 1, " %")
@@ -780,6 +796,7 @@ class SettingsPanel(QWidget):
                     sig.connect(lambda *_: self._on_edit())          # a field a preset defines: the preset label becomes "Custom"
                 else:
                     sig.connect(lambda *_: self.changed.emit())      # sizing / costs / risk limits are shared by every preset: the preset label stays
+        self.edge.valueChanged.connect(self._edge_edited)
         self.apply_preset(next(iter(PRESETS)))
         self.changed.connect(self.refresh_notice)
         self.changed.connect(self._sync_auto)
@@ -833,9 +850,15 @@ class SettingsPanel(QWidget):
 
     def _sync_auto(self) -> None:
         """With Auto on, the fixed Kelly / stake / contracts / memory fields are not used - grey them out so nobody tunes a dead control."""
-        on = self.auto_on.isChecked()
-        for w in (self.mult, self.cap, self.maxc, self.look, self.half):
+        ev_on = bool(self.ev_rules())
+        on = self.auto_on.isChecked() and not ev_on
+        for w in (self.mult, self.cap, self.maxc):
             w.setEnabled(not on)
+        for w in (self.look, self.half):
+            w.setEnabled(not on and not ev_on)
+        for w in (self.pbasis, self.pmodel, self.hourk, self.corehours, self.corek, self.neark, self.nearw):
+            w.setEnabled(not ev_on)                      # the learned probability is not used while the EV filter is on
+        self.auto_on.setEnabled(not ev_on)
         for w in (self.auto_hl, self.auto_z, self.auto_ladder, self.auto_part, self.auto_maxc):
             w.setEnabled(on)
         try:
@@ -852,7 +875,7 @@ class SettingsPanel(QWidget):
 
     def auto_config(self) -> Optional[AutoConfig]:
         """The AutoConfig the Backtest and Live tabs pass on (None = Auto off).  Raises ValueError on a bad entry."""
-        if not self.auto_on.isChecked():
+        if not self.auto_on.isChecked() or self.ev_rules():
             return None
         try:
             hl = tuple(sorted({float(x) for x in self.auto_hl.text().replace(";", ",").replace(" ", ",").split(",") if x.strip()}))
@@ -879,7 +902,7 @@ class SettingsPanel(QWidget):
     def _widgets(self) -> dict:
         return dict(hours=self.hours, minutes=self.minutes, dog=self.leg_dog, cmin=self.cmin, cmax=self.cmax, fav=self.leg_fav, fmin=self.fmin,
                     fmax=self.fmax, spread=self.spread, fee=self.fee, slip=self.slip, mult=self.mult, cap=self.cap, edge=self.edge, maxc=self.maxc,
-                    pbasis=self.pbasis, pmodel=self.pmodel, hourk=self.hourk, look=self.look, half=self.half, corehours=self.corehours, corek=self.corek, neark=self.neark, nearw=self.nearw, throttle=self.throttle, dloss=self.dloss, ddstop=self.ddstop,
+                    pbasis=self.pbasis, pmodel=self.pmodel, hourk=self.hourk, look=self.look, half=self.half, corehours=self.corehours, corek=self.corek, neark=self.neark, nearw=self.nearw, ev14=self.ev14, ev28=self.ev28, evn=self.evn, throttle=self.throttle, dloss=self.dloss, ddstop=self.ddstop,
                     auto=self.auto_on, auto_hl=self.auto_hl, auto_z=self.auto_z, auto_ladder=self.auto_ladder, auto_part=self.auto_part, auto_maxc=self.auto_maxc)
 
     def _on_edit(self) -> None:
@@ -899,10 +922,23 @@ class SettingsPanel(QWidget):
                 self.pmodel.setCurrentIndex(vals["pmodel"]); self.pbasis.setCurrentIndex(vals["pbasis"]); self.look.setValue(vals.get("look", 45)); self.half.setValue(vals.get("half", 0))
                 self.hourk.setValue(vals.get("hourk", 40)); self.corehours.setText(vals.get("core", "")); self.corek.setValue(vals.get("corek", 0))
                 self.neark.setValue(vals.get("near", 0)); self.nearw.setValue(vals.get("nearw", 2))
+                evr = {int(d): float(t) for d, t in vals.get("evr", ())}
+                self.ev14.setValue(evr[14] * 100 if 14 in evr else -50); self.ev28.setValue(evr[28] * 100 if 28 in evr else -50); self.evn.setValue(int(vals.get("evn", 8)))
                 self.auto_on.setChecked(bool(vals.get("auto", False)))
+                if "edge" in vals:                                # this preset defines its own conviction hurdle: remember yours, restore it when you leave
+                    if self._edge_saved is None:
+                        self._edge_saved = self.edge.value()
+                    self.edge.setValue(float(vals["edge"]) * 100)
+                elif self._edge_saved is not None:
+                    self.edge.setValue(self._edge_saved)
+                    self._edge_saved = None
         finally:
             self._applying = False
         self.changed.emit()
+
+    def _edge_edited(self, *_a) -> None:
+        if not self._applying:                                    # YOU changed Min edge (or reset sizing): that value stays when the preset changes
+            self._edge_saved = None
 
     def params(self) -> StrategyParams:
         legs = tuple(n for n, on in (("DOG", self.leg_dog.isChecked()), ("FAV", self.leg_fav.isChecked())) if on)
@@ -923,6 +959,15 @@ class SettingsPanel(QWidget):
     def near_k(self) -> float:
         """Near-core shrinkage (0 unless core hours are in use)."""
         return self.neark.value() if self.core_hours() else 0.0
+
+    def ev_rules(self) -> tuple:
+        """The EV-regime filter ((days, threshold in dollars), ...); () = off."""
+        r = []
+        if self.ev14.value() > self.ev14.minimum() + 1e-9:
+            r.append((14, round(self.ev14.value() / 100, 6)))
+        if self.ev28.value() > self.ev28.minimum() + 1e-9:
+            r.append((28, round(self.ev28.value() / 100, 6)))
+        return tuple(r)
 
     def active_hours(self) -> tuple:
         """The hours the preset is built around: its core hours if it has any (all-hours scout presets), else its trading hours."""
@@ -975,6 +1020,9 @@ class SettingsPanel(QWidget):
             i = self.preset.findText(str(qs.value("settings/preset")))
             if i >= 0:
                 self.preset.setCurrentIndex(i)
+                pv = PRESETS.get(str(qs.value("settings/preset")))
+                if pv and "edge" in pv and abs(self.edge.value() - float(pv["edge"]) * 100) < 1e-9:
+                    self._edge_saved = 4.0                          # saved while a preset with its own Min edge was active: the default comes back when you pick another preset
             self.refresh_notice()
             self._sync_auto()
             if old_mem and "R2" not in str(qs.value("settings/preset")):
@@ -1390,7 +1438,8 @@ class BacktestTab(QWidget):
             min_edge=self.sp.edge.value() / 100, max_contracts=self.sp.maxc.value(), prob_mode=self.mode.currentText(),
             fixed_p=self.fixed_p.value() / 100, lookback_days=self.sp.look.value(), halflife_days=self.sp.halflife(), core_hours=self.sp.core_hours(), core_k=self.sp.corek.value(), near_k=self.sp.near_k(), near_width=self.sp.nearw.value(),
             dd_throttle=self.sp.throttle.isChecked(), daily_loss_limit=self.sp.dloss.value() / 100, max_drawdown_stop=self.sp.ddstop.value() / 100, min_history=MIN_HISTORY,
-            compounding=self.compound.isChecked(), p_model=self.sp.p_model(), p_basis=self.sp.p_basis(), hour_k=self.sp.hourk.value(), auto=self.sp.auto_config())
+            compounding=self.compound.isChecked(), p_model=self.sp.p_model(), p_basis=self.sp.p_basis(), hour_k=self.sp.hourk.value(), auto=self.sp.auto_config(),
+            ev_rules=self.sp.ev_rules(), ev_min_n=self.sp.evn.value())
 
     def safe_config(self):
         try:
@@ -1799,7 +1848,7 @@ class LiveTab(QWidget):
                           prob_source="manual" if manual else "history", manual_p=self.manual_p.value() / 100, lookback_days=self.sp.look.value(), halflife_days=self.sp.halflife(),
                           core_hours=self.sp.core_hours(), core_k=self.sp.corek.value(), near_k=self.sp.near_k(), near_width=self.sp.nearw.value(), dd_throttle=self.sp.throttle.isChecked(), p_model=self.sp.p_model(), p_basis=self.sp.p_basis(), hour_k=self.sp.hourk.value(),
                           daily_loss_limit=self.sp.dloss.value() / 100, max_drawdown_stop=self.sp.ddstop.value() / 100, auto=self.sp.auto_config(),
-                          auto_fund=bool(live and self.autofund.isChecked()), fund_max=self.fund_max.value())
+                          auto_fund=bool(live and self.autofund.isChecked()), fund_max=self.fund_max.value(), ev_rules=self.sp.ev_rules(), ev_min_n=self.sp.evn.value())
 
     def _stats(self, cfg: LiveConfig) -> SignalStats:
         key = (cfg.params, cfg.p_model, cfg.p_basis, cfg.hour_k, cfg.prior_n, cfg.lookback_days, cfg.halflife_days, cfg.core_hours, cfg.core_k, cfg.near_k, cfg.near_width, cfg.auto if auto_active(cfg) else None, id(self.get_rows()))
@@ -2570,6 +2619,14 @@ Real fills can be better or worse than the assumed slippage - the one thing a ba
 <li><b>Cash and exchange shards:</b> Kalshi splits its markets over several matching engines (&quot;exchange shards&quot;; BTC 15-minute is on shard 2, Crypto &amp; Commodities) and an API order is funded only by the cash held ON that shard - the Kalshi app moves cash there for you, the API does not. <b>Auto-fund</b> (Live-only settings, on by default) does what the app does: at session start, once early in every window and again if an order is rejected for cash, it moves cash from your OTHER shards onto the trading shard (never out of your account), up to the amount you set. The account box and the pre-flight show your cash per shard. <i>(The transfer call was built from Kalshi's documentation and tested against a mock exchange only: check it on a small amount first.)</i></li>
 <li><b>Safety:</b> start in <b>Demo</b>; production asks you to type LIVE; a red banner shows when real money is in play.</li>
 </ul>
+<h2>PROJ-EV: any hour whose projected EV is positive</h2>
+<p><b>PROJ-EV</b> trades <i>any</i> hour of the day while that hour's <b>projected EV</b> - the Regime radar's 'Engine estimate': the by-hour learned edge, decaying 14-day memory, shrunk toward the all-hours estimate (k = 100), net of slippage and fee -
+is <b>above zero</b>, and stops trading that hour as soon as the projection drops back below zero. It is the all-hours adaptive engine with the conviction hurdle (Min edge) set to 0c instead of 4c, so the preset sets Min edge to 0
+(and gives your own value back when you pick another preset). Bets are sized by Kelly off that projection, so a barely-positive hour gets a tiny bet. Not the same as the FILTER presets below, which look at the raw trailing EV.</p>
+<h2>EV-regime filter presets (FILTER-14 / FILTER-28 / FILTER-BOTH)</h2>
+<p>A &quot;regime&quot; here is a UTC hour of the day (the hours the Regime radar lists). <b>FILTER-14</b> trades an hour only while its trailing <b>14-day</b> net EV (the radar's 'Net EV 14 d': win &minus; price &minus; slippage &minus; fee per contract, signals settled before the decision) is above <b>10c</b>;
+<b>FILTER-28</b> uses the <b>28-day</b> EV above <b>5c</b>; <b>FILTER-BOTH</b> needs both. An hour needs at least 8 signals in a window before its EV counts. Hours that fail are skipped (their signals are still recorded), passing hours are sized with the normal Kelly rules off their own trailing edge.
+The thresholds are the three boxes in &quot;EV-regime filter&quot; and can be changed (or added to any preset). <b>Test them before trusting them:</b> in the data so far the hours that pass earn a few cents more than those that fail, but almost all of that is hours 22-23; elsewhere it adds nothing (see REPORT.md 9m).</p>
 <h2>Trade history and fresh data</h2>
 <p><b>Your trades are kept.</b> Every trade a session places - paper or LIVE - is written to the <b>trade ledger</b> (<code>data/live/ledger.jsonl</code>) the moment it fills and again when it settles. The Live tab's <b>Trades shown</b> box chooses what the table, equity curve and metrics display:
 this session only, all recorded trades of the selected mode (Paper or LIVE), or both modes. After a restart or a reconnect the history is simply there. Details:</p>
@@ -2610,11 +2667,13 @@ class RadarTab(QWidget):
         self.summary = QLabel("—"); self.summary.setWordWrap(True)
         row.addWidget(self.btn); row.addWidget(self.summary, 1)
         v.addLayout(row)
+        self.why = QLabel(""); self.why.setObjectName("muted"); self.why.setWordWrap(True); self.why.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        v.addWidget(self.why)
         self.fig = Figure(figsize=(9, 3.4), facecolor=BG)
         self.canvas = FigureCanvasQTAgg(self.fig)
         self.canvas.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         v.addWidget(self.canvas, 3)
-        self.table = make_table(["Hour (UTC)", "Active", "Signals (28 d)", "Win", "Avg price", "Net EV 28 d", "± se", "Net EV 14 d", "Engine estimate", "Status"])
+        self.table = make_table(["Hour (UTC)", "Active", "Signals (28 d)", "Win", "Avg price", "Net EV 28 d", "± se", "z (28 d)", "Net EV 14 d", "Engine estimate", "Status"])
         v.addWidget(self.table, 4)
 
     def showEvent(self, e) -> None:
@@ -2625,7 +2684,7 @@ class RadarTab(QWidget):
         p = self.sp.params()
         return radar.RadarConfig(cost_min=p.cost_min, cost_max=p.cost_max, minutes=p.minutes, fee_model=self.sp.fee.currentText(), slippage=self.sp.slip.value() / 100, min_edge=self.sp.edge.value() / 100,
                                  hour_k=self.sp.hourk.value(), halflife_days=self.sp.halflife() or radar.SCOUT_HALFLIFE, core_hours=self.sp.core_hours(), core_k=self.sp.corek.value(),
-                                 near_k=self.sp.near_k(), near_width=self.sp.nearw.value())
+                                 near_k=self.sp.near_k(), near_width=self.sp.nearw.value(), ev_rules=self.sp.ev_rules(), ev_min_n=self.sp.evn.value())
 
     def refresh(self) -> None:
         try:
@@ -2638,6 +2697,7 @@ class RadarTab(QWidget):
             return
         state, txt = radar.summarize(df, active, cfg)
         self.summary.setText(txt)
+        self.why.setText(radar.luck_note(df, cfg) + "  " + radar.EVIDENCE_NOTE)
         self.summary.setStyleSheet(f"color: {GREEN if state == 'ok' else YELLOW if state in ('moved', 'warm') else MUTED}; font-weight: 600;")
         col = {"TRADE": GREEN, "WATCH": YELLOW, "cold": MUTED}
         h = df[df.hour != "ALL"]
@@ -2665,8 +2725,8 @@ class RadarTab(QWidget):
         for i, r in enumerate(df.itertuples()):
             c = col[r.status]
             set_row(self.table, i, [r.hour, "●" if r.active else "", r.n, "—" if not r.n else f"{r.win * 100:.0f}%", "—" if not r.n else f"{r.price * 100:.0f}c",
-                                    "—" if not r.n else f"{r.ev * 100:+.1f}c", "—" if r.n < 2 else f"{r.se * 100:.1f}c", "—" if not r.n14 else f"{r.ev14 * 100:+.1f}c",
-                                    f"{r.est_edge * 100:+.1f}c", r.status], {8: c, 9: c})
+                                    "—" if not r.n else f"{r.ev * 100:+.1f}c", "—" if r.n < 2 else f"{r.se * 100:.1f}c", "—" if r.z != r.z else f"{r.z:+.1f}",
+                                    "—" if not r.n14 else f"{r.ev14 * 100:+.1f}c", "—" if r.est_edge != r.est_edge else f"{r.est_edge * 100:+.1f}c", r.status], {7: GREEN if (r.z == r.z and r.z >= radar.LUCK_Z) else MUTED, 9: c, 10: c})
 
 
 class HelpTab(QTextBrowser):
@@ -2744,10 +2804,19 @@ class MainWindow(QMainWindow):
             pass
         self.live.log("refreshing local data from Kalshi (newly settled windows) …")
         self.statusBar().showMessage("Refreshing data from Kalshi …")
-        w = FnWorker(lambda log: self.updater(lambda s: None))
+        w = FnWorker(lambda log: self._run_update())
         self._rw = w
         w.done.connect(self._refreshed)
         w.start()
+
+    def _dl_rps(self) -> Optional[float]:
+        """Requests per second a data download may use: the normal rate when idle, 1/s while a live session runs (the session and the download share Kalshi's public rate limit; a download at full speed
+        makes the session's own quote reads fail with HTTP 429)."""
+        return 1.0 if self.live._session_running() else None
+
+    def _run_update(self) -> bool:
+        rps = self._dl_rps()
+        return self.updater(lambda s: None) if rps is None else self.updater(lambda s: None, rps=rps)
 
     def _refreshed(self, ok, err) -> None:
         self._refresh_busy = False
@@ -2786,8 +2855,9 @@ class MainWindow(QMainWindow):
 
     def update_data(self) -> None:
         self.settings.btn_update.setEnabled(False)
-        self.live.log("updating local data from Kalshi (public API)…")
-        w = FnWorker(lambda log: update_data(log))
+        rps = self._dl_rps()
+        self.live.log("updating local data from Kalshi (public API)…" + ("  (a live session is running: slow download, 1 request/s, so the session's own reads are not starved)" if rps else ""))
+        w = FnWorker(lambda log: update_data(log, rps=rps))
         self._uw = w
         w.log.connect(lambda s: self.live.log("  " + s))
         w.done.connect(self._updated)
@@ -2810,7 +2880,8 @@ class MainWindow(QMainWindow):
             return
         self.settings.btn_backfill.setEnabled(False)
         self.live.log(f"downloading older history for hours {self.settings.hours.text()} ({n:,} markets)…")
-        w = FnWorker(lambda log: backfill_history(hours, log))
+        rps = self._dl_rps()
+        w = FnWorker(lambda log: backfill_history(hours, log, rps=rps))
         self._bw = w
         w.log.connect(lambda s: self.live.log("  " + s) if ("/" in s or "done" in s.lower() or "markets" in s) else None)
         w.done.connect(self._backfilled)

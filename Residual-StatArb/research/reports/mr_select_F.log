@@ -1,0 +1,52 @@
+﻿  market: 234 symbols, 2719 sessions (8 s)
+top50+etf k20 rule @1545: Sharpe 1.21 (IS 1.23, OOS 1.19) · CAGR 15.8% vs SPY 15.0% · maxDD -14.0% · 15831 trades · win 63% · exposure 61% (10 s)
+top50+etf k20 OVERNIGHT @1545: Sharpe 0.96 (IS 0.92, OOS 1.03) · CAGR 6.9% vs SPY 15.0% · maxDD -13.5% · 24610 trades · win 55% · exposure 47% (11 s)
+top50+etf k20 exit ibs>0.5 @1545: Sharpe 1.21 (IS 1.16, OOS 1.29) · CAGR 14.5% vs SPY 15.0% · maxDD -14.3% · 17631 trades · win 61% · exposure 55% (12 s)
+top50+etf k20 no-sma-exit @1545: Sharpe 1.19 (IS 1.27, OOS 1.10) · CAGR 15.5% vs SPY 15.0% · maxDD -14.3% · 12814 trades · win 63% · exposure 67% (14 s)
+top50+etf k30 rule @1545: Sharpe 1.12 (IS 1.21, OOS 1.03) · CAGR 12.4% vs SPY 15.0% · maxDD -11.8% · 19812 trades · win 63% · exposure 51% (16 s)
+top50+etf k30 OVERNIGHT @1545: Sharpe 0.89 (IS 0.78, OOS 1.04) · CAGR 5.3% vs SPY 15.0% · maxDD -9.8% · 28912 trades · win 55% · exposure 36% (17 s)
+top50+etf k30 exit ibs>0.5 @1545: Sharpe 1.07 (IS 1.06, OOS 1.09) · CAGR 10.7% vs SPY 15.0% · maxDD -11.8% · 21541 trades · win 61% · exposure 44% (19 s)
+top50+etf k30 no-sma-exit @1545: Sharpe 1.21 (IS 1.32, OOS 1.06) · CAGR 13.9% vs SPY 15.0% · maxDD -12.0% · 16725 trades · win 63% · exposure 58% (21 s)
+  market: 351 symbols, 2719 sessions (10 s)
+top100+etf k20 rule @1545: Sharpe 1.04 (IS 1.24, OOS 0.78) · CAGR 15.3% vs SPY 15.0% · maxDD -19.5% · 18179 trades · win 63% · exposure 72% (33 s)
+top100+etf k20 OVERNIGHT @1545: Sharpe 1.02 (IS 1.27, OOS 0.73) · CAGR 8.6% vs SPY 15.0% · maxDD -18.7% · 30757 trades · win 55% · exposure 59% (34 s)
+top100+etf k20 exit ibs>0.5 @1545: Sharpe 0.94 (IS 0.95, OOS 0.94) · CAGR 12.6% vs SPY 15.0% · maxDD -24.2% · 20985 trades · win 60% · exposure 66% (37 s)
+top100+etf k20 no-sma-exit @1545: Sharpe 1.10 (IS 1.27, OOS 0.86) · CAGR 16.1% vs SPY 15.0% · maxDD -17.7% · 14154 trades · win 63% · exposure 77% (38 s)
+top100+etf k30 rule @1545: Sharpe 1.07 (IS 1.24, OOS 0.86) · CAGR 13.9% vs SPY 15.0% · maxDD -13.6% · 23984 trades · win 63% · exposure 62% (41 s)
+top100+etf k30 OVERNIGHT @1545: Sharpe 0.89 (IS 1.05, OOS 0.72) · CAGR 6.5% vs SPY 15.0% · maxDD -13.4% · 37475 trades · win 55% · exposure 47% (43 s)
+top100+etf k30 exit ibs>0.5 @1545: Sharpe 0.99 (IS 1.04, OOS 0.94) · CAGR 11.8% vs SPY 15.0% · maxDD -16.8% · 26842 trades · win 60% · exposure 56% (46 s)
+top100+etf k30 no-sma-exit @1545: Sharpe 1.05 (IS 1.25, OOS 0.77) · CAGR 13.8% vs SPY 15.0% · maxDD -14.3% · 19389 trades · win 63% · exposure 69% (48 s)
+  market: 476 symbols, 2719 sessions (11 s)
+top150+etf k20 rule @1545: Sharpe 0.86 (IS 0.93, OOS 0.76) · CAGR 12.0% vs SPY 15.0% · maxDD -26.3% · 14221 trades · win 64% · exposure 72% (61 s)
+top150+etf k20 OVERNIGHT @1545: Sharpe 0.99 (IS 1.25, OOS 0.70) · CAGR 8.8% vs SPY 15.0% · maxDD -23.3% · 33013 trades · win 55% · exposure 63% (63 s)
+top150+etf k20 exit ibs>0.5 @1545: Sharpe 0.77 (IS 0.78, OOS 0.76) · CAGR 10.5% vs SPY 15.0% · maxDD -29.7% · 17436 trades · win 60% · exposure 72% (65 s)
+top150+etf k20 no-sma-exit @1545: Sharpe 1.04 (IS 1.01, OOS 1.11) · CAGR 14.5% vs SPY 15.0% · maxDD -25.6% · 10322 trades · win 64% · exposure 76% (68 s)
+top150+etf k30 rule @1545: Sharpe 0.89 (IS 0.94, OOS 0.82) · CAGR 11.8% vs SPY 15.0% · maxDD -23.1% · 21278 trades · win 63% · exposure 68% (70 s)
+top150+etf k30 OVERNIGHT @1545: Sharpe 0.89 (IS 1.10, OOS 0.64) · CAGR 6.8% vs SPY 15.0% · maxDD -15.2% · 40852 trades · win 55% · exposure 52% (72 s)
+top150+etf k30 exit ibs>0.5 @1545: Sharpe 0.83 (IS 0.80, OOS 0.88) · CAGR 10.2% vs SPY 15.0% · maxDD -23.7% · 23548 trades · win 60% · exposure 69% (75 s)
+top150+etf k30 no-sma-exit @1545: Sharpe 0.99 (IS 0.96, OOS 1.05) · CAGR 13.2% vs SPY 15.0% · maxDD -21.1% · 15223 trades · win 63% · exposure 75% (78 s)
+                            model  sh_is  sh_oos  sh_all  cagr_is  cagr_oos  cagr    mdd   vol  trades   win  expo  max_expo  beta
+  top50+etf k30 no-sma-exit @1545  1.321   1.062   1.206    0.141     0.135 0.139 -0.120 0.113   16725 0.630 0.578     0.974 0.414
+ top100+etf k20 no-sma-exit @1545  1.274   0.859   1.104    0.181     0.130 0.161 -0.177 0.145   14154 0.627 0.767     0.982 0.550
+   top100+etf k20 OVERNIGHT @1545  1.266   0.730   1.016    0.095     0.070 0.086 -0.187 0.085   30757 0.552 0.585     0.983 0.156
+  top50+etf k20 no-sma-exit @1545  1.265   1.097   1.195    0.157     0.153 0.155 -0.143 0.128   12814 0.629 0.673     0.980 0.477
+ top100+etf k30 no-sma-exit @1545  1.250   0.771   1.050    0.158     0.105 0.138 -0.143 0.131   19389 0.626 0.688     0.977 0.498
+   top150+etf k20 OVERNIGHT @1545  1.246   0.695   0.990    0.099     0.070 0.088 -0.233 0.089   33013 0.551 0.628     0.984 0.162
+        top100+etf k20 rule @1545  1.239   0.783   1.045    0.172     0.121 0.153 -0.195 0.146   18179 0.632 0.718     0.979 0.535
+        top100+etf k30 rule @1545  1.236   0.860   1.075    0.150     0.119 0.139 -0.136 0.129   23984 0.632 0.623     0.977 0.470
+         top50+etf k20 rule @1545  1.235   1.189   1.211    0.149     0.173 0.158 -0.140 0.128   15831 0.635 0.612     0.979 0.459
+         top50+etf k30 rule @1545  1.206   1.026   1.122    0.122     0.127 0.124 -0.118 0.109   19812 0.635 0.505     0.974 0.385
+ top50+etf k20 exit ibs>0.5 @1545  1.158   1.293   1.209    0.125     0.178 0.145 -0.143 0.118   17631 0.607 0.551     0.981 0.390
+   top150+etf k30 OVERNIGHT @1545  1.096   0.645   0.887    0.075     0.056 0.068 -0.152 0.077   40852 0.552 0.515     0.980 0.135
+ top50+etf k30 exit ibs>0.5 @1545  1.062   1.092   1.067    0.096     0.126 0.107 -0.118 0.100   21541 0.605 0.443     0.974 0.321
+   top100+etf k30 OVERNIGHT @1545  1.047   0.716   0.889    0.067     0.060 0.065 -0.134 0.073   37475 0.552 0.473     0.983 0.129
+top100+etf k30 exit ibs>0.5 @1545  1.040   0.941   0.995    0.115     0.123 0.118 -0.168 0.119   26842 0.601 0.559     0.978 0.401
+ top150+etf k20 no-sma-exit @1545  1.007   1.111   1.042    0.145     0.145 0.145 -0.256 0.139   10322 0.636 0.762     0.976 0.565
+ top150+etf k30 no-sma-exit @1545  0.962   1.050   0.992    0.132     0.132 0.132 -0.211 0.134   15223 0.630 0.748     0.969 0.575
+top100+etf k20 exit ibs>0.5 @1545  0.946   0.942   0.942    0.119     0.137 0.126 -0.242 0.136   20985 0.599 0.663     0.979 0.461
+        top150+etf k30 rule @1545  0.939   0.818   0.891    0.122     0.112 0.118 -0.231 0.136   21278 0.634 0.680     0.970 0.545
+        top150+etf k20 rule @1545  0.927   0.755   0.864    0.132     0.100 0.120 -0.263 0.143   14221 0.635 0.720     0.976 0.576
+    top50+etf k20 OVERNIGHT @1545  0.917   1.034   0.959    0.058     0.087 0.069 -0.135 0.072   24610 0.554 0.468     0.985 0.124
+top150+etf k30 exit ibs>0.5 @1545  0.804   0.881   0.833    0.098     0.109 0.102 -0.237 0.126   23548 0.603 0.686     0.971 0.511
+top150+etf k20 exit ibs>0.5 @1545  0.781   0.757   0.772    0.107     0.103 0.105 -0.297 0.143   17436 0.602 0.723     0.976 0.561
+    top50+etf k30 OVERNIGHT @1545  0.780   1.040   0.886    0.040     0.075 0.053 -0.098 0.061   28912 0.555 0.364     0.976 0.100

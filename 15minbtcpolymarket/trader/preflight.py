@@ -11,7 +11,8 @@ It answers one question - "can I run this strategy live right now?" - from evide
 Verdict (always about LIVE trading; paper is always allowed):
   GO       every check passed
   CAUTION  advice, not a gate: live may run with the user's own settings; ``Report.stake_cap`` is only a SUGGESTED per-trade cap while the evidence is unconfirmed
-  NO-GO    at least one check failed (forward test rejected, trailing edge negative, feed/account problem, ...)
+  NO-GO    a technical failure only (no data, feed / exchange / account / clock problem, extreme sizing).  EVIDENCE NEVER BLOCKS: a rejected forward test or a negative trailing edge is a warning
+           with a suggested stake cap, because the engine's own learner gate already sits out when it sees no edge - and an engine that is not running cannot catch the next regime
 """
 from __future__ import annotations
 
@@ -34,6 +35,7 @@ from .fees import fee_per_contract
 from .kalshi import KalshiQuotes, base_url
 from . import radar
 from .adaptive import decide, format_ladder, snapshot
+from .evfilter import describe_rules
 from .live import MIN_HISTORY, LiveConfig, auto_active, build_stats
 from .strategy import StrategyParams, fmt_int_list, size_bet
 
@@ -268,7 +270,8 @@ def forward_check(rows: pd.DataFrame, now: float, state: dict, coverage_fn=cover
     detail = fr.line() + f".  Re-evaluated on {'fresh' if need else 'unchanged'} data: {why}."
     out = []
     if fr.verdict == "REJECT":
-        out.append(Check("evidence", "Forward test (pre-registered R1)", FAIL, detail + " The frozen rule failed its own test: do not trade it with money."))
+        out.append(Check("evidence", "Forward test (pre-registered R1)", WARN, detail + f" The frozen rule failed its own test: expect little or no edge. The engine's learner gate still decides whether it bets at all; "
+                                                                                    f"a {CAUTION_CAP * 100:.1f}% per-trade cap is suggested (optional).", cap=CAUTION_CAP))
     elif fr.verdict == "ACCEPT":
         out.append(Check("evidence", "Forward test (pre-registered R1)", PASS, detail))
     else:
@@ -301,6 +304,11 @@ def regime_check(rows: pd.DataFrame, cfg: LiveConfig, now: float) -> tuple[Check
         pe = StrategyParams(hours=tuple(cfg.core_hours), minutes=pe.minutes, cost_min=pe.cost_min, cost_max=pe.cost_max, max_spread=pe.max_spread, legs=pe.legs,
                             fav_min=pe.fav_min, fav_max=pe.fav_max)
     sig = extract_signals(rows, pe)
+    if cfg.ev_rules:                                                    # EV-filter preset: judge only the signals the filter would have taken (rule evaluated at each signal's entry)
+        est = build_stats(rows, cfg)
+        recent = sig[sig.open_ts >= min(now - 28 * 86400, FORWARD_START_TS)]
+        keep = [est.passes(int(h), float(o + 60 * m)) for h, o, m in zip(recent.hour.values, recent.open_ts.values, recent.minute.values)]
+        sig = recent[np.array(keep, dtype=bool)] if len(recent) else recent
     w28, w14 = window_stats(sig, cfg, now, 28), window_stats(sig, cfg, now, 14)
     fmt = lambda w: (f"n={w['n']}, win {w['win'] * 100:.0f}% at avg {w['price'] * 100:.0f}c, net EV {w['ev'] * 100:+.1f}c (se {w['se'] * 100:.1f}c)" if w["n"] else "no signals")
     detail = f"last 28 d: {fmt(w28)} | last 14 d: {fmt(w14)}  [net of {cfg.paper_slippage * 100:.0f}c slippage + {cfg.fee_model} fee]"
@@ -308,7 +316,7 @@ def regime_check(rows: pd.DataFrame, cfg: LiveConfig, now: float) -> tuple[Check
     if w28["n"] < 20:
         c28 = Check("evidence", "Trailing edge (your preset)", WARN, detail + " Too few signals to judge the current regime.", cap=CAUTION_CAP)
     elif w28["ev"] < 0:
-        c28 = Check("evidence", "Trailing edge (your preset)", FAIL, detail + " Negative over the last 28 days: the regime is not there - nothing to harvest.")
+        c28 = Check("evidence", "Trailing edge (your preset)", WARN, detail + " Negative over the last 28 days: no regime to harvest right now. The engine's learner gate sits out until it sees one - leaving it running costs nothing and catches the next one.", cap=CAUTION_CAP)
     elif w28["ev"] < hurdle:
         c28 = Check("evidence", "Trailing edge (your preset)", WARN, detail + f" Positive but below the {hurdle * 100:.0f}c conviction hurdle: the engine will mostly sit out.", cap=CAUTION_CAP)
     elif w14["n"] >= 10 and w14["ev"] < 0:
@@ -328,7 +336,13 @@ def gate_check(rows: pd.DataFrame, cfg: LiveConfig, now: float) -> Check:
     legs = cfg.params.legs
     thin = [(lg, stats.n_total(now, lg)) for lg in legs if stats.n_total(now, lg) < MIN_HISTORY]
     if thin:
-        return Check("evidence", "Learner gate", FAIL, "not enough history: " + ", ".join(f"{lg} n={n} (need {MIN_HISTORY})" for lg, n in thin))
+        return Check("evidence", "Learner gate", WARN, "not enough history: " + ", ".join(f"{lg} n={n} (need {MIN_HISTORY})" for lg, n in thin) + " - the engine will only record signals until it has enough.")
+    if cfg.ev_rules:
+        hrs = stats.passing_hours(now)
+        txt = f"EV filter ({describe_rules(cfg.ev_rules)}, >= {cfg.ev_min_n} signals per window)"
+        if not hrs:
+            return Check("evidence", "EV filter", WARN, txt + ": no hour of the day passes right now - the engine will only record signals; live money would sit idle.")
+        return Check("evidence", "EV filter", PASS, txt + f": hours passing right now (UTC): {', '.join(f'{h:02d}' for h in hrs)}. Each is re-checked at every decision with the signals settled by then.")
     leg = legs[0]
     typ = (cfg.params.cost_min + cfg.params.cost_max) / 2 if leg == "DOG" else (cfg.params.fav_min + cfg.params.fav_max) / 2
     hour = next((h for h in cfg.params.hours if h >= 22), cfg.params.hours[0])
@@ -357,7 +371,8 @@ def gate_check(rows: pd.DataFrame, cfg: LiveConfig, now: float) -> Check:
 def radar_check(rows: pd.DataFrame, cfg: LiveConfig, now: float) -> Check:
     """Scout all 24 hours (nothing is traded): is the edge where the preset trades, or has it moved?"""
     rc = radar.RadarConfig(cost_min=cfg.params.cost_min, cost_max=cfg.params.cost_max, minutes=cfg.params.minutes, fee_model=cfg.fee_model, slippage=cfg.paper_slippage, min_edge=cfg.min_edge,
-                           hour_k=cfg.hour_k, halflife_days=cfg.halflife_days or radar.SCOUT_HALFLIFE, core_hours=tuple(cfg.core_hours), core_k=cfg.core_k, near_k=cfg.near_k, near_width=cfg.near_width)
+                           hour_k=cfg.hour_k, halflife_days=cfg.halflife_days or radar.SCOUT_HALFLIFE, core_hours=tuple(cfg.core_hours), core_k=cfg.core_k, near_k=cfg.near_k, near_width=cfg.near_width,
+                           ev_rules=tuple(cfg.ev_rules), ev_min_n=cfg.ev_min_n)
     active = tuple(cfg.core_hours) if (cfg.p_model == "by_hour" and cfg.core_hours) else tuple(cfg.params.hours)
     df = radar.hour_radar(rows, now, rc, active)
     state, txt = radar.summarize(df, active, rc)
@@ -524,7 +539,7 @@ def _safe(group: str, name: str, fn: Callable[[], object], bad: str = FAIL):
 def run_preflight(cfg: LiveConfig, *, live: bool, key_path: str = "", key_id: str = "", env: str = "production", client=None, log: Callable[[str], None] = print, now: Optional[float] = None,
                   refresh: bool = True, rows: Optional[pd.DataFrame] = None, loader: Callable[[], pd.DataFrame] = load_rows,
                   updater: Callable[[Callable[[str], None]], bool] = update_data, quotes=None, http_get=requests.get,
-                  coverage_fn=coverage, state_directory: Optional[Path] = None) -> Report:
+                  coverage_fn=coverage, state_directory: Optional[Path] = None, cooldown_s: float = 1.5) -> Report:
     fixed_now = now                                  # tests pin the clock; in real use every step re-reads it (the data update can take minutes)
     clock: Callable[[], float] = (lambda: fixed_now) if fixed_now is not None else time.time
     now = clock()
@@ -542,6 +557,7 @@ def run_preflight(cfg: LiveConfig, *, live: bool, key_path: str = "", key_id: st
         log(f"      newest settled window is {_ago(now - hi)} old -> updating from Kalshi (public API)…")
         try:
             ok = updater(log)
+            time.sleep(cooldown_s)                                     # the download just used Kalshi's public rate limit: let it recover before the account checks
             rows = loader()
             rep.updated_data = True
             state["data_update_ts"] = clock()

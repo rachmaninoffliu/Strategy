@@ -68,6 +68,7 @@ def cfg(**kw):
 
 def run(rows, c=None, live=False, tmp=None, **kw):
     kw.setdefault("refresh", False)
+    kw.setdefault("cooldown_s", 0.0)
     kw.setdefault("quotes", Q())
     kw.setdefault("http_get", ok_get)
     kw.setdefault("coverage_fn", lambda *a, **k: (10, 10))
@@ -142,17 +143,19 @@ def test_caution_while_forward_test_unconfirmed_caps_stake():
     assert "0.5%" in rep.headline()
 
 
-def test_no_go_when_forward_test_rejects():
+def test_a_rejected_forward_test_warns_but_never_blocks_live():
+    """The engine's learner gate already sits out without an edge; an engine that is not running cannot catch the next regime - so evidence is advice, not a gate."""
     lose_until = TS(2026, 10, 8) + 6 * 86400
     rep = run(make_rows(lambda o: o >= lose_until or o < TS(2026, 10, 8)))
-    assert rep.forward.verdict == "REJECT" and rep.verdict == "NO-GO"
-    assert any("Forward test" in c.name for c in rep.of(pf.FAIL))
+    c = by_name(rep, "Forward test (pre-registered R1)")[0]
+    assert rep.forward.verdict == "REJECT" and rep.verdict == "CAUTION" and c.status == pf.WARN and c.cap == pf.CAUTION_CAP and "learner gate" in c.detail
+    assert not rep.of(pf.FAIL) and rep.stake_cap == pf.CAUTION_CAP
 
 
-def test_no_go_when_trailing_edge_negative():
+def test_negative_trailing_edge_warns_but_never_blocks_live():
     rep = run(make_rows(lambda o: o < TS(2026, 9, 1)))                       # wins before September, nothing for 7 weeks
     c = by_name(rep, "Trailing edge (your preset)")[0]
-    assert c.status == pf.FAIL and rep.verdict == "NO-GO"
+    assert c.status == pf.WARN and c.cap == pf.CAUTION_CAP and rep.verdict == "CAUTION" and not rep.of(pf.FAIL) and "costs nothing" in c.detail
 
 
 def test_gate_closed_is_a_warning_not_a_failure():
@@ -238,7 +241,7 @@ def test_core_scout_preset_is_judged_on_its_core_hours_and_radar_warns_on_a_move
     hot5 = lambda o: (o >= TS(2026, 9, 1)) and int((o % 86400) // 3600) == 5 or (o < TS(2026, 9, 1) and int((o % 86400) // 3600) in (22, 23))
     rep = run(make_rows(hot5), c=c)
     r = by_name(rep, "Regime radar (all 24 hours)")[0]
-    assert r.status == pf.WARN and "moved" in r.detail and by_name(rep, "Trailing edge (your preset)")[0].status == pf.FAIL
+    assert r.status == pf.WARN and "moved" in r.detail and by_name(rep, "Trailing edge (your preset)")[0].status == pf.WARN
     # without core hours the all-hours preset is outside the tested family
     rep = run(make_rows(lambda o: True), c=cfg(params=all_hours, p_model="by_hour"))
     assert by_name(rep, "Preset")[0].status == pf.WARN
@@ -375,6 +378,22 @@ def test_buying_power_check_with_auto_fund_counts_cash_that_will_be_moved():
         assert cap.status == pf.PASS and "$95.67" in cap.detail, cap.detail                          # fund_max 100: moves only up to $100 on the shard
     finally:
         srv.shutdown()
+
+
+
+def test_ev_filter_preset_checks_name_the_hours_that_pass():
+    all_hours = StrategyParams(hours=tuple(range(24)), minutes=(12, 13), cost_min=0.15, cost_max=0.35)
+    hot = lambda o: (o // 3600) % 24 in (22, 23)                                     # only hours 22 and 23 ever win
+    rows = make_rows(hot)
+    rep = run(rows, c=cfg(params=all_hours, ev_rules=((14, 0.10),), ev_min_n=8))
+    f = by_name(rep, "EV filter")[0]
+    assert f.status == pf.PASS and "22, 23" in f.detail and "14 d net EV > 10c" in f.detail, f.detail
+    assert not by_name(rep, "Learner gate")                                          # the learned-probability gate is replaced by the filter's own check
+    edge = by_name(rep, "Trailing edge (your preset)")[0]                            # judged on the signals the filter would have taken (hours 22-23), not on all 24 hours
+    assert edge.status in (pf.PASS, pf.WARN) and "net EV +" in edge.detail, edge.detail
+    cold = run(make_rows(lambda o: False), c=cfg(params=all_hours, ev_rules=((14, 0.10), (28, 0.05)), ev_min_n=8))
+    g = by_name(cold, "EV filter")[0]
+    assert g.status == pf.WARN and "no hour of the day passes" in g.detail and "AND" in g.detail, g.detail
 
 
 if __name__ == "__main__":

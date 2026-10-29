@@ -161,6 +161,7 @@ class MockKalshi(BaseHTTPRequestHandler):
     transfers: list = []               # accepted intra-account transfer bodies
     transfer_mode = "ok"               # ok | reject400
     transfer_lag = 0                   # balance reads before a transfer shows up on the destination shard (Kalshi completes transfers asynchronously)
+    throttle_gets = 0                  # the next N signed GETs are answered with HTTP 429 (+ Retry-After: 0)
     _pending: list = []
     _transfer_ids: set = set()
     series_index = 0                   # the shard the BTC 15-minute series trades on (the real one: 2)
@@ -179,9 +180,11 @@ class MockKalshi(BaseHTTPRequestHandler):
         except Exception:
             return False
 
-    def _send(self, code, obj):
+    def _send(self, code, obj, headers=None):
         b = json.dumps(obj).encode()
         self.send_response(code); self.send_header("Content-Type", "application/json"); self.send_header("Content-Length", str(len(b)))
+        for k, v in (headers or {}).items():
+            self.send_header(k, v)
         self.end_headers(); self.wfile.write(b)
 
     def do_GET(self):
@@ -202,6 +205,9 @@ class MockKalshi(BaseHTTPRequestHandler):
             return self._send(200, {"orderbook_fp": {"yes_dollars": [[f"{self.yes_bid:.4f}", "500.00"]], "no_dollars": [[f"{1 - self.yes_ask:.4f}", "700.00"]]}})
         if not self._auth_ok("GET"):
             return self._send(401, {"error": "bad signature"})
+        if MockKalshi.throttle_gets > 0:
+            MockKalshi.throttle_gets -= 1
+            return self._send(429, {"error": {"code": "too_many_requests", "message": "too many requests"}}, {"Retry-After": "0"})
         if route == "/portfolio/balance":
             for p in list(self._pending):                                                      # asynchronous transfers arriving
                 p[2] -= 1
@@ -285,6 +291,7 @@ def _mock_server():
     MockKalshi.positions, MockKalshi.resting = [], []
     MockKalshi.shards, MockKalshi.series_index = {0: 950.5}, 0
     MockKalshi.transfers, MockKalshi.transfer_mode, MockKalshi.transfer_lag, MockKalshi._pending, MockKalshi._transfer_ids = [], "ok", 0, [], set()
+    MockKalshi.throttle_gets = 0
     MockKalshi.yes_bid, MockKalshi.yes_ask = 0.14, 0.15
     srv = ThreadingHTTPServer(("127.0.0.1", 0), MockKalshi)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
@@ -1950,6 +1957,359 @@ def test_order_rejected_for_cash_is_retried_once_after_funding_and_never_loops()
     clock.t += 12 * 60 + 2
     eng.tick()
     assert not eng._positions and stub.buys == 1 and not stub.fund_calls
+
+
+
+# ── HTTP 429: the app must not cause it, and must survive it ─────────────────────
+def test_rate_limiter_spaces_requests_and_never_blocks_for_long():
+    from trader.kalshi import RateLimiter
+    rl = RateLimiter(rate=20.0, burst=2)
+    t0 = time.monotonic()
+    for _ in range(6):
+        rl.acquire(5.0)
+    el = time.monotonic() - t0
+    assert 0.15 <= el < 1.0, el                                                         # 2 free (burst) + 4 at 20/s = about 0.2 s: spaced, not blocked
+    rl2 = RateLimiter(rate=0.5, burst=1)
+    rl2.acquire(1.0)
+    t0 = time.monotonic()
+    rl2.acquire(0.05)                                                                   # empty bucket, 2 s to the next token: gives up waiting after 50 ms and lets the request go
+    assert time.monotonic() - t0 < 0.5
+
+
+class _CountingQuotes(FakeQuotes):
+    """Quote source whose market lookup / book reads can be switched off; counts every request."""
+    def __init__(self, fail_s, clock):
+        super().__init__()
+        self.fail_s, self.clock, self.t0, self.calls = fail_s, clock, None, 0
+    def window_ticker(self, open_ts):
+        self.calls += 1
+        return None if self.clock.t - self.t0 < self.fail_s else super().window_ticker(open_ts)
+
+
+def test_engine_backs_off_when_a_quote_is_unavailable_instead_of_hammering_the_api():
+    """A failed read at the decision instant used to be retried every ~5 ms for the whole 25 s grace period (hundreds of requests per second in this simulation) - the way to HTTP 429."""
+    for fail_s, max_calls, trades in ((4.0, 14, 1), (25.0, 40, 0)):
+        eng, clock, events = _engine(cfg=LiveConfig(capital=1000.0), quotes=None)
+        q = _CountingQuotes(fail_s, clock)
+        eng.quotes = q
+        q.t0 = clock.t + 12 * 60
+        t, end = clock.t + 12 * 60 - 20, clock.t + 12 * 60 + 40
+        while t < end:                                                                      # the LiveWorker's loop: tick, then sleep as long as the engine says
+            clock.t = t
+            eng.tick()
+            t += max(0.005, min(0.25, eng.sleep_hint(t)))
+        assert q.calls <= max_calls and len(eng._positions) == trades, (fail_s, q.calls, len(eng._positions))
+    # the book is read once per attempt: when it fails the fallback is the market quote, NOT a second book request
+    class BookDown:
+        def __init__(self): self.books = self.market = self.quote_calls = 0
+        def window_ticker(self, o): return f"KXBTC15M-{o}"
+        def book(self, t): self.books += 1; return None
+        def market_quote(self, t): self.market += 1; return (0.14, 0.15)
+        def quote(self, t): self.quote_calls += 1; return (0.14, 0.15)
+        def result(self, t): return "no"
+    bq = BookDown()
+    eng, clock, events = _engine(cfg=LiveConfig(capital=1000.0), quotes=bq)
+    clock.t += 12 * 60 + 1
+    eng.tick()
+    assert bq.books == 1 and bq.market == 1 and bq.quote_calls == 0 and len(eng._positions) == 1
+
+
+def test_window_market_lookup_is_negative_cached_and_the_ticker_is_warmed_up_early():
+    class Resp:
+        status_code = 200
+        def json(self): return {"markets": []}
+    class Sess:
+        def __init__(self): self.n = 0
+        def get(self, *a, **k): self.n += 1; return Resp()
+    s = Sess()
+    q = kalshi.KalshiQuotes(session=s, base="http://127.0.0.1:9")
+    assert q.window_ticker(1_780_000_000) is None and s.n == 1
+    assert q.window_ticker(1_780_000_000) is None and s.n == 1                              # not asked again within a second
+    # the engine looks the window's market up early (20-300 s into the window), so the decision second only reads the book
+    seen = []
+    class Q(FakeQuotes):
+        def window_ticker(self, o): seen.append(o); return super().window_ticker(o)
+    eng, clock, events = _engine(cfg=LiveConfig(capital=1000.0), quotes=Q())
+    w0 = clock.t
+    for dt in (5, 25, 26, 200, 400):
+        clock.t = w0 + dt
+        eng.tick()
+    assert seen == [int(w0)]                                                                 # once, at +25 s (not at +5 s, not again later)
+
+
+def test_a_failing_cash_read_never_halts_the_session():
+    from trader.kalshi import ApiError
+
+    class Flaky:
+        mode = "live"
+        def __init__(self, fails): self.fails, self.reads, self.bought = fails, 0, 0
+        def buying_power(self):
+            self.reads += 1
+            if self.fails > 0:
+                self.fails -= 1
+                raise ApiError(429, "too many requests")
+            return 500.0
+        def buy(self, t, side, n, mx, q): self.bought += 1; return Fill(n, 0.17, 0.2, "o1", "FILLED")
+        def cancel_all(self): pass
+    # two 429s, then fine: re-read within the decision, trade as normal
+    b = Flaky(2)
+    eng, clock, events = _engine(cfg=LiveConfig(capital=1000.0), broker=b)
+    clock.t += 12 * 60 + 2
+    eng.tick()
+    assert not eng.halted and b.reads == 3 and b.bought == 1 and len(eng._positions) == 1
+    # a persistent failure with no earlier reading: the signal is tracked, no order, NO halt
+    b = Flaky(99)
+    eng, clock, events = _engine(cfg=LiveConfig(capital=1000.0), broker=b)
+    clock.t += 12 * 60 + 2
+    eng.tick()
+    assert not eng.halted and b.bought == 0 and not eng._positions and any("could not be read" in e["msg"] for k, e in events if k == "log")
+    assert len(eng._shadow) == 1                                                             # the signal still teaches the model
+    # a persistent failure after an earlier good reading: the last known cash is used
+    b = Flaky(0)
+    eng, clock, events = _engine(cfg=LiveConfig(capital=1000.0), broker=b)
+    eng._last_bp = (500.0, clock.t - 60)
+    b.fails = 99
+    clock.t += 12 * 60 + 2
+    eng.tick()
+    assert not eng.halted and b.bought == 1 and any("last known" in e["msg"] for k, e in events if k == "log")
+
+
+def test_client_re_sends_reads_on_429_but_never_writes():
+    from trader.kalshi import ApiError
+    srv, url = _mock_server()
+    try:
+        c = _client(url)
+        MockKalshi.throttle_gets = 2                                                          # two 429s (Retry-After: 0), then OK: the read succeeds on its third try
+        assert c.balance()["buying_power"] == 950.5
+        assert MockKalshi.paths.count("/trade-api/v2/portfolio/balance") == 3
+        MockKalshi.paths.clear()
+        MockKalshi.throttle_gets = 99                                                         # persistent: gives up after exactly 3 tries with a message that says what it is
+        try:
+            c.balance()
+            assert False
+        except ApiError as e:
+            assert e.status == 429 and "rate limit" in e.message and MockKalshi.paths.count("/trade-api/v2/portfolio/balance") == 3
+        MockKalshi.throttle_gets = 0
+        MockKalshi.mode = "rate429"                                                           # an ORDER answered with 429 is not re-sent by the client (the caller skips the signal)
+        MockKalshi.created.clear()
+        br = KalshiBroker(c, fill_wait_s=1, exchange_index=None)
+        try:
+            br.buy(MockKalshi.ticker, "YES", 5, 0.2, 0.17)
+            assert False
+        except NotPlaced:
+            pass
+        assert len(MockKalshi.created) == 1
+    finally:
+        srv.shutdown()
+
+
+def test_downloads_run_slowly_while_a_live_session_is_running():
+    import trader.data as D
+    seen = {}
+    class P:
+        stdout = iter([])
+        def wait(self): return 0
+    orig = D.subprocess.Popen
+    D.subprocess.Popen = lambda *a, **k: (seen.update(env=k.get("env")), P())[1]
+    try:
+        import pandas as _pd
+        old_read = D.pd.read_csv
+        D.pd.read_csv = lambda *a, **k: _pd.DataFrame({"open_ts": [1_780_000_000]})
+        try:
+            D.update_data(lambda s: None, rps=1.0)
+            assert seen["env"]["COLLECT_RPS"] == "1.0"
+            seen.clear()
+            D.update_data(lambda s: None)
+            assert "COLLECT_RPS" not in seen["env"] or seen["env"].get("COLLECT_RPS") == os.environ.get("COLLECT_RPS")
+        finally:
+            D.pd.read_csv = old_read
+    finally:
+        D.subprocess.Popen = orig
+
+
+
+# ── EV-regime filter presets ──────────────────────────────────────────────────────
+def _hourly_history(days, seed, hot_hours=(0, 1, 2, 3, 4, 5), p_hot=0.55, p_cold=0.10):
+    """Every window of every day with a 15c underdog; the hours in ``hot_hours`` really are good (EV about +35c), the rest really are bad (about -9c)."""
+    rng = np.random.default_rng(seed)
+    base = int(datetime(2026, 5, 1, tzinfo=timezone.utc).timestamp())
+    recs = []
+    for d in range(days):
+        for w in range(96):
+            o = base + d * 86400 + w * 900
+            hr = (w * 900) // 3600
+            y = int(rng.random() < (p_hot if hr in hot_hours else p_cold))
+            for m in (12, 13):
+                recs.append(dict(ticker=f"KXBTC15M-{o}", open_ts=o, minute=m, bid=0.14, ask=0.15, yes=y, vol=5_000.0))
+    return pd.DataFrame(recs)
+
+
+def test_trailing_ev_window_equals_the_radars_numbers_and_has_no_lookahead():
+    from trader import radar
+    from trader.data import extract_signals
+    from trader.evfilter import TrailingEVStats
+    rows = _hourly_history(45, 3)
+    p = StrategyParams(hours=tuple(range(24)), minutes=(12, 13), cost_min=0.15, cost_max=0.35, legs=("DOG",))
+    sig = extract_signals(rows, p)
+    now = float(sig.close_ts.max()) - 5 * 86400
+    st = TrailingEVStats.from_signals(sig[sig.close_ts <= now], ((14, 0.10),), 8, 0.02, "Kalshi")        # built from the PAST only
+    full = TrailingEVStats.from_signals(sig, ((14, 0.10),), 8, 0.02, "Kalshi")                           # built with the future in it as well
+    df = radar.hour_radar(rows, now, radar.RadarConfig(window_days=28), ())
+    for h in range(24):
+        r = df[df.hour == h].iloc[0]
+        n28, ev28, _g = st.window(h, now, 28)
+        n14, ev14, _g14 = st.window(h, now, 14)
+        assert n28 == r.n and n14 == r.n14 and abs(ev28 - r.ev) < 1e-12 and abs(ev14 - r.ev14) < 1e-12, (h, n28, r.n, ev28, r.ev)       # 'Net EV 28 d / 14 d' of the radar
+        fn28, fev28, _ = full.window(h, now, 28)
+        assert fn28 == n28 and abs(fev28 - ev28) < 1e-12                                              # later signals never change what was known at ``now``
+
+
+def test_ev_rules_pass_fail_min_signals_and_sizing_probability():
+    from trader.evfilter import TrailingEVStats
+    day = 86400
+    t0 = 1_780_000_000 // 900 * 900
+    def hist(hour_wins, hour=5, cost=0.15, step=day // 4):
+        rows = []
+        for i, w in enumerate(hour_wins):
+            o = t0 + i * step
+            rows.append(dict(leg="DOG", hour=hour, open_ts=o, close_ts=o + 900, win=w, cost=cost))
+        return pd.DataFrame(rows)
+    sig = hist([1] * 12 + [0] * 4)                                                                    # 16 signals over 4 days: 75% win at 15c = a big edge
+    st = TrailingEVStats.from_signals(sig, ((14, 0.10),), 8, 0.02, "Kalshi")
+    now = float(sig.close_ts.max()) + 60
+    ok, gross, parts = st.check(5, now)
+    n, ev, g = st.window(5, now, 14)
+    assert ok and n == 16 and ev > 0.10 and abs(gross - g) < 1e-12 and abs(g - (0.75 - 0.15)) < 1e-9
+    p, n_leg, nh = st.p("DOG", 5, 0.20, now)
+    assert abs(p - (0.20 + gross)) < 1e-12 and n_leg == 16 and nh == 16                               # a passing hour is sized off its own trailing gross edge
+    assert st.p("DOG", 6, 0.20, now)[0] == 0.20 and not st.passes(6, now)                             # an hour with no signals: p = price = zero edge = Kelly sizes to nothing
+    assert "TRADE" in st.explain(5, now) and "no trade" in st.explain(6, now)
+    # not enough signals in the window: no trade even though the few it has are great
+    few = TrailingEVStats.from_signals(hist([1] * 5), ((14, 0.10),), 8, 0.02, "Kalshi")
+    assert not few.passes(5, t0 + 5 * (day // 4) + 60) and "needs n>=8" in few.explain(5, t0 + 5 * (day // 4) + 60)
+    # two rules: BOTH must hold.  100 losing signals 15-27 days ago and 12 winners in the last 13 days: the 14 d window is hot, the 28 d window (12 wins in 112) is not
+    ref = t0 + 60 * day
+    rows2 = [dict(leg="DOG", hour=5, open_ts=int(ref - 27 * day + i * (12 * day / 100)) // 900 * 900, win=0, cost=0.15) for i in range(100)]
+    rows2 += [dict(leg="DOG", hour=5, open_ts=int(ref - 13 * day + i * day) // 900 * 900, win=1, cost=0.15) for i in range(12)]
+    new = pd.DataFrame(rows2).assign(close_ts=lambda d: d.open_ts + 900)
+    both = TrailingEVStats.from_signals(new, ((14, 0.10), (28, 0.05)), 8, 0.02, "Kalshi")
+    only14 = TrailingEVStats.from_signals(new, ((14, 0.10),), 8, 0.02, "Kalshi")
+    only28 = TrailingEVStats.from_signals(new, ((28, 0.05),), 8, 0.02, "Kalshi")
+    n14, ev14, g14 = both.window(5, ref, 14); n28, ev28, g28 = both.window(5, ref, 28)
+    assert n14 == 12 and ev14 > 0.10 and n28 == 112 and ev28 < 0.05
+    assert only14.passes(5, ref) and not only28.passes(5, ref) and not both.passes(5, ref)           # all rules must hold
+    assert "28 d EV" in both.explain(5, ref) and "no trade" in both.explain(5, ref)
+    # a signal that settles while trading counts for the next decision; one the history file already has is ignored
+    live = TrailingEVStats.from_signals(sig, ((14, 0.10),), 8, 0.02, "Kalshi")
+    last_open = int(sig.open_ts.max())
+    live.add_live("DOG", 5, last_open, True, 0.15)                                                   # already in the history: ignored
+    assert live.window(5, now, 14)[0] == 16
+    live.add_live("DOG", 5, last_open + day // 4, False, 0.15)
+    assert live.window(5, now + day, 14)[0] == 17
+    for bad in ((), ):
+        try:
+            TrailingEVStats(bad)
+            assert False
+        except ValueError:
+            pass
+
+
+def test_ev_filter_presets_replay_the_live_engine_exactly_and_only_trade_passing_hours():
+    from trader.presets import find_preset, preset_config
+    from trader.replay import verify
+    rows = _hourly_history(60, 5)
+    for name in ("FILTER-14", "FILTER-28", "FILTER-BOTH"):
+        cfg = preset_config(name, date(2026, 6, 1), date(2026, 6, 28), capital=1_000.0)
+        assert cfg.ev_rules and cfg.auto is None
+        cmp, bt, rp = verify(rows, cfg)
+        assert cmp.identical and len(bt.trades) >= 20, (name, cmp.text(), len(bt.trades))
+        hrs = pd.to_datetime(bt.trades.entry_ts, unit="s", utc=True).dt.hour
+        assert (hrs <= 5).mean() >= 0.9, (name, hrs.value_counts().to_dict())                       # the hot hours (0-5) are where it trades
+    assert preset_config("FILTER-14", date(2026, 6, 1), date(2026, 6, 2)).ev_rules == ((14, 0.10),)
+    assert preset_config("FILTER-28", date(2026, 6, 1), date(2026, 6, 2)).ev_rules == ((28, 0.05),)
+    assert preset_config("FILTER-BOTH", date(2026, 6, 1), date(2026, 6, 2)).ev_rules == ((14, 0.10), (28, 0.05))
+    assert find_preset("filter-28").startswith("FILTER-28") and preset_config("R2+", date(2026, 6, 1), date(2026, 6, 2)).ev_rules == ()
+    # the live config round-trips through the ledger's JSON (a later reconcile rebuilds the filter)
+    import json
+    from trader.live import auto_active, config_from_dict, config_to_dict
+    from trader.replay import live_config_from
+    lc = live_config_from(preset_config("FILTER-BOTH", date(2026, 6, 1), date(2026, 6, 28)))
+    assert config_from_dict(json.loads(json.dumps(config_to_dict(lc)))) == lc and lc.ev_rules == ((14, 0.10), (28, 0.05)) and not auto_active(lc)
+
+
+def test_ev_filter_presets_replay_on_real_history():
+    from trader.data import DATA, load_rows
+    from trader.presets import preset_config
+    from trader.replay import verify
+    if not (DATA / "markets.csv").exists() or not (DATA / "candles.csv").exists():
+        print("     (no local history - skipped)")
+        return
+    rows = load_rows()
+    if rows.open_ts.max() < int(datetime(2026, 9, 30, tzinfo=timezone.utc).timestamp()):
+        print("     (history too short - skipped)")
+        return
+    for name in ("FILTER-14", "FILTER-28", "FILTER-BOTH"):
+        cmp, bt, rp = verify(rows, preset_config(name, date(2026, 8, 20), date(2026, 9, 30), capital=1_000.0))
+        assert cmp.identical and len(bt.trades) >= 5, (name, cmp.text(), len(bt.trades))
+
+
+
+# ── PROJ-EV: any hour while its projected EV is positive ──────────────────────────
+def _flip_history(days, flip_day, seed, hour=3, p_good=0.60, p_bad=0.02, p_other=0.15):
+    """Every window of every day with a 15c underdog.  ``hour`` is genuinely good (+40c) until ``flip_day`` and then genuinely bad; every other hour wins about its price (-3c after costs)."""
+    rng = np.random.default_rng(seed)
+    base = int(datetime(2026, 5, 1, tzinfo=timezone.utc).timestamp())
+    recs = []
+    for d in range(days):
+        for w in range(96):
+            o = base + d * 86400 + w * 900
+            hr = (w * 900) // 3600
+            p = (p_good if d < flip_day else p_bad) if hr == hour else p_other
+            y = int(rng.random() < p)
+            for m in (12, 13):
+                recs.append(dict(ticker=f"KXBTC15M-{o}", open_ts=o, minute=m, bid=0.14, ask=0.15, yes=y, vol=5_000.0))
+    return pd.DataFrame(recs), base
+
+
+def test_proj_ev_trades_an_hour_once_its_projection_turns_positive_and_stops_when_it_turns_negative():
+    from trader import radar
+    from trader.presets import preset_config
+    from trader.replay import verify
+    rows, base = _flip_history(75, 40, 7)
+    cfg = preset_config("PROJ-EV", date(2026, 6, 1), date(2026, 7, 14), capital=1_000.0)
+    assert cfg.min_edge == 0.0 and cfg.p_model == "by_hour" and len(cfg.params.hours) == 24 and cfg.auto is None and not cfg.ev_rules
+    cmp, bt, rp = verify(rows, cfg)
+    assert cmp.identical, cmp.text()                                                                   # live engine == backtest for this preset too
+    t = bt.trades.copy()
+    t["hour"] = pd.to_datetime(t.entry_ts, unit="s", utc=True).dt.hour
+    t["day"] = (t.entry_ts - base) // 86400
+    h3 = t[t.hour == 3]
+    assert len(h3[h3.day < 40]) >= 10, h3.day.tolist()                                                  # it found the good hour and traded it before the flip ...
+    assert h3[h3.day >= 40 + 21].empty, h3[h3.day >= 61].day.tolist()                                   # ... and had stopped trading it within three weeks of the flip (14 d memory)
+    assert (t.p_used > t.quoted).all()                                                                  # every trade had a positive projected edge before costs: the hurdle is 'above zero'
+    # the radar agrees: the hour is TRADE while its projection is positive and cold afterwards
+    rc = radar.RadarConfig(min_edge=0.0, hour_k=100.0, halflife_days=14.0)
+    now_good = float(base + 38 * 86400)
+    now_bad = float(base + 72 * 86400)
+    st_good = radar.hour_radar(rows, now_good, rc, ())
+    st_bad = radar.hour_radar(rows, now_bad, rc, ())
+    assert st_good[st_good.hour == 3].iloc[0].status == "TRADE" and st_bad[st_bad.hour == 3].iloc[0].status != "TRADE"
+    assert st_good[st_good.hour == 3].iloc[0].est_edge > 0 > st_bad[st_bad.hour == 3].iloc[0].est_edge
+
+
+def test_proj_ev_replays_the_live_engine_on_real_history():
+    from trader.data import DATA, load_rows
+    from trader.presets import preset_config
+    from trader.replay import verify
+    if not (DATA / "markets.csv").exists() or not (DATA / "candles.csv").exists():
+        print("     (no local history - skipped)")
+        return
+    rows = load_rows()
+    if rows.open_ts.max() < int(datetime(2026, 9, 30, tzinfo=timezone.utc).timestamp()):
+        print("     (history too short - skipped)")
+        return
+    cmp, bt, rp = verify(rows, preset_config("PROJ-EV", date(2026, 8, 20), date(2026, 9, 30), capital=1_000.0))
+    assert cmp.identical and len(bt.trades) >= 20, (cmp.text(), len(bt.trades))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,94 @@
+
+======== 1. Premium-to-reset reversion, 5-min (research default)
+all : CAGR -3.3% · vol 0.7% · Sharpe -4.88 (±0.64) · Sortino -3.91 · MaxDD -28.2% · Calmar -0.12 · PSR 0% · β -0.00 · corr -0.04
+IS  : CAGR -4.6% · vol 0.9% · Sharpe -5.21 (±0.90) · Sortino -4.46 · MaxDD -20.8% · Calmar -0.22 · PSR 0% · β -0.00 · corr -0.08
+OOS : CAGR -2.0% · vol 0.4% · Sharpe -5.64 (±0.92) · Sortino -4.81 · MaxDD -9.4% · Calmar -0.22 · PSR 0% · β +0.00 · corr +0.07
+notes: ['2,488 round trips · win rate 21% · average -5.4 bp net (+0.7 gross) per $1 of the 3x leg · average hold 51 min']
+      return    vol  sharpe  maxdd  days
+year                                    
+2017  -0.051  0.007  -7.302 -0.051   250
+2018  -0.079  0.012  -6.742 -0.079   251
+2019  -0.038  0.006  -6.093 -0.038   251
+2020  -0.042  0.011  -3.806 -0.042   253
+2021  -0.016  0.005  -3.350 -0.015   252
+2022  -0.030  0.005  -6.471 -0.030   251
+2023  -0.013  0.003  -4.965 -0.013   250
+2024  -0.014  0.002  -6.664 -0.014   252
+2025  -0.021  0.005  -4.494 -0.021   250
+2026  -0.020  0.003  -8.020 -0.020   204
+          sharpe  net_bp_day  trades    win  avg_net_bp  avg_gross_bp  avg_bars  cost_bp_day  tf
+pair                                                                                            
+TQQQ/QQQ  -3.811      -0.381    1033  0.217      -3.634         1.024    10.045        2.418   5
+SOXL/SMH  -1.986      -0.412     400  0.328     -10.161         0.979    17.488        2.186   5
+SPXL/SPY  -4.512      -0.567    1055  0.170      -5.297         0.395     7.609        2.872   5
+fixed gross 1.0x: CAGR -1.1% · vol 0.2% · Sharpe -4.89 (±0.64) · Sortino -3.91 · MaxDD -10.5% · Calmar -0.11 · PSR 0% · β -0.00 · corr -0.04
+
+======== 2. time frames: realistic fills / optimistic fills (fill at the signal bar's close) / zero cost (gross edge)
+       fill/cost  sharpe  sharpe_is  sharpe_oos   cagr  maxdd  trades  gross_bp  net_bp  cost_pct
+tf                                                                                               
+1      next_open  -8.502     -8.305      -9.497 -0.118 -0.705   10063     1.058  -4.908     0.152
+5      next_open  -4.879     -5.207      -5.644 -0.033 -0.282    2488     0.750  -5.389     0.039
+15     next_open  -3.087     -3.532      -2.667 -0.011 -0.101     848     0.662  -5.106     0.012
+30     next_open  -1.850     -2.189      -1.506 -0.004 -0.043     293    -0.377  -6.023     0.004
+1   close (bias)   5.860      6.020       7.121  0.169 -0.012   10063    12.117   6.151     0.152
+5   close (bias)   2.846      2.964       3.132  0.025 -0.013    2488    10.118   3.979     0.039
+15  close (bias)   1.581      1.801       1.333  0.006 -0.008     848     8.701   2.934     0.012
+30  close (bias)   0.671      0.232       1.491  0.001 -0.004     293     7.671   2.024     0.004
+1      zero cost   4.202      4.665       3.851  0.052 -0.008   29865     0.679   0.679     0.000
+5      zero cost   1.586      1.538       1.922  0.010 -0.009    7284     0.568   0.568     0.000
+15     zero cost   0.910      0.861       1.005  0.003 -0.005    2714     0.494   0.494     0.000
+30     zero cost   0.141     -0.291       0.900  0.000 -0.011    1067     0.159   0.159     0.000
+
+======== 3. Sharpe vs slippage per leg (5-minute bars, default preset)
+   slip_bp  sharpe   cagr  maxdd
+0      0.0  -2.986 -0.019 -0.168
+1      0.1  -3.678 -0.024 -0.208
+2      0.2  -4.310 -0.028 -0.246
+3      0.3  -4.879 -0.033 -0.282
+4      0.6  -6.228 -0.048 -0.380
+5      1.0  -7.374 -0.067 -0.491
+
+======== 4. ablation
+                                                              sharpe   cagr    vol  maxdd   beta  sharpe_oos  cagr_oos
+variant                                                                                                               
+CURRENT SETTING                                               -4.879 -0.033  0.007 -0.282 -0.002      -5.644    -0.020
+A&L 2008 rules (fixed thresholds, no filters, no vol target) -13.832 -0.118  0.009 -0.706 -0.000     -12.747    -0.108
+no half-life filter                                           -6.261 -0.079  0.013 -0.554  0.002      -6.282    -0.088
+no edge / cost filter                                        -10.461 -0.088  0.009 -0.593  0.000     -11.411    -0.068
+no model-failure stop                                         -4.714 -0.032  0.007 -0.271 -0.001      -5.484    -0.020
+no cooldown after a stop                                      -4.937 -0.037  0.008 -0.307 -0.002      -5.603    -0.023
+trade the open (no 15-min wait)                               -5.153 -0.036  0.007 -0.300  0.001      -5.397    -0.022
+no volatility target (fixed gross)                            -4.888 -0.011  0.002 -0.105 -0.001      -5.644    -0.007
+inverse-vol pair weights                                      -5.103 -0.031  0.006 -0.266 -0.002      -4.514    -0.021
+one bar of latency                                            -5.237 -0.039  0.008 -0.324  0.003      -5.309    -0.022
+costs x2                                                      -7.364 -0.070  0.010 -0.508 -0.001      -8.121    -0.045
+costs x0.5                                                    -2.406 -0.015  0.006 -0.133 -0.002      -2.504    -0.008
+costs x0.1                                                     0.132  0.001  0.006 -0.019 -0.002       0.703     0.002
+zero cost, same trades                                         0.789  0.005  0.006 -0.014 -0.003       1.465     0.005
+zero cost, every signal (no cost filter)                       1.586  0.010  0.007 -0.009 -0.003       1.922     0.008
+plain z-score instead of OU fit                               -4.881 -0.066  0.014 -0.489  0.004      -4.122    -0.063
+OU window x2                                                  -4.421 -0.028  0.006 -0.244 -0.003      -6.410    -0.021
+OU window /2                                                  -5.560 -0.049  0.009 -0.389 -0.001      -5.558    -0.035
+only TQQQ/QQQ                                                 -3.776 -0.028  0.008 -0.242 -0.002      -3.488    -0.020
+only SOXL/SMH                                                 -2.015 -0.031  0.015 -0.268  0.000      -0.316    -0.002
+only SPXL/SPY                                                 -4.489 -0.042  0.009 -0.339 -0.004      -5.426    -0.039
+
+======== 5. the scan
+1458 rule sets; {1: 18, 5: 480, 15: 480, 30: 480}
+share with positive in-sample Sharpe: 0.0 | positive in AND out of sample: 0.0 | best in-sample Sharpe: -0.92
+           sharpe_is  sharpe_oos  gross_bp_is  net_bp_is  trades_is
+tf spread                                                          
+1  chain      -10.47      -12.25         1.04      -4.97    8827.50
+   reset      -10.33      -11.02         0.94      -4.93   11195.42
+5  chain       -9.36       -9.24         0.56      -5.82    4255.17
+   reset       -9.28       -8.94         0.37      -6.11    4640.90
+15 chain       -7.34       -6.59         0.04      -6.64    2219.59
+   reset       -7.11       -6.46         0.18      -6.53    2172.78
+30 chain       -5.57       -4.64        -0.08      -7.16    1239.70
+   reset       -5.65       -4.90        -0.35      -7.24    1193.22
+ tf spread    beta  win  s_open  s_close  edge_ratio  hl_max  sharpe_is  sharpe_oos  gross_bp_is  net_bp_is
+ 30  reset rolling  2.0     3.0      0.5         1.5    60.0      -0.92       -0.71         2.50      -5.90
+ 30  reset rolling  2.0     3.0      0.0         1.5    60.0      -1.07       -1.05         1.98      -6.05
+ 30  chain rolling 10.0     3.0      0.5         1.5    60.0      -1.18       -1.24        -1.55      -6.80
+ 30  chain rolling 10.0     3.0      0.0         0.0    60.0      -1.23       -1.72        -1.13      -6.39
+ 30  chain rolling 10.0     3.0      0.0         1.5    60.0      -1.23       -1.39        -1.39      -6.63

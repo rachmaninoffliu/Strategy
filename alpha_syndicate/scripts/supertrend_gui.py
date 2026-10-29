@@ -219,13 +219,9 @@ def compare_open(live, expected, forming=False, tol=0.005):
 
 
 def creds(paper: bool):
-    node = "alpaca-paper" if paper else "alpaca-live"
-    cfg = json.load(open(os.path.expanduser("~/.claude.json")))
-    env = cfg.get("mcpServers", {}).get(node, {}).get("env", {})
-    k, s = env.get("ALPACA_API_KEY"), env.get("ALPACA_SECRET_KEY")
-    if not k or not s or str(k).startswith("YOUR_"):
-        raise RuntimeError(f"No usable credentials for '{node}' in ~/.claude.json")
-    return k, s
+    """Alpaca keys: the project's key file "Alpaca Key.txt" in the project folder, then ALPACA_API_KEY / ALPACA_SECRET_KEY, then ~/.claude.json (alpaca_keys.py)."""
+    import alpaca_keys
+    return alpaca_keys.creds(paper)
 
 
 # =============================================================== engine =====

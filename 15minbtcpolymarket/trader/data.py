@@ -1,6 +1,7 @@
 """Local historical data (Kalshi KXBTC15M 1-minute bid/ask candles + outcomes) -> strategy signals."""
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -98,15 +99,17 @@ def needs_refresh(rows: pd.DataFrame, now: float, last_attempt_ts: float = 0.0) 
     return lag > REFRESH_LAG_S and now - last_attempt_ts > REFRESH_GAP_S
 
 
-def update_data(log: Callable[[str], None]) -> bool:
-    """Refresh markets + candles (+ the newest windows' candles via gapfill) via collect.py. Streams output to ``log``."""
+def update_data(log: Callable[[str], None], rps: Optional[float] = None) -> bool:
+    """Refresh markets + candles (+ the newest windows' candles via gapfill) via collect.py. Streams output to ``log``.  ``rps`` = requests per second the download may use (default 5): the app passes a low
+    value while a live session is running, because the download and the session share Kalshi's public rate limit."""
+    env = dict(os.environ, **({"COLLECT_RPS": str(rps)} if rps else {}))
     last = int(pd.read_csv(DATA / "markets.csv", usecols=["open_ts"]).open_ts.max())
     since = str(last - 2 * 86400)
     ok = True
     for args in (["markets"], ["batch", since], ["gapfill", "3"]):
         log(f"$ python collect.py {' '.join(args)}")
         proc = subprocess.Popen([sys.executable, "collect.py", *args], cwd=str(BASE), stdout=subprocess.PIPE,
-                                stderr=subprocess.STDOUT, text=True, bufsize=1)
+                                stderr=subprocess.STDOUT, text=True, bufsize=1, env=env)
         assert proc.stdout is not None
         for line in proc.stdout:
             line = line.rstrip()
@@ -127,12 +130,12 @@ def backfill_plan(hours) -> int:
     return int((~m.ticker.isin(have)).sum())
 
 
-def backfill_history(hours, log: Callable[[str], None]) -> bool:
+def backfill_history(hours, log: Callable[[str], None], rps: Optional[float] = None) -> bool:
     """Download 1-minute candles for every market in ``hours`` back to the series launch (public API, ~1.5 markets/s)."""
     end = (datetime.now(timezone.utc) + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
     cmd = [sys.executable, "collect_hours.py", EARLIEST_MARKET, end, ",".join(str(h) for h in sorted(hours))]
     log("$ python " + " ".join(cmd[1:]))
-    proc = subprocess.Popen(cmd, cwd=str(BASE), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+    proc = subprocess.Popen(cmd, cwd=str(BASE), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1, env=dict(os.environ, **({"COLLECT_RPS": str(rps)} if rps else {})))
     assert proc.stdout is not None
     for line in proc.stdout:
         line = line.rstrip()

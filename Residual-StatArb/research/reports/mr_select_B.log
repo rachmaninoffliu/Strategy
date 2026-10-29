@@ -1,0 +1,62 @@
+﻿  market: 234 symbols, 2719 sessions (10 s)
+top50+etf k20 ibs<0.1 & -: Sharpe 1.06 (IS 1.06, OOS 1.09) · CAGR 10.6% vs SPY 15.0% · maxDD -9.6% · 10493 trades · win 64% · exposure 41% (12 s)
+top50+etf k20 ibs<0.1 & ret1<0.0: Sharpe 1.04 (IS 1.04, OOS 1.06) · CAGR 10.1% vs SPY 15.0% · maxDD -11.3% · 9557 trades · win 65% · exposure 39% (13 s)
+top50+etf k20 ibs<0.1 & rsi2<30.0: Sharpe 0.83 (IS 0.77, OOS 0.92) · CAGR 7.2% vs SPY 15.0% · maxDD -12.1% · 6471 trades · win 64% · exposure 29% (14 s)
+top50+etf k20 ibs<0.1 & z5<-1.0: Sharpe 0.66 (IS 0.66, OOS 0.68) · CAGR 5.0% vs SPY 15.0% · maxDD -12.3% · 5090 trades · win 64% · exposure 23% (15 s)
+top50+etf k20 ibs<0.1 & ret3<0.0: Sharpe 0.86 (IS 0.92, OOS 0.81) · CAGR 7.8% vs SPY 15.0% · maxDD -12.6% · 7322 trades · win 65% · exposure 32% (16 s)
+top50+etf k20 ibs<0.1 & ret1<-0.01: Sharpe 0.85 (IS 0.82, OOS 0.90) · CAGR 7.7% vs SPY 15.0% · maxDD -12.1% · 6109 trades · win 64% · exposure 27% (17 s)
+top50+etf k20 ibs<0.15 & -: Sharpe 1.14 (IS 1.22, OOS 1.07) · CAGR 13.5% vs SPY 15.0% · maxDD -13.8% · 13495 trades · win 64% · exposure 53% (19 s)
+top50+etf k20 ibs<0.15 & ret1<0.0: Sharpe 1.14 (IS 1.21, OOS 1.07) · CAGR 13.1% vs SPY 15.0% · maxDD -12.4% · 12281 trades · win 64% · exposure 50% (20 s)
+top50+etf k20 ibs<0.15 & rsi2<30.0: Sharpe 0.88 (IS 0.83, OOS 0.95) · CAGR 9.0% vs SPY 15.0% · maxDD -12.2% · 8338 trades · win 64% · exposure 37% (21 s)
+top50+etf k20 ibs<0.15 & z5<-1.0: Sharpe 0.78 (IS 0.74, OOS 0.86) · CAGR 7.0% vs SPY 15.0% · maxDD -10.3% · 6641 trades · win 64% · exposure 30% (22 s)
+top50+etf k20 ibs<0.15 & ret3<0.0: Sharpe 0.95 (IS 1.02, OOS 0.90) · CAGR 10.2% vs SPY 15.0% · maxDD -10.8% · 9458 trades · win 65% · exposure 41% (24 s)
+top50+etf k20 ibs<0.15 & ret1<-0.01: Sharpe 0.86 (IS 0.94, OOS 0.79) · CAGR 9.5% vs SPY 15.0% · maxDD -13.0% · 8024 trades · win 64% · exposure 35% (25 s)
+top50+etf k20 ibs<0.2 & -: Sharpe 1.21 (IS 1.23, OOS 1.19) · CAGR 15.8% vs SPY 15.0% · maxDD -14.0% · 15831 trades · win 63% · exposure 61% (27 s)
+top50+etf k20 ibs<0.2 & ret1<0.0: Sharpe 1.18 (IS 1.18, OOS 1.19) · CAGR 15.0% vs SPY 15.0% · maxDD -13.5% · 14286 trades · win 64% · exposure 57% (29 s)
+top50+etf k20 ibs<0.2 & rsi2<30.0: Sharpe 0.95 (IS 0.91, OOS 1.04) · CAGR 10.6% vs SPY 15.0% · maxDD -10.9% · 9670 trades · win 64% · exposure 43% (31 s)
+top50+etf k20 ibs<0.2 & z5<-1.0: Sharpe 0.89 (IS 0.82, OOS 1.00) · CAGR 8.8% vs SPY 15.0% · maxDD -10.3% · 7774 trades · win 64% · exposure 35% (32 s)
+top50+etf k20 ibs<0.2 & ret3<0.0: Sharpe 0.97 (IS 1.02, OOS 0.93) · CAGR 11.4% vs SPY 15.0% · maxDD -13.6% · 11041 trades · win 65% · exposure 48% (34 s)
+top50+etf k20 ibs<0.2 & ret1<-0.01: Sharpe 0.94 (IS 1.00, OOS 0.87) · CAGR 11.5% vs SPY 15.0% · maxDD -14.3% · 9473 trades · win 64% · exposure 41% (35 s)
+top50+etf k20 ibs<0.25 & -: Sharpe 1.11 (IS 1.09, OOS 1.14) · CAGR 15.0% vs SPY 15.0% · maxDD -14.3% · 17548 trades · win 63% · exposure 67% (37 s)
+top50+etf k20 ibs<0.25 & ret1<0.0: Sharpe 1.12 (IS 1.04, OOS 1.25) · CAGR 15.0% vs SPY 15.0% · maxDD -14.6% · 15744 trades · win 64% · exposure 63% (39 s)
+top50+etf k20 ibs<0.25 & rsi2<30.0: Sharpe 0.95 (IS 0.82, OOS 1.15) · CAGR 11.0% vs SPY 15.0% · maxDD -11.5% · 10644 trades · win 64% · exposure 47% (41 s)
+top50+etf k20 ibs<0.25 & z5<-1.0: Sharpe 0.89 (IS 0.78, OOS 1.06) · CAGR 9.4% vs SPY 15.0% · maxDD -11.3% · 8663 trades · win 64% · exposure 39% (43 s)
+top50+etf k20 ibs<0.25 & ret3<0.0: Sharpe 0.95 (IS 0.90, OOS 1.03) · CAGR 11.7% vs SPY 15.0% · maxDD -15.9% · 12177 trades · win 64% · exposure 53% (45 s)
+top50+etf k20 ibs<0.25 & ret1<-0.01: Sharpe 0.94 (IS 0.88, OOS 1.02) · CAGR 12.2% vs SPY 15.0% · maxDD -14.8% · 10518 trades · win 64% · exposure 45% (46 s)
+top50+etf k20 ibs<0.3 & -: Sharpe 1.03 (IS 0.99, OOS 1.08) · CAGR 14.4% vs SPY 15.0% · maxDD -19.2% · 18970 trades · win 63% · exposure 72% (49 s)
+top50+etf k20 ibs<0.3 & ret1<0.0: Sharpe 1.00 (IS 0.98, OOS 1.04) · CAGR 13.6% vs SPY 15.0% · maxDD -17.7% · 16913 trades · win 63% · exposure 67% (50 s)
+top50+etf k20 ibs<0.3 & rsi2<30.0: Sharpe 0.85 (IS 0.72, OOS 1.03) · CAGR 9.8% vs SPY 15.0% · maxDD -12.9% · 11360 trades · win 64% · exposure 51% (52 s)
+top50+etf k20 ibs<0.3 & z5<-1.0: Sharpe 0.82 (IS 0.66, OOS 1.04) · CAGR 8.9% vs SPY 15.0% · maxDD -11.0% · 9289 trades · win 63% · exposure 42% (53 s)
+top50+etf k20 ibs<0.3 & ret3<0.0: Sharpe 0.82 (IS 0.74, OOS 0.95) · CAGR 10.2% vs SPY 15.0% · maxDD -15.4% · 13105 trades · win 64% · exposure 57% (54 s)
+top50+etf k20 ibs<0.3 & ret1<-0.01: Sharpe 0.82 (IS 0.79, OOS 0.87) · CAGR 10.8% vs SPY 15.0% · maxDD -17.4% · 11342 trades · win 63% · exposure 49% (56 s)
+                              model  sh_is  sh_oos  sh_all  cagr_is  cagr_oos  cagr    mdd   vol  trades   win  expo  max_expo  beta
+          top50+etf k20 ibs<0.2 & -  1.235   1.189   1.211    0.149     0.173 0.158 -0.140 0.128   15831 0.635 0.612     0.979 0.459
+         top50+etf k20 ibs<0.15 & -  1.216   1.074   1.145    0.129     0.145 0.135 -0.138 0.116   13495 0.637 0.527     0.980 0.385
+  top50+etf k20 ibs<0.15 & ret1<0.0  1.206   1.071   1.137    0.125     0.142 0.131 -0.124 0.114   12281 0.644 0.496     0.978 0.375
+   top50+etf k20 ibs<0.2 & ret1<0.0  1.181   1.192   1.181    0.138     0.170 0.150 -0.135 0.125   14286 0.642 0.575     0.979 0.446
+         top50+etf k20 ibs<0.25 & -  1.090   1.145   1.109    0.137     0.171 0.150 -0.143 0.134   17548 0.630 0.672     0.978 0.496
+          top50+etf k20 ibs<0.1 & -  1.062   1.086   1.060    0.092     0.129 0.106 -0.096 0.100   10493 0.641 0.415     0.977 0.312
+  top50+etf k20 ibs<0.25 & ret1<0.0  1.042   1.247   1.124    0.128     0.187 0.150 -0.146 0.132   15744 0.637 0.631     0.978 0.484
+   top50+etf k20 ibs<0.1 & ret1<0.0  1.039   1.056   1.036    0.089     0.121 0.101 -0.113 0.097    9557 0.647 0.389     0.978 0.303
+   top50+etf k20 ibs<0.2 & ret3<0.0  1.021   0.930   0.975    0.108     0.124 0.114 -0.136 0.118   11041 0.646 0.478     0.978 0.395
+  top50+etf k20 ibs<0.15 & ret3<0.0  1.020   0.900   0.953    0.095     0.114 0.102 -0.108 0.108    9458 0.646 0.411     0.977 0.334
+ top50+etf k20 ibs<0.2 & ret1<-0.01  1.000   0.874   0.938    0.111     0.122 0.115 -0.143 0.125    9473 0.641 0.407     0.978 0.420
+          top50+etf k20 ibs<0.3 & -  0.990   1.083   1.026    0.130     0.167 0.144 -0.192 0.140   18970 0.625 0.719     0.978 0.531
+   top50+etf k20 ibs<0.3 & ret1<0.0  0.980   1.039   1.002    0.126     0.154 0.136 -0.177 0.137   16913 0.631 0.674     0.978 0.512
+top50+etf k20 ibs<0.15 & ret1<-0.01  0.941   0.787   0.859    0.090     0.102 0.095 -0.130 0.113    8024 0.639 0.348     0.976 0.345
+   top50+etf k20 ibs<0.1 & ret3<0.0  0.915   0.814   0.856    0.071     0.089 0.078 -0.126 0.092    7322 0.647 0.322     0.976 0.270
+  top50+etf k20 ibs<0.2 & rsi2<30.0  0.905   1.039   0.954    0.087     0.138 0.106 -0.109 0.112    9670 0.644 0.431     0.978 0.349
+  top50+etf k20 ibs<0.25 & ret3<0.0  0.904   1.032   0.954    0.101     0.144 0.117 -0.159 0.124   12177 0.640 0.528     0.977 0.430
+top50+etf k20 ibs<0.25 & ret1<-0.01  0.883   1.021   0.936    0.102     0.155 0.122 -0.148 0.132   10518 0.640 0.451     0.977 0.457
+ top50+etf k20 ibs<0.15 & rsi2<30.0  0.834   0.954   0.877    0.073     0.118 0.090 -0.122 0.104    8338 0.642 0.372     0.978 0.307
+ top50+etf k20 ibs<0.1 & ret1<-0.01  0.823   0.905   0.850    0.065     0.097 0.077 -0.121 0.092    6109 0.637 0.266     0.975 0.272
+    top50+etf k20 ibs<0.2 & z5<-1.0  0.823   1.001   0.893    0.071     0.118 0.088 -0.103 0.101    7774 0.640 0.353     0.978 0.296
+ top50+etf k20 ibs<0.25 & rsi2<30.0  0.820   1.145   0.955    0.083     0.156 0.110 -0.115 0.116   10644 0.640 0.475     0.979 0.379
+ top50+etf k20 ibs<0.3 & ret1<-0.01  0.793   0.868   0.821    0.096     0.130 0.108 -0.174 0.137   11342 0.633 0.487     0.976 0.482
+   top50+etf k20 ibs<0.25 & z5<-1.0  0.777   1.062   0.894    0.071     0.134 0.094 -0.113 0.107    8663 0.639 0.393     0.977 0.328
+  top50+etf k20 ibs<0.1 & rsi2<30.0  0.768   0.925   0.828    0.057     0.097 0.072 -0.121 0.088    6471 0.645 0.291     0.975 0.247
+   top50+etf k20 ibs<0.3 & ret3<0.0  0.739   0.950   0.824    0.085     0.132 0.102 -0.154 0.128   13105 0.637 0.567     0.978 0.452
+   top50+etf k20 ibs<0.15 & z5<-1.0  0.735   0.864   0.784    0.058     0.092 0.070 -0.103 0.092    6641 0.636 0.303     0.975 0.256
+  top50+etf k20 ibs<0.3 & rsi2<30.0  0.715   1.033   0.846    0.075     0.138 0.098 -0.129 0.119   11360 0.637 0.508     0.979 0.397
+    top50+etf k20 ibs<0.3 & z5<-1.0  0.662   1.038   0.820    0.063     0.134 0.089 -0.110 0.111    9289 0.634 0.422     0.978 0.352
+    top50+etf k20 ibs<0.1 & z5<-1.0  0.659   0.676   0.660    0.044     0.059 0.050 -0.123 0.078    5090 0.637 0.235     0.975 0.199

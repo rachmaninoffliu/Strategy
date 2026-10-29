@@ -1,0 +1,10 @@
+﻿ResMomentum backtest: Sharpe 0.47 (IS 0.37, OOS 0.60) · CAGR 3.9% · vol 9.2% · maxDD -14.5% · turnover 19x/yr · hold 23.3 d
+ResMomentum research: done
+ResMomentum signals: scores at the bar starting 2026-10-26 15:45 ET (cached SIP history) book from flat: 10 long / 10 short · stock gross 0.90x · ETF hedge 1.02x · net -0.090 · beta after hedge +0.000
+ResMeanReversion backtest: Sharpe 0.47 (IS 0.96, OOS -0.20) · CAGR 3.5% · vol 8.2% · maxDD -14.0% · turnover 435x/yr · hold 0.8 d
+ResMeanReversion research: done
+ResMeanReversion signals: scores at the bar starting 2026-10-26 15:45 ET (cached SIP history) book from flat: 10 long / 10 short · stock gross 0.80x · ETF hedge 1.80x · net -0.391 · beta after hedge +0.000
+ResPrediction backtest: Sharpe 0.19 (IS 0.41, OOS -0.08) · CAGR 1.0% · vol 6.0% · maxDD -14.3% · turnover 169x/yr · hold 1.9 d
+ResPrediction research: done
+ResPrediction signals: scores at the bar starting 2026-10-26 15:45 ET (cached SIP history) book from flat: 20 long / 20 short · stock gross 0.80x · ETF hedge 1.02x · net +0.094 · beta after hedge -0.000
+GUI SMOKE OK

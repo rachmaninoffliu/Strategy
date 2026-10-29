@@ -1,0 +1,240 @@
+//@version=5
+//@strategy_alert_message {{strategy.order.alert_message}}
+strategy("Three-Edge Combo: Double-7 + VIX Stretch + Turn-of-Month",
+     overlay=true, initial_capital=100000, pyramiding=0,
+     margin_long=100, margin_short=100,
+     process_orders_on_close=true,
+     commission_type=strategy.commission.percent, commission_value=0.03,
+     slippage=0)
+
+// =====================================================================================
+// THREE-EDGE COMBO - long only, full account, flat ~57% of the time.
+// Three independent, well-documented short-term edges on the INDEX (QQQ by default);
+// the strategy is long the chart symbol whenever ANY of them is active:
+//
+//   1. DOUBLE-7 (dip buying)   index closes at its 7-day low while above its 200-day SMA
+//                              -> hold until it closes at its 7-day high
+//   2. VIX STRETCH (fear spike) VIX closes >= 5% above its 10-day SMA three days in a row
+//                              while the index is above its 200-day SMA
+//                              -> hold until index RSI(2) > 65
+//   3. TURN OF MONTH (flows)   hold from the close two trading days before month-end
+//                              to the close of the 3rd trading day of the new month
+//
+// RESEARCH (SPY daily 1993-2019 + VIX, 3 bp per side; rules from the literature, NOT
+// optimised; signals on the index, leveraged funds simulated):
+//   Fund        1993-2019 CAGR / max DD    2010-2019 CAGR / max DD   Buy & hold (93-19)
+//   1x (QQQ)       8.9% / -21%                8.2% / -18%             9.4% / -55%
+//   2x (QLD)      16.8% / -40%               15.3% / -35%            12.9% / -87%
+//   3x (TQQQ)     23.8% / -55%               21.7% / -49%            13.5% / -98%
+//   Weekly correlation with the SOXL Supertrend 2010-2019: 0.08
+//   50/50 with the Supertrend (3x version): Sharpe 1.29 vs 1.09, max DD -29% vs -43%.
+//   Beats buy & hold over the full cycle (because it sidesteps crashes) but TRAILS it in
+//   a pure bull decade (2010-19: 3x 21.7% vs 29.2%). Stop-losses were tested and HURT.
+//   Not yet verified on QQQ/TQQQ or after 2019.
+//
+// TIMING: daily chart -> decides at each daily close. Intraday chart (e.g. 15-min) ->
+// decides once a day on the bar closing at/after 15:45 (or the last bar of a half-day),
+// using that price as today's close; daily values are rebuilt from the intraday bars.
+// ALERTS: one alert, condition = this strategy, message = {{strategy.order.alert_message}}
+// =====================================================================================
+
+startDate  = input.time(timestamp("2010-01-01T00:00:00"), "Start Date", group="Backtest Range")
+endDate    = input.time(timestamp("2099-12-31T00:00:00"), "End Date",   group="Backtest Range")
+inRange    = time >= startDate and time <= endDate
+
+sigSymbol  = input.symbol("NASDAQ:QQQ", "Signal index (QQQ for QQQ/QLD/TQQQ)", group="Signals")
+vixSymbol  = input.symbol("TVC:VIX", "VIX symbol", group="Signals")
+useD7      = input.bool(true, "1. Double-7", group="Signals")
+useVix     = input.bool(true, "2. VIX stretch", group="Signals")
+useTom     = input.bool(true, "3. Turn of month", group="Signals")
+decisionHHMM = input.int(1545, "Decision time on intraday charts (HHMM, exchange time)", group="Timing")
+
+f_msg(string action, float qty) =>
+    '{"ticker":"' + syminfo.ticker + '","action":"' + action + '","quantity":' + str.tostring(math.floor(math.abs(qty)), "#") + '}'
+
+// ---------- data ----------
+tz        = syminfo.timezone
+dailyMode = timeframe.isintraday
+sC = request.security(sigSymbol, timeframe.period, close, lookahead = barmerge.lookahead_off)
+vC = request.security(vixSymbol, timeframe.period, close, lookahead = barmerge.lookahead_off)
+
+dayKey = year(time, tz) * 10000 + month(time, tz) * 100 + dayofmonth(time, tz)
+newDay = not na(dayKey[1]) and dayKey != dayKey[1]
+
+// completed daily closes rebuilt from intraday bars + incremental Wilder RSI(2)
+var float[] sArr = array.new_float()
+var float[] vArr = array.new_float()
+var float lastS = na
+var float ag = na
+var float al = na
+var int   rsiN = 0
+if newDay
+    if not na(sC[1])
+        if not na(lastS)
+            float ch = sC[1] - lastS
+            rsiN += 1
+            if rsiN <= 2
+                ag := nz(ag) + math.max(ch, 0) / 2
+                al := nz(al) + math.max(-ch, 0) / 2
+            else
+                ag := (ag + math.max(ch, 0)) / 2
+                al := (al + math.max(-ch, 0)) / 2
+        lastS := sC[1]
+        array.push(sArr, sC[1])
+        if array.size(sArr) > 215
+            array.shift(sArr)
+    if not na(vC[1])
+        array.push(vArr, vC[1])
+        if array.size(vArr) > 30
+            array.shift(vArr)
+
+// stats over the last n closes; offset 0 includes today's price, offset k>0 ends k days ago
+f_stat(float[] arr, int n, float today, int offset, string kind) =>
+    float res = na
+    int sz = array.size(arr)
+    int endIdx = offset == 0 ? sz : sz - (offset - 1)   // exclusive end; offset 1 = window ending yesterday
+    int need = offset == 0 ? n - 1 : n
+    if endIdx - need >= 0 and (offset > 0 or not na(today))
+        float lo = offset == 0 ? today : 1e20
+        float hi = offset == 0 ? today : -1e20
+        float sm = offset == 0 ? today : 0.0
+        for i = endIdx - need to endIdx - 1
+            float v = array.get(arr, i)
+            lo := math.min(lo, v)
+            hi := math.max(hi, v)
+            sm += v
+        res := kind == "lo" ? lo : kind == "hi" ? hi : sm / n
+    res
+
+f_rsi2Today(float px) =>
+    float res = na
+    if rsiN >= 2 and not na(lastS) and not na(px)
+        float ch = px - lastS
+        float g = (ag + math.max(ch, 0)) / 2
+        float l = (al + math.max(-ch, 0)) / 2
+        res := l == 0 ? 100.0 : g == 0 ? 0.0 : 100.0 - 100.0 / (1.0 + g / l)
+    res
+
+// ---------- features (today-inclusive) ----------
+// bar-based versions (used on daily and higher charts) - computed on every bar
+bLo7  = ta.lowest(sC, 7)
+bHi7  = ta.highest(sC, 7)
+bSma  = ta.sma(sC, 200)
+bRsi2 = ta.rsi(sC, 2)
+bVSma = ta.sma(vC, 10)
+
+float lo7  = dailyMode ? f_stat(sArr, 7, sC, 0, "lo")    : bLo7
+float hi7  = dailyMode ? f_stat(sArr, 7, sC, 0, "hi")    : bHi7
+float sma  = dailyMode ? f_stat(sArr, 200, sC, 0, "sma") : bSma
+float rsi2 = dailyMode ? f_rsi2Today(sC)                 : bRsi2
+
+vSma0 = dailyMode ? f_stat(vArr, 10, vC, 0, "sma") : bVSma
+vSma1 = dailyMode ? f_stat(vArr, 10, na, 1, "sma") : bVSma[1]
+vSma2 = dailyMode ? f_stat(vArr, 10, na, 2, "sma") : bVSma[2]
+vC1   = dailyMode ? (array.size(vArr) >= 1 ? array.get(vArr, array.size(vArr) - 1) : na) : vC[1]
+vC2   = dailyMode ? (array.size(vArr) >= 2 ? array.get(vArr, array.size(vArr) - 2) : na) : vC[2]
+vixStretch3 = vC > vSma0 * 1.05 and vC1 > vSma1 * 1.05 and vC2 > vSma2 * 1.05
+
+// ---------- turn-of-month calendar ----------
+f_weekdaysLeftInMonth() =>
+    int y = year(time, tz)
+    int mo = month(time, tz)
+    int d = dayofmonth(time, tz)
+    int cnt = 0
+    for k = 1 to 31
+        int ts = timestamp(tz, y, mo, d, 12, 0) + k * 86400000
+        if month(ts, tz) != mo
+            break
+        int dw = dayofweek(ts, tz)
+        if dw != dayofweek.saturday and dw != dayofweek.sunday
+            cnt += 1
+    cnt
+
+var int tdOfMonth = 0
+if newDay and month(time, tz) != month(time[1], tz)
+    tdOfMonth := 0
+if newDay or bar_index == 0
+    tdOfMonth += 1
+
+// ---------- decision bar ----------
+closeHHMM = hour(time_close, tz) * 100 + minute(time_close, tz)
+var bool decided = false
+if newDay
+    decided := false
+bool isDecision = false
+if dailyMode
+    if not decided and ((not na(closeHHMM) and closeHHMM >= decisionHHMM) or session.islastbar_regular)
+        isDecision := true
+        decided := true
+else
+    isDecision := barstate.isconfirmed
+
+decide = isDecision and inRange and not na(sma) and not na(rsi2)
+
+// ---------- signal states ----------
+var bool d7On  = false
+var bool vixOn = false
+bool tomOn = false
+if decide
+    bool upTrend = sC > sma
+    // 1. Double-7
+    if d7On and sC >= hi7
+        d7On := false
+    else if not d7On and upTrend and sC <= lo7
+        d7On := true
+    // 2. VIX stretch
+    if vixOn and rsi2 > 65
+        vixOn := false
+    else if not vixOn and upTrend and vixStretch3
+        vixOn := true
+    // 3. Turn of month: be long at this close if the NEXT trading day is the last day
+    //    of the month or trading day 1-3 of the new month
+    int left = f_weekdaysLeftInMonth()
+    tomOn := left <= 1 or tdOfMonth <= 2
+
+wantLong = (useD7 and d7On) or (useVix and vixOn) or (useTom and tomOn)
+
+// ---------- orders: full account, never more ----------
+inPos = strategy.position_size > 0
+if decide and inPos and not wantLong
+    m = f_msg("sell", strategy.position_size)
+    strategy.close("Long", comment = m, alert_message = m)
+if decide and not inPos and wantLong
+    float fillPx = (math.ceil(close / syminfo.mintick) + 1) * syminfo.mintick
+    float q = math.floor(strategy.equity * 0.998 / (fillPx * syminfo.pointvalue))
+    if q > 0
+        why = (useD7 and d7On ? "D7 " : "") + (useVix and vixOn ? "VIX " : "") + (useTom and tomOn ? "TOM " : "")
+        m = f_msg("buy", q)
+        strategy.entry("Long", strategy.long, qty = q, comment = why + m, alert_message = m)
+
+// ---------- visuals & stats ----------
+bgcolor(strategy.position_size > 0 ? color.new(color.teal, 92) : na, title = "In position")
+
+var float bhStart = na
+var float peakEq  = na
+var float maxDD   = 0.0
+var int   nBars   = 0
+var int   nIn     = 0
+if inRange
+    if na(bhStart)
+        bhStart := close
+    peakEq := na(peakEq) ? strategy.equity : math.max(peakEq, strategy.equity)
+    maxDD  := math.min(maxDD, strategy.equity / peakEq - 1)
+    nBars  += 1
+    nIn    += strategy.position_size > 0 ? 1 : 0
+stratRet = (strategy.equity / strategy.initial_capital - 1) * 100
+bhRet    = na(bhStart) ? na : (close / bhStart - 1) * 100
+
+var table t = table.new(position.top_right, 2, 5, border_width = 1)
+if barstate.islast
+    color bg = color.new(color.teal, 20)
+    table.cell(t, 0, 0, "Three-Edge Combo", text_color = color.white, bgcolor = bg, text_size = size.small)
+    table.cell(t, 1, 0, dailyMode ? "once/day @" + str.tostring(decisionHHMM) : "daily closes", text_color = color.white, bgcolor = bg, text_size = size.small)
+    table.cell(t, 0, 1, "Strategy / Buy & hold", text_color = color.white, bgcolor = bg, text_size = size.small)
+    table.cell(t, 1, 1, str.tostring(stratRet, "#,##0.0") + "% / " + str.tostring(bhRet, "#,##0.0") + "%", text_color = color.white, bgcolor = bg, text_size = size.small)
+    table.cell(t, 0, 2, "Max drawdown", text_color = color.white, bgcolor = bg, text_size = size.small)
+    table.cell(t, 1, 2, str.tostring(maxDD * 100, "#0.0") + "%", text_color = color.white, bgcolor = bg, text_size = size.small)
+    table.cell(t, 0, 3, "Time in market", text_color = color.white, bgcolor = bg, text_size = size.small)
+    table.cell(t, 1, 3, str.tostring(nBars > 0 ? nIn * 100.0 / nBars : 0, "#0") + "%", text_color = color.white, bgcolor = bg, text_size = size.small)
+    table.cell(t, 0, 4, "Closed trades", text_color = color.white, bgcolor = bg, text_size = size.small)
+    table.cell(t, 1, 4, str.tostring(strategy.closedtrades), text_color = color.white, bgcolor = bg, text_size = size.small)

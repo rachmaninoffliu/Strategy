@@ -1,0 +1,17 @@
+{"ts": "10:00:04", "j": 5, "sym": "SMH", "side": "BUY", "lots": 2, "qty": 20, "ref_price": 637.41, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 2, "edge": 8.833583087573338, "note": ""}
+{"ts": "10:00:04", "j": 5, "sym": "NVDA", "side": "BUY", "lots": 3, "qty": 48, "ref_price": 242.315, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 3, "edge": 8.008968730959609, "note": ""}
+{"ts": "10:10:04", "j": 7, "sym": "TSLA", "side": "BUY", "lots": 1, "qty": 8, "ref_price": 381.48, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 1, "edge": 4.19443654646793, "note": ""}
+{"ts": "10:20:04", "j": 9, "sym": "SMH", "side": "SELL", "lots": 1, "qty": 10, "ref_price": 637.22, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 1, "edge": 7.659588040630099, "note": ""}
+{"ts": "10:35:04", "j": 12, "sym": "TSLA", "side": "SELL", "lots": 1, "qty": 8, "ref_price": 380.975, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 0, "edge": 3.173369194191196, "note": ""}
+{"ts": "10:35:04", "j": 12, "sym": "SMH", "side": "SELL", "lots": 1, "qty": 10, "ref_price": 635.8, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 0, "edge": 2.8869303725413333, "note": ""}
+{"ts": "10:40:04", "j": 13, "sym": "TSLA", "side": "BUY", "lots": 1, "qty": 8, "ref_price": 380.955, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 1, "edge": 3.4392671643085784, "note": ""}
+{"ts": "10:45:04", "j": 14, "sym": "TSLA", "side": "SELL", "lots": 1, "qty": 8, "ref_price": 380.62, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 0, "edge": 2.886856344927427, "note": ""}
+{"ts": "11:10:04", "j": 19, "sym": "SMH", "side": "BUY", "lots": 1, "qty": 10, "ref_price": 638.82, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 1, "edge": 5.58595690214629, "note": ""}
+{"ts": "11:25:04", "j": 22, "sym": "SMH", "side": "SELL", "lots": 1, "qty": 10, "ref_price": 637.055, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 0, "edge": 3.270502974149862, "note": ""}
+{"ts": "11:25:04", "j": 22, "sym": "NVDA", "side": "SELL", "lots": 1, "qty": 16, "ref_price": 241.57, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 2, "edge": 6.392731755016369, "note": ""}
+{"ts": "12:55:04", "j": 40, "sym": "NVDA", "side": "SELL", "lots": 1, "qty": 16, "ref_price": 240.55, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 1, "edge": 4.2041731038052035, "note": ""}
+{"ts": "14:45:04", "j": 62, "sym": "TSLA", "side": "SELL", "lots": 1, "qty": 8, "ref_price": 379.42, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": -1, "edge": -3.745983108592774, "note": ""}
+{"ts": "14:55:04", "j": 64, "sym": "TSLA", "side": "BUY", "lots": 1, "qty": 8, "ref_price": 380.08, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 0, "edge": -3.116304985475811, "note": ""}
+{"ts": "15:15:04", "j": 68, "sym": "TSLA", "side": "SELL", "lots": 1, "qty": 8, "ref_price": 379.565, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": -1, "edge": -4.218416382468984, "note": ""}
+{"ts": "15:30:05", "j": 71, "sym": "TSLA", "side": "BUY", "lots": 1, "qty": 8, "type": "MOC", "mode": "DRY_RUN", "note": "flatten at the official close; entry deadline 15:50 ET"}
+{"ts": "15:30:05", "j": 71, "sym": "NVDA", "side": "SELL", "lots": 1, "qty": 16, "type": "MOC", "mode": "DRY_RUN", "note": "flatten at the official close; entry deadline 15:50 ET"}

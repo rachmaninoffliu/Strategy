@@ -1,0 +1,113 @@
+07:53:20 15:45: models ready
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_features.py:46: RuntimeWarning: All-NaN slice encountered
+  hi[t] = np.nanmax(seg, 1)
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_features.py:47: RuntimeWarning: All-NaN slice encountered
+  lo[t] = np.nanmin(seg, 1)
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_features.py:63: RuntimeWarning: Mean of empty slice
+  "m_breadth": np.nanmean(np.where(U, d > 0, np.nan), 1), "m_disp": np.nanstd(np.where(U, d, np.nan), 1), "m_dow": cx.dates.dayofweek.to_numpy().astype(float),
+C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\site-packages\numpy\lib\nanfunctions.py:1879: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\site-packages\joblib\externals\loky\backend\context.py:136: UserWarning: Could not find the number of physical cores for the following reason:
+[WinError 2] The system cannot find the file specified
+Returning the number of logical cores instead. You can silence this warning by setting LOKY_MAX_CPU_COUNT to the number of cores you want to use.
+  warnings.warn(
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\site-packages\joblib\externals\loky\backend\context.py", line 257, in _count_physical_cores
+    cpu_info = subprocess.run(
+               ^^^^^^^^^^^^^^^
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1538, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+07:54:50   1530_y_on_hgbraw_rank 2018: trained on 74,462 rows
+07:55:02   1530_y_on_hgbraw_rank 2019: trained on 119,557 rows
+07:55:17   1530_y_on_hgbraw_rank 2020: trained on 165,121 rows
+07:55:37   1530_y_on_hgbraw_rank 2021: trained on 210,695 rows
+07:56:00   1530_y_on_hgbraw_rank 2022: trained on 256,694 rows
+07:56:18   1530_y_on_hgbraw_rank 2023: trained on 302,058 rows
+07:56:34   1530_y_on_hgbraw_rank 2024: trained on 347,010 rows
+07:56:51   1530_y_on_hgbraw_rank 2025: trained on 392,129 rows
+07:57:04   1530_y_on_hgbraw_rank 2026: trained on 437,090 rows
+07:57:16   1530_y_on_hgb_rank 2018: trained on 74,462 rows
+07:57:26   1530_y_on_hgb_rank 2019: trained on 119,557 rows
+07:57:37   1530_y_on_hgb_rank 2020: trained on 165,121 rows
+07:57:51   1530_y_on_hgb_rank 2021: trained on 210,695 rows
+07:58:04   1530_y_on_hgb_rank 2022: trained on 256,694 rows
+07:58:19   1530_y_on_hgb_rank 2023: trained on 302,058 rows
+07:58:33   1530_y_on_hgb_rank 2024: trained on 347,010 rows
+07:58:48   1530_y_on_hgb_rank 2025: trained on 392,129 rows
+07:59:03   1530_y_on_hgb_rank 2026: trained on 437,090 rows
+07:59:04   1530_y_on_ridge_rank 2018: trained on 74,462 rows
+07:59:04   1530_y_on_ridge_rank 2019: trained on 119,557 rows
+07:59:05   1530_y_on_ridge_rank 2020: trained on 165,121 rows
+07:59:05   1530_y_on_ridge_rank 2021: trained on 210,695 rows
+07:59:06   1530_y_on_ridge_rank 2022: trained on 256,694 rows
+07:59:06   1530_y_on_ridge_rank 2023: trained on 302,058 rows
+07:59:07   1530_y_on_ridge_rank 2024: trained on 347,010 rows
+07:59:07   1530_y_on_ridge_rank 2025: trained on 392,129 rows
+07:59:08   1530_y_on_ridge_rank 2026: trained on 437,090 rows
+07:59:08 15:30: models ready
+                                                             label  sh_all  sh_is  sh_oos  cagr_all  cagr_is  cagr_oos  vol_all  mdd_all  beta
+                                                    SPY buy & hold   0.810  0.524   1.377     0.143    0.092     0.213    0.187   -0.338 1.000
+                                            15:45 rule top10 + QQQ   1.819  2.160   1.493     0.416    0.450     0.372    0.203   -0.207 0.343
+                                            15:45 rule top20 + QQQ   1.878  2.208   1.569     0.347    0.368     0.321    0.166   -0.169 0.312
+                      15:45 rule top20 + QQQ | overnight leg alone   1.657  2.038   1.319     0.271    0.294     0.241    0.152   -0.223 0.210
+                            15:45 rule top20 + QQQ | auctions 2 bp   1.554  1.866   1.257     0.276    0.301     0.245    0.166   -0.172 0.309
+                            15:45 rule top20 + QQQ | auctions 3 bp   1.228  1.522   0.945     0.209    0.236     0.174    0.166   -0.188 0.306
+                         15:45 rule top20 + QQQ | first-trade exit   1.855  2.185   1.546     0.342    0.363     0.315    0.166   -0.168 0.312
+                                            15:45 rule top30 + QQQ   1.832  2.125   1.551     0.297    0.312     0.277    0.148   -0.150 0.298
+                          15:45 rule + trees (IS pick) top10 + QQQ   2.080  2.426   1.803     0.459    0.460     0.457    0.190   -0.159 0.348
+                          15:45 rule + trees (IS pick) top20 + QQQ   2.126  2.392   1.927     0.387    0.370     0.410    0.160   -0.140 0.323
+    15:45 rule + trees (IS pick) top20 + QQQ | overnight leg alone   1.916  2.246   1.693     0.308    0.296     0.325    0.146   -0.215 0.220
+          15:45 rule + trees (IS pick) top20 + QQQ | auctions 2 bp   1.790  2.022   1.615     0.314    0.303     0.329    0.160   -0.151 0.320
+          15:45 rule + trees (IS pick) top20 + QQQ | auctions 3 bp   1.452  1.650   1.301     0.245    0.238     0.253    0.160   -0.168 0.317
+       15:45 rule + trees (IS pick) top20 + QQQ | first-trade exit   2.097  2.366   1.896     0.381    0.365     0.402    0.160   -0.149 0.323
+                          15:45 rule + trees (IS pick) top30 + QQQ   2.062  2.295   1.868     0.334    0.325     0.346    0.145   -0.127 0.312
+                      15:45 rule + 3 models (ensemble) top10 + QQQ   2.070  2.408   1.848     0.481    0.455     0.515    0.199   -0.155 0.375
+                      15:45 rule + 3 models (ensemble) top20 + QQQ   1.937  2.327   1.670     0.384    0.376     0.394    0.176   -0.149 0.359
+15:45 rule + 3 models (ensemble) top20 + QQQ | overnight leg alone   1.720  2.158   1.444     0.305    0.301     0.310    0.163   -0.217 0.257
+      15:45 rule + 3 models (ensemble) top20 + QQQ | auctions 2 bp   1.631  1.972   1.394     0.311    0.308     0.314    0.175   -0.159 0.356
+      15:45 rule + 3 models (ensemble) top20 + QQQ | auctions 3 bp   1.323  1.616   1.117     0.241    0.243     0.239    0.175   -0.169 0.353
+   15:45 rule + 3 models (ensemble) top20 + QQQ | first-trade exit   1.905  2.304   1.629     0.375    0.370     0.381    0.175   -0.166 0.359
+                      15:45 rule + 3 models (ensemble) top30 + QQQ   1.939  2.279   1.694     0.351    0.343     0.362    0.162   -0.139 0.353
+                                            15:30 rule top10 + QQQ   1.820  2.063   1.593     0.415    0.426     0.402    0.202   -0.226 0.337
+                                            15:30 rule top20 + QQQ   1.928  2.213   1.665     0.361    0.372     0.346    0.167   -0.160 0.315
+                      15:30 rule top20 + QQQ | overnight leg alone   1.712  2.042   1.422     0.284    0.297     0.266    0.153   -0.223 0.212
+                            15:30 rule top20 + QQQ | auctions 2 bp   1.605  1.873   1.355     0.289    0.304     0.269    0.167   -0.163 0.312
+                            15:30 rule top20 + QQQ | auctions 3 bp   1.281  1.532   1.044     0.221    0.240     0.197    0.167   -0.188 0.309
+                         15:30 rule top20 + QQQ | first-trade exit   1.905  2.190   1.642     0.355    0.366     0.340    0.167   -0.158 0.314
+                                            15:30 rule top30 + QQQ   1.864  2.135   1.605     0.304    0.315     0.289    0.148   -0.150 0.299
+                          15:30 rule + trees (IS pick) top10 + QQQ   2.032  2.360   1.801     0.450    0.434     0.472    0.192   -0.213 0.345
+                          15:30 rule + trees (IS pick) top20 + QQQ   2.091  2.409   1.842     0.383    0.376     0.391    0.161   -0.161 0.323
+    15:30 rule + trees (IS pick) top20 + QQQ | overnight leg alone   1.878  2.261   1.604     0.304    0.301     0.308    0.147   -0.246 0.220
+          15:30 rule + trees (IS pick) top20 + QQQ | auctions 2 bp   1.757  2.041   1.531     0.310    0.308     0.312    0.161   -0.173 0.320
+          15:30 rule + trees (IS pick) top20 + QQQ | auctions 3 bp   1.422  1.672   1.220     0.240    0.244     0.236    0.161   -0.197 0.316
+       15:30 rule + trees (IS pick) top20 + QQQ | first-trade exit   2.069  2.391   1.816     0.377    0.372     0.384    0.161   -0.171 0.322
+                          15:30 rule + trees (IS pick) top30 + QQQ   1.923  2.281   1.604     0.312    0.326     0.293    0.147   -0.143 0.313
+                      15:30 rule + 3 models (ensemble) top10 + QQQ   1.946  2.312   1.691     0.455    0.445     0.468    0.203   -0.161 0.382
+                      15:30 rule + 3 models (ensemble) top20 + QQQ   1.952  2.291   1.721     0.387    0.373     0.406    0.176   -0.156 0.362
+15:30 rule + 3 models (ensemble) top20 + QQQ | overnight leg alone   1.734  2.122   1.494     0.308    0.298     0.322    0.163   -0.235 0.259
+      15:30 rule + 3 models (ensemble) top20 + QQQ | auctions 2 bp   1.646  1.940   1.443     0.314    0.305     0.326    0.175   -0.166 0.359
+      15:30 rule + 3 models (ensemble) top20 + QQQ | auctions 3 bp   1.338  1.586   1.164     0.244    0.240     0.250    0.175   -0.185 0.356
+   15:30 rule + 3 models (ensemble) top20 + QQQ | first-trade exit   1.929  2.271   1.695     0.381    0.368     0.398    0.175   -0.161 0.361
+                      15:30 rule + 3 models (ensemble) top30 + QQQ   1.837  2.076   1.670     0.331    0.313     0.354    0.163   -0.141 0.351
+
+trials counted: 4906 (variance of IS Sharpe 0.492)
+                                       model  sh_is  sh_oos  dsr_all  exp_max_all  psr_oos>0  psr_oos>1.38  psr_oos>2
+                      15:45 rule top20 + QQQ  2.208   1.569    0.189        2.583      0.999         0.648      0.197
+    15:45 rule + trees (IS pick) top20 + QQQ  2.392   1.927    0.334        2.583      1.000         0.863      0.443
+15:45 rule + 3 models (ensemble) top20 + QQQ  2.327   1.670    0.286        2.583      0.999         0.716      0.260
+                      15:30 rule top20 + QQQ  2.213   1.665    0.192        2.583      1.000         0.716      0.253
+    15:30 rule + trees (IS pick) top20 + QQQ  2.409   1.842    0.351        2.583      1.000         0.819      0.378
+15:30 rule + 3 models (ensemble) top20 + QQQ  2.291   1.721    0.261        2.583      1.000         0.749      0.293
+                                              2018  2019   2020  2021  2022  2023  2024  2025  2026
+15:45 rule top20 + QQQ                        17.7  23.3  109.1  56.6   0.8  22.8  42.6  33.7  22.6
+15:45 rule + trees (IS pick) top20 + QQQ      21.9  28.9   75.1  72.8   1.5  23.3  55.0  53.1  25.9
+15:45 rule + 3 models (ensemble) top20 + QQQ  18.4  29.4   73.8  79.5   3.1  18.8  52.1  48.2  31.6
+15:30 rule top20 + QQQ                        17.1  22.9  113.4  55.8   1.4  25.8  45.0  35.4  25.2
+15:30 rule + trees (IS pick) top20 + QQQ      20.6  34.4   72.7  75.6   0.2  19.1  48.2  46.8  34.9
+15:30 rule + 3 models (ensemble) top20 + QQQ  18.9  31.1   71.1  78.0   2.5  17.3  45.7  42.8  49.4
+SPY                                           -5.0  31.1   18.5  28.6 -18.2  26.2  24.9  17.7  12.3

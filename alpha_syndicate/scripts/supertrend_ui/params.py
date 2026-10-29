@@ -280,7 +280,7 @@ def describe_parameters(values: dict, bt: Optional[BacktestSettings], lv: LiveSe
     if bt is not None:
         add(g, "Entries use only what a live order knows", "yes - live-accurate" if bt.strict else "NO - classic: a flat re-entry may use the entry bar's own close",
             "yes - the last closed bar and the current quote", "shared" if bt.strict else "differs",
-            "" if bt.strict else "About 5% of the classic backtest's trades could not have been placed live, and they were unusually good. Tick 'Live-accurate entries' in the Backtest tab.")
+            "" if bt.strict else "About 13% of the classic backtest's trades have no live equivalent, and they were unusually good (+2.35% on average). Tick 'Live-accurate entries' in the Backtest tab.")
 
     g = "Exits"
     for a in ("riskReward", "price_perc", "trailFactor", "buyback", "riskfactor", "limitfactor"):

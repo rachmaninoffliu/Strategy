@@ -1,0 +1,75 @@
+  30m chain/rolling/win2.0: 40 rule sets done (5s)
+  15m chain/rolling/win2.0: 40 rule sets done (8s)
+  1m reset/fixed/win5.0: 6 rule sets done (10s)
+  30m chain/rolling/win5.0: 40 rule sets done (9s)
+  15m chain/rolling/win5.0: 40 rule sets done (15s)
+  30m chain/rolling/win10.0: 40 rule sets done (13s)
+  5m chain/rolling/win2.0: 40 rule sets done (16s)
+  1m reset/rolling/win5.0: 6 rule sets done (19s)
+  30m chain/fixed/win2.0: 40 rule sets done (18s)
+  15m chain/rolling/win10.0: 40 rule sets done (21s)
+  30m chain/fixed/win5.0: 40 rule sets done (23s)
+  1m chain/fixed/win5.0: 6 rule sets done (28s)
+  30m chain/fixed/win10.0: 40 rule sets done (27s)
+  15m chain/fixed/win2.0: 40 rule sets done (28s)
+  5m chain/rolling/win5.0: 40 rule sets done (29s)
+  30m reset/rolling/win2.0: 40 rule sets done (31s)
+  15m chain/fixed/win5.0: 40 rule sets done (34s)
+  30m reset/rolling/win5.0: 40 rule sets done (35s)
+  15m chain/fixed/win10.0: 40 rule sets done (39s)
+  30m reset/rolling/win10.0: 40 rule sets done (38s)
+  5m chain/rolling/win10.0: 40 rule sets done (40s)
+  30m reset/fixed/win2.0: 40 rule sets done (42s)
+  15m reset/rolling/win2.0: 40 rule sets done (46s)
+  30m reset/fixed/win5.0: 40 rule sets done (46s)
+  30m reset/fixed/win10.0: 40 rule sets done (50s)
+  15m reset/rolling/win5.0: 40 rule sets done (52s)
+  5m chain/fixed/win2.0: 40 rule sets done (55s)
+  15m reset/rolling/win10.0: 40 rule sets done (57s)
+  15m reset/fixed/win2.0: 40 rule sets done (63s)
+  5m chain/fixed/win5.0: 40 rule sets done (64s)
+  15m reset/fixed/win5.0: 40 rule sets done (67s)
+  15m reset/fixed/win10.0: 40 rule sets done (71s)
+  5m chain/fixed/win10.0: 40 rule sets done (72s)
+  5m reset/rolling/win2.0: 40 rule sets done (80s)
+  5m reset/rolling/win5.0: 40 rule sets done (87s)
+  5m reset/rolling/win10.0: 40 rule sets done (94s)
+  5m reset/fixed/win2.0: 40 rule sets done (102s)
+  5m reset/fixed/win5.0: 40 rule sets done (110s)
+  5m reset/fixed/win10.0: 40 rule sets done (117s)
+
+== 1m top 6 by in-sample Sharpe
+spread    beta  win  s_open  s_close  edge_ratio  hl_max  sharpe_is  sharpe_oos  trades_is  net_bp_is  gross_bp_is
+ reset   fixed  5.0     2.0      0.5         0.0    60.0       7.31        8.80      18229       2.97         8.49
+ reset   fixed  5.0     2.0      0.5         1.5    60.0       6.13        7.11       6064       6.87        13.10
+ reset   fixed  5.0     3.0      0.5         0.0    60.0       5.66        6.36       3593       4.88        10.56
+ reset   fixed  5.0     1.5      0.5         1.5    60.0       5.56        6.56       7915       8.28        15.26
+ reset   fixed  5.0     1.5      0.5         0.0    60.0       5.54        7.24      41082       1.77         7.27
+ reset rolling  5.0     2.0      0.5         0.0    60.0       5.45        6.94      11525       2.63         8.14
+
+== 5m top 6 by in-sample Sharpe
+spread  beta  win  s_open  s_close  edge_ratio  hl_max  sharpe_is  sharpe_oos  trades_is  net_bp_is  gross_bp_is
+ reset fixed  5.0     2.0      0.5         0.0    60.0       3.59        3.34       4474       1.89         7.57
+ reset fixed  2.0     2.0      0.5         0.0    60.0       3.59        0.06       6546       1.64         7.67
+ reset fixed 10.0     1.5      0.0         1.5    60.0       3.51        3.54       2528       3.45         9.39
+ reset fixed  2.0     1.5      0.5         1.5    60.0       3.50       -0.08       2971       4.47        12.86
+ reset fixed 10.0     2.0      0.5         0.0    60.0       3.38        3.16       3264       2.12         7.59
+ reset fixed 10.0     1.5      0.0         0.0    60.0       3.35        2.15       5823       1.53         7.05
+
+== 15m top 6 by in-sample Sharpe
+spread  beta  win  s_open  s_close  edge_ratio  hl_max  sharpe_is  sharpe_oos  trades_is  net_bp_is  gross_bp_is
+ reset fixed 10.0     1.5      0.0         1.5    60.0       1.77        0.76        967       1.47         6.85
+ reset fixed  5.0     2.0      0.5         1.5    60.0       1.72        1.36        555       3.06         9.11
+ reset fixed 10.0     1.0      0.5         1.5    60.0       1.64        1.47        561       2.35         8.02
+ reset fixed 10.0     1.5      0.5         1.5    60.0       1.61        1.48        536       2.47         7.99
+ reset fixed  5.0     2.0      0.0         1.5    60.0       1.60        1.28        861       1.81         7.53
+ reset fixed  5.0     1.5      0.5         1.5    60.0       1.54        1.58        668       2.46         8.89
+
+== 30m top 6 by in-sample Sharpe
+spread  beta  win  s_open  s_close  edge_ratio  hl_max  sharpe_is  sharpe_oos  trades_is  net_bp_is  gross_bp_is
+ reset fixed 10.0     1.0      0.0         1.5    60.0       0.65        0.59        392       0.92         6.14
+ reset fixed  5.0     1.0      0.0         1.5    60.0       0.62        0.40        462       0.84         6.65
+ reset fixed  5.0     3.0      0.0         1.5    60.0       0.54        1.49         95       2.13         7.68
+ reset fixed  5.0     3.0      0.5         1.5    60.0       0.46        1.44         79       2.18         7.78
+ reset fixed 10.0     1.0      0.5         1.5    60.0       0.44        1.42        184       1.14         6.34
+ reset fixed 10.0     1.5      0.5         1.5    60.0       0.41        1.42        183       1.08         6.28

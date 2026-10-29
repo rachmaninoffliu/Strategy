@@ -139,7 +139,7 @@ class LiveTab(QWidget):
         g = QGroupBox("Alpaca account")
         f = QGridLayout(g)
         self.account = QComboBox(); self.account.addItems(["Paper account (play money)", "LIVE account (real money)"])
-        self.account.setToolTip("Which Alpaca account the engine reads and (when ARMED) sends orders to. Keys come from ~/.claude.json (alpaca-paper / alpaca-live). Always starts on Paper.")
+        self.account.setToolTip("Which Alpaca account the engine reads and (when ARMED) sends orders to. Keys come from the project's key file 'Alpaca Key.txt' in the project folder (then ALPACA_API_KEY / ALPACA_SECRET_KEY, then ~/.claude.json). Always starts on Paper.")
         self.btn_connect = QPushButton("Connect and test"); self.btn_connect.setObjectName("primary"); self.btn_connect.clicked.connect(self.connect_account)
         self.btn_connect.setToolTip("Read-only check of the keys, the account, the market clock and the SOXL / SOXS instruments. Sends nothing.")
         self.btn_test = QPushButton("Order-path test"); self.btn_test.setEnabled(False)

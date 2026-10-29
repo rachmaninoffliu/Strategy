@@ -1,0 +1,22 @@
+﻿  market: 59 symbols, 2719 sessions (3 s)
+etf k5 @1530 cost 1bp: Sharpe 0.92 (IS 0.99, OOS 0.80) · CAGR 11.7% vs SPY 15.0% · maxDD -21.4% · 4600 trades · win 62% · exposure 69% (4 s)
+etf k5 @1530 cost 2bp: Sharpe 0.78 (IS 0.86, OOS 0.65) · CAGR 9.7% vs SPY 15.0% · maxDD -24.5% · 4600 trades · win 61% · exposure 69% (4 s)
+etf k5 @1530 cost 3bp: Sharpe 0.65 (IS 0.73, OOS 0.50) · CAGR 7.8% vs SPY 15.0% · maxDD -27.5% · 4600 trades · win 60% · exposure 69% (5 s)
+etf k5 @1530 cost 5bp: Sharpe 0.37 (IS 0.47, OOS 0.20) · CAGR 4.0% vs SPY 15.0% · maxDD -34.1% · 4600 trades · win 58% · exposure 69% (6 s)
+  market: 59 symbols, 2719 sessions (3 s)
+etf k5 @1545 cost 1bp: Sharpe 1.26 (IS 1.15, OOS 1.47) · CAGR 16.1% vs SPY 15.0% · maxDD -16.8% · 4605 trades · win 63% · exposure 69% (9 s)
+etf k5 @1545 cost 2bp: Sharpe 1.12 (IS 1.01, OOS 1.32) · CAGR 14.0% vs SPY 15.0% · maxDD -17.6% · 4605 trades · win 62% · exposure 69% (10 s)
+etf k5 @1545 cost 3bp: Sharpe 0.98 (IS 0.88, OOS 1.17) · CAGR 12.0% vs SPY 15.0% · maxDD -18.4% · 4605 trades · win 61% · exposure 69% (10 s)
+etf k5 @1545 cost 5bp: Sharpe 0.70 (IS 0.60, OOS 0.86) · CAGR 8.1% vs SPY 15.0% · maxDD -20.0% · 4605 trades · win 59% · exposure 69% (11 s)
+  market: 59 symbols, 2719 sessions (3 s)
+etf k5 @1600 cost 1bp (LOOK-AHEAD: decided on the close it trades at): Sharpe 1.11 (IS 1.16, OOS 1.03) · CAGR 14.8% vs SPY 15.0% · maxDD -17.5% · 4559 trades · win 64% · exposure 70% (15 s)
+                                                                model  sh_is  sh_oos  sh_all  cagr_is  cagr_oos  cagr    mdd   vol  trades   win  expo  max_expo  beta
+etf k5 @1600 cost 1bp (LOOK-AHEAD: decided on the close it trades at)  1.162   1.027   1.113    0.160     0.129 0.148 -0.175 0.132    4559 0.636 0.697     0.981 0.350
+                                                etf k5 @1545 cost 1bp  1.146   1.469   1.262    0.148     0.183 0.161 -0.168 0.124    4605 0.633 0.693     0.985 0.330
+                                                etf k5 @1545 cost 2bp  1.011   1.319   1.121    0.128     0.161 0.140 -0.176 0.124    4605 0.623 0.693     0.985 0.329
+                                                etf k5 @1530 cost 1bp  0.987   0.800   0.920    0.132     0.093 0.117 -0.214 0.129    4600 0.622 0.690     0.989 0.359
+                                                etf k5 @1545 cost 3bp  0.876   1.167   0.980    0.108     0.140 0.120 -0.184 0.124    4605 0.613 0.693     0.985 0.328
+                                                etf k5 @1530 cost 2bp  0.858   0.651   0.785    0.112     0.074 0.097 -0.245 0.129    4600 0.613 0.690     0.989 0.358
+                                                etf k5 @1530 cost 3bp  0.728   0.501   0.648    0.093     0.054 0.078 -0.275 0.129    4600 0.605 0.690     0.989 0.358
+                                                etf k5 @1545 cost 5bp  0.602   0.863   0.695    0.070     0.099 0.081 -0.200 0.123    4605 0.593 0.693     0.985 0.327
+                                                etf k5 @1530 cost 5bp  0.467   0.198   0.372    0.055     0.017 0.040 -0.341 0.128    4600 0.581 0.690     0.989 0.356

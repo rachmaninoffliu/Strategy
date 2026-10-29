@@ -1,0 +1,5 @@
+﻿234 symbols, 193 with IEX history
+entries since 2023-01-03: SIP 6272, hybrid 6312, same (day, ticker) 5228 = 83.4% of SIP's
+snapshot last price, hybrid vs SIP: median |diff| 1.5 bp, 95th pct 31.5 bp
+IBS hybrid vs SIP: median |diff| 0.008, 95th pct 0.140; IBS<0.2 agreement 97.1%
+since 2023-01-03: SIP Sharpe 1.19 CAGR 17.3% | hybrid Sharpe 1.04 CAGR 14.5%

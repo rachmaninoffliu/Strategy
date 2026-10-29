@@ -1,0 +1,23 @@
+{
+  "name": "Book rule+ML 1530 IEX top8 cap3",
+  "universe": "top150+etf",
+  "minute": 1530,
+  "overnight": true,
+  "k": 8,
+  "ranking": "rule+ml",
+  "trend_filter": true,
+  "min_price": 0.0,
+  "intraday_symbol": "QQQ",
+  "intraday_every": 2,
+  "intraday_lookback": 14,
+  "intraday_trail": true,
+  "intraday_mult": 1.0,
+  "intraday_feed": "iex",
+  "cash_reserve": 0.02,
+  "sector_cap": 3,
+  "cost_auction_bp": 1.0,
+  "half_spread_bp": 0.5,
+  "note": "The traded book. Overnight: the 8 best of the top-150 stocks + 59 ETFs by the rank of today's move plus the rank of the walk-forward ML forecast of the overnight return (one model per year; the first is 2018), at most 3 of one sector, bought in the closing auction and sold in the next opening auction. Intraday: QQQ noise-area breakout every 30 minutes on IEX. Backtest from 2018.",
+  "_shadow": null,
+  "_auction_orders": "market"
+}

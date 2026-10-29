@@ -86,10 +86,10 @@ def run_preflight(values: dict, ls: LiveSettings, log: Callable[[str], None] = l
     log("checking credentials …")
     try:
         k, s = creds_fn(ls.paper)
-        add("Account", "API keys", PASS, f"keys for the {acct_name} found in ~/.claude.json", "creds")
+        add("Account", "API keys", PASS, f"keys for the {acct_name} found ({__import__('alpaca_keys').describe(ls.paper)})", "creds")
     except Exception as exc:                                    # noqa: BLE001
         k = s = None
-        add("Account", "API keys", FAIL, f"{exc}. Add the keys of the {acct_name} to the alpaca-{'paper' if ls.paper else 'live'} entry in ~/.claude.json.", "creds")
+        add("Account", "API keys", FAIL, f"{exc}. Put the keys of the {acct_name} in 'Alpaca Key.txt' (lines 'Key ID:' / 'Secret Key:') in the project folder.", "creds")
     if k:
         log("connecting to Alpaca …")
         try:

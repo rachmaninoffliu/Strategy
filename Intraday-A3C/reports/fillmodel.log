@@ -1,0 +1,5 @@
+Sharpe 2019-26, ens k=3, no trading before 10:00, cost = half quoted spread + 0.25 bp per lot
+TSLA: a=0:  1.35  a=0.25:  1.35  a=0.5:  1.35  a=0.75:  1.36  a=1:  1.36 | move from the signal close to the next open, against us: -0.03 bp (n=18,071)
+SMH: a=0:  1.10  a=0.25:  1.09  a=0.5:  1.09  a=0.75:  1.09  a=1:  1.09 | move from the signal close to the next open, against us: +0.00 bp (n=12,689)
+NVDA: a=0:  0.89  a=0.25:  0.89  a=0.5:  0.90  a=0.75:  0.90  a=1:  0.90 | move from the signal close to the next open, against us: -0.06 bp (n=16,823)
+basket TSLA+SMH+NVDA, inverse-vol weights: a=0:  1.54  a=0.25:  1.54  a=0.5:  1.54  a=0.75:  1.54  a=1:  1.55

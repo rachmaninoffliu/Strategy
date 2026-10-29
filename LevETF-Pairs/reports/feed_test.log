@@ -1,0 +1,30 @@
+preset: Premium-to-reset reversion, 5-min (research default)
+
+=== 5-minute bars (IEX history starts 2020-07-27)
+TQQQ/QQQ: sessions 1,523 | empty IEX bars: leveraged leg 4.1%, 1x leg 0.1% | s-score corr IEX vs SIP 0.288 | same side when |s_sip| > 1.5: 70.7% | median |s diff| 0.79
+SOXL/SMH: sessions 1,314 | empty IEX bars: leveraged leg 5.1%, 1x leg 6.5% | s-score corr IEX vs SIP 0.459 | same side when |s_sip| > 1.5: 88.6% | median |s diff| 0.54
+SPXL/SPY: sessions 1,134 | empty IEX bars: leveraged leg 21.9%, 1x leg 0.0% | s-score corr IEX vs SIP 0.236 | same side when |s_sip| > 1.5: 62.7% | median |s diff| 0.84
+  SIP signal, SIP marks    Sharpe  -4.29 | round trips    853 | gross +0.78 bp, net -4.64 bp per trip
+  IEX signal, SIP marks    Sharpe -13.69 | round trips  6,915 | gross +0.13 bp, net -5.72 bp per trip
+
+=== 15-minute bars (IEX history starts 2020-07-27)
+TQQQ/QQQ: sessions 1,551 | empty IEX bars: leveraged leg 1.1%, 1x leg 0.0% | s-score corr IEX vs SIP 0.277 | same side when |s_sip| > 1.5: 69.0% | median |s diff| 0.82
+SOXL/SMH: sessions 1,450 | empty IEX bars: leveraged leg 3.8%, 1x leg 1.1% | s-score corr IEX vs SIP 0.397 | same side when |s_sip| > 1.5: 88.2% | median |s diff| 0.58
+SPXL/SPY: sessions 1,484 | empty IEX bars: leveraged leg 10.4%, 1x leg 0.0% | s-score corr IEX vs SIP 0.204 | same side when |s_sip| > 1.5: 63.6% | median |s diff| 0.87
+  SIP signal, SIP marks    Sharpe  -3.43 | round trips    324 | gross +0.31 bp, net -4.94 bp per trip
+  IEX signal, SIP marks    Sharpe -10.17 | round trips  3,179 | gross +0.13 bp, net -5.92 bp per trip
+
+=== 30-minute bars (IEX history starts 2020-07-27)
+TQQQ/QQQ: sessions 1,551 | empty IEX bars: leveraged leg 0.3%, 1x leg 0.0% | s-score corr IEX vs SIP 0.265 | same side when |s_sip| > 1.5: 69.2% | median |s diff| 0.89
+SOXL/SMH: sessions 1,505 | empty IEX bars: leveraged leg 2.8%, 1x leg 0.2% | s-score corr IEX vs SIP 0.566 | same side when |s_sip| > 1.5: 88.2% | median |s diff| 0.60
+SPXL/SPY: sessions 1,528 | empty IEX bars: leveraged leg 4.3%, 1x leg 0.0% | s-score corr IEX vs SIP 0.201 | same side when |s_sip| > 1.5: 61.7% | median |s diff| 0.91
+  SIP signal, SIP marks    Sharpe  -1.84 | round trips    117 | gross +0.66 bp, net -4.64 bp per trip
+  IEX signal, SIP marks    Sharpe  -6.69 | round trips  1,425 | gross +0.51 bp, net -5.50 bp per trip
+
+=== 1-minute bars: share of empty IEX minutes
+TQQQ: IEX has a bar in 75.5% of the minutes the consolidated tape has one
+QQQ: IEX has a bar in 91.8% of the minutes the consolidated tape has one
+SOXL: IEX has a bar in 64.3% of the minutes the consolidated tape has one
+SMH: IEX has a bar in 58.6% of the minutes the consolidated tape has one
+SPXL: IEX has a bar in 30.5% of the minutes the consolidated tape has one
+SPY: IEX has a bar in 98.0% of the minutes the consolidated tape has one

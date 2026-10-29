@@ -12,7 +12,9 @@ import base64
 import json
 import math
 import os
+import random
 import re
+import threading
 import time
 import uuid
 from dataclasses import dataclass
@@ -62,6 +64,50 @@ class ApiError(Exception):
         super().__init__(f"HTTP {status}: {message}")
         self.status = status
         self.message = message
+
+
+class RateLimiter:
+    """Token bucket shared by every request this process sends to one Kalshi API area: it spaces requests out instead of letting a retry loop, a refresh or a burst of calls push the app over Kalshi's limit
+    (HTTP 429).  ``acquire`` waits at most ``max_wait`` seconds and then lets the request go anyway - the limiter must never hold up an order for long."""
+
+    def __init__(self, rate: float, burst: int):
+        self.rate, self.burst = float(rate), float(burst)
+        self._tokens, self._t, self._lock = float(burst), time.monotonic(), threading.Lock()
+
+    def acquire(self, max_wait: float = 1.0) -> float:
+        start = time.monotonic()
+        while True:
+            with self._lock:
+                now = time.monotonic()
+                self._tokens = min(self.burst, self._tokens + (now - self._t) * self.rate)
+                self._t = now
+                if self._tokens >= 1.0:
+                    self._tokens -= 1.0
+                    return now - start
+                need = (1.0 - self._tokens) / self.rate
+            if time.monotonic() - start + need > max_wait:
+                return time.monotonic() - start
+            time.sleep(need)
+
+
+PUBLIC_LIMITER = RateLimiter(4.0, 4)         # market data (order book, quotes, results): Kalshi's unauthenticated limit bites around 6 requests/s, shared with anything else on this IP
+PRIVATE_LIMITER = RateLimiter(8.0, 6)        # signed account / order requests
+RETRY_STATUS = (429, 502, 503, 504)          # transient: worth another try for a read
+
+
+def _loopback(url: str) -> bool:
+    return url.startswith(("http://127.0.0.1", "http://localhost"))          # the test mock: no limiter, no waiting
+
+
+def _retry_delay(resp, attempt: int, cap: float = 3.0) -> float:
+    """How long to wait before re-sending after a transient error: Kalshi's Retry-After when it sends one, else 0.6 s, 1.2 s ... plus a little jitter."""
+    try:
+        ra = float(resp.headers.get("Retry-After", ""))
+        if ra >= 0:
+            return min(cap, ra) + random.uniform(0.0, 0.1)
+    except (TypeError, ValueError):
+        pass
+    return min(cap, 0.6 * (2 ** attempt)) + random.uniform(0.0, 0.2)
 
 
 def cent_floor(x: float) -> float:
@@ -125,21 +171,25 @@ class KalshiQuotes:
         self.timeout = timeout
         self.base = base                              # None = module BASE (production)
         self._tickers: dict[int, str] = {}
+        self._miss: dict[int, float] = {}             # window -> do not look it up again before this (monotonic) time
 
     def _url(self, path: str) -> str:
         return (self.base or BASE) + path
 
     def _get(self, path: str, params: Optional[dict] = None) -> Optional[dict]:
+        url = self._url(path)
         for i in range(3):
+            if not _loopback(url):
+                PUBLIC_LIMITER.acquire(1.0)
             try:
-                r = self.s.get(self._url(path), params=params, timeout=self.timeout)
+                r = self.s.get(url, params=params, timeout=self.timeout)
             except requests.RequestException:
                 time.sleep(0.3)
                 continue
             if r.status_code == 200:
                 return r.json()
             if r.status_code == 429:
-                time.sleep(0.7 * (i + 1))
+                time.sleep(_retry_delay(r, i, cap=1.5))
                 continue
             return None
         return None
@@ -147,12 +197,16 @@ class KalshiQuotes:
     def window_ticker(self, open_ts: int) -> Optional[str]:
         if open_ts in self._tickers:
             return self._tickers[open_ts]
+        if time.monotonic() < self._miss.get(open_ts, 0.0):
+            return None                               # looked a moment ago and it was not there: do not ask again at once
         d = self._get("/markets", {"series_ticker": SERIES, "status": "open", "limit": 6})
         stamp = datetime.fromtimestamp(open_ts, timezone.utc).strftime("%Y-%m-%dT%H:%M")
         for m in (d or {}).get("markets", []):
             if str(m.get("open_time", "")).startswith(stamp):
                 self._tickers[open_ts] = m["ticker"]
                 return m["ticker"]
+        self._miss = {k: v for k, v in self._miss.items() if v > time.monotonic()}
+        self._miss[open_ts] = time.monotonic() + 1.0
         return None
 
     @staticmethod
@@ -193,6 +247,10 @@ class KalshiQuotes:
         b = self.book(ticker)
         if b is not None:
             return b.top()
+        return self.market_quote(ticker)
+
+    def market_quote(self, ticker: str) -> Optional[tuple[float, float]]:
+        """The (lagging) quote fields of the market object - only the fallback when the order book could not be read."""
         d = self._get(f"/markets/{ticker}")
         m = (d or {}).get("market")
         if not m:
@@ -206,8 +264,11 @@ class KalshiQuotes:
         """Contracts traded in the one-minute candle that ENDED at ``minute`` of the window (the last completed minute at the decision instant), or None if unavailable.
         Same definition as the historical candle volume the backtest uses (candle 'minute' = its end offset)."""
         end = int(open_ts) + 60 * int(minute)
+        url = self._url(f"/series/{SERIES}/markets/{ticker}/candlesticks")
+        if not _loopback(url):
+            PUBLIC_LIMITER.acquire(0.3)
         try:                                                  # one short attempt: this sits on the order path, so it must not hold the order back with retries
-            r = self.s.get(self._url(f"/series/{SERIES}/markets/{ticker}/candlesticks"), params={"start_ts": end - 60, "end_ts": end, "period_interval": 1}, timeout=min(self.timeout, 2.5))
+            r = self.s.get(url, params={"start_ts": end - 60, "end_ts": end, "period_interval": 1}, timeout=min(self.timeout, 2.5))
             d = r.json() if r.status_code == 200 else None
         except (requests.RequestException, ValueError):
             return None
@@ -310,24 +371,39 @@ class KalshiClient:
         self.skew_s: Optional[float] = None            # server clock - local clock (seconds), from the Date header
 
     def _req(self, method: str, path: str, params: Optional[dict] = None, body: Optional[dict] = None) -> dict:
+        """One signed request.  READS are re-sent (up to 3 tries, with Retry-After / backoff) on 429, 502-504 and network errors; ORDERS and other writes are sent exactly once - a 429 on a write is reported
+        as such (the order was not placed) and what to do next is the caller's decision.  Every request first takes a slot from the process-wide limiter."""
         url = self.base + path
-        headers = self.signer.headers(method, urlparse(url).path)
         data = json.dumps(body, separators=(",", ":")) if body is not None else None
-        t0 = time.time()
-        try:
-            r = self.s.request(method, url, params=params, headers=headers, data=data, timeout=self.timeout)
-        except requests.RequestException as e:
-            raise ApiError(0, f"network error ({type(e).__name__})") from None
-        d = r.headers.get("Date")
-        if d:
+        tries = 3 if method.upper() == "GET" else 1
+        for attempt in range(tries):
+            if not _loopback(url):
+                PRIVATE_LIMITER.acquire(1.0 if method.upper() == "GET" else 0.25)
+            headers = self.signer.headers(method, urlparse(url).path)                      # a fresh timestamp and signature for every try
+            t0 = time.time()
             try:
-                self.skew_s = parsedate_to_datetime(d).timestamp() - (t0 + time.time()) / 2
-            except Exception:                          # noqa: BLE001
-                pass
+                r = self.s.request(method, url, params=params, headers=headers, data=data, timeout=self.timeout)
+            except requests.RequestException as e:
+                if attempt + 1 < tries:
+                    time.sleep(0.4 * (attempt + 1))
+                    continue
+                raise ApiError(0, f"network error ({type(e).__name__})") from None
+            d = r.headers.get("Date")
+            if d:
+                try:
+                    self.skew_s = parsedate_to_datetime(d).timestamp() - (t0 + time.time()) / 2
+                except Exception:                          # noqa: BLE001
+                    pass
+            if r.status_code in RETRY_STATUS and attempt + 1 < tries:
+                time.sleep(_retry_delay(r, attempt))
+                continue
+            break
         if r.status_code >= 400:
             msg = r.text[:300].replace("\n", " ")
             if r.status_code == 401:
                 msg = "unauthorized - check the Key ID, the key file, the environment (demo and production keys differ) and that this PC's clock is correct"
+            elif r.status_code == 429:
+                msg += " (Kalshi's rate limit: the app already spaces out and re-sends its reads; if this keeps happening, another program, a second copy of this app or a data download is using the same key / IP)"
             raise ApiError(r.status_code, msg)
         try:
             return r.json() if r.content else {}

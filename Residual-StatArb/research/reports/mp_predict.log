@@ -1,0 +1,204 @@
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:47: RuntimeWarning: All-NaN slice encountered
+  hi45[t] = np.nanmax(seg, 1)
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:48: RuntimeWarning: All-NaN slice encountered
+  lo45[t] = np.nanmin(seg, 1)
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:65: RuntimeWarning: Mean of empty slice
+  "m_breadth": np.nanmean(np.where(U, d45 > 0, np.nan), 1), "m_disp": np.nanstd(np.where(U, d45, np.nan), 1), "m_dow": cx.dates.dayofweek.to_numpy().astype(float),
+C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\site-packages\numpy\lib\nanfunctions.py:1879: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+07:40:01 features: 473,264 rows, 2717 sessions
+07:40:02   y_on_ridge_rank 2018: trained on 74,462 rows
+07:40:02   y_on_ridge_rank 2019: trained on 119,557 rows
+07:40:03   y_on_ridge_rank 2020: trained on 165,121 rows
+07:40:03   y_on_ridge_rank 2021: trained on 210,695 rows
+07:40:03   y_on_ridge_rank 2022: trained on 256,694 rows
+07:40:04   y_on_ridge_rank 2023: trained on 302,058 rows
+07:40:04   y_on_ridge_rank 2024: trained on 347,010 rows
+07:40:05   y_on_ridge_rank 2025: trained on 392,129 rows
+07:40:05   y_on_ridge_rank 2026: trained on 437,090 rows
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:155: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  ic = pd.DataFrame({"t": df.t[ok], "p": pr[ok], "y": df[target][ok]}).groupby("t").apply(lambda g: g.p.corr(g.y, method="spearman"))
+07:40:09 P on ridge rank-target: IC is 0.0645 oos 0.0470
+C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\site-packages\joblib\externals\loky\backend\context.py:136: UserWarning: Could not find the number of physical cores for the following reason:
+[WinError 2] The system cannot find the file specified
+Returning the number of logical cores instead. You can silence this warning by setting LOKY_MAX_CPU_COUNT to the number of cores you want to use.
+  warnings.warn(
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\site-packages\joblib\externals\loky\backend\context.py", line 257, in _count_physical_cores
+    cpu_info = subprocess.run(
+               ^^^^^^^^^^^^^^^
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\xinyu\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1538, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+07:40:17   y_on_hgb_rank 2018: trained on 74,462 rows
+07:40:25   y_on_hgb_rank 2019: trained on 119,557 rows
+07:40:34   y_on_hgb_rank 2020: trained on 165,121 rows
+07:40:43   y_on_hgb_rank 2021: trained on 210,695 rows
+07:40:54   y_on_hgb_rank 2022: trained on 256,694 rows
+07:41:04   y_on_hgb_rank 2023: trained on 302,058 rows
+07:41:14   y_on_hgb_rank 2024: trained on 347,010 rows
+07:41:25   y_on_hgb_rank 2025: trained on 392,129 rows
+07:41:34   y_on_hgb_rank 2026: trained on 437,090 rows
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:155: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  ic = pd.DataFrame({"t": df.t[ok], "p": pr[ok], "y": df[target][ok]}).groupby("t").apply(lambda g: g.p.corr(g.y, method="spearman"))
+07:41:38 P on hgb rank-target: IC is 0.0557 oos 0.0394
+07:41:45   y_on_hgb_raw 2018: trained on 74,462 rows
+07:41:52   y_on_hgb_raw 2019: trained on 119,557 rows
+07:42:00   y_on_hgb_raw 2020: trained on 165,121 rows
+07:42:13   y_on_hgb_raw 2021: trained on 210,695 rows
+07:42:25   y_on_hgb_raw 2022: trained on 256,694 rows
+07:42:37   y_on_hgb_raw 2023: trained on 302,058 rows
+07:42:50   y_on_hgb_raw 2024: trained on 347,010 rows
+07:43:05   y_on_hgb_raw 2025: trained on 392,129 rows
+07:43:28   y_on_hgb_raw 2026: trained on 437,090 rows
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:155: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  ic = pd.DataFrame({"t": df.t[ok], "p": pr[ok], "y": df[target][ok]}).groupby("t").apply(lambda g: g.p.corr(g.y, method="spearman"))
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:164: RuntimeWarning: Mean of empty slice
+  mean_top = np.nanmean(np.where(sel, P, np.nan), 1)
+07:43:38 P on hgb raw-target: IC is 0.0206 oos 0.0212
+07:43:52   y_on_hgbraw_rank 2018: trained on 74,462 rows
+07:44:07   y_on_hgbraw_rank 2019: trained on 119,557 rows
+07:44:24   y_on_hgbraw_rank 2020: trained on 165,121 rows
+07:44:40   y_on_hgbraw_rank 2021: trained on 210,695 rows
+07:44:58   y_on_hgbraw_rank 2022: trained on 256,694 rows
+07:45:13   y_on_hgbraw_rank 2023: trained on 302,058 rows
+07:45:30   y_on_hgbraw_rank 2024: trained on 347,010 rows
+07:45:50   y_on_hgbraw_rank 2025: trained on 392,129 rows
+07:46:09   y_on_hgbraw_rank 2026: trained on 437,090 rows
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:155: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  ic = pd.DataFrame({"t": df.t[ok], "p": pr[ok], "y": df[target][ok]}).groupby("t").apply(lambda g: g.p.corr(g.y, method="spearman"))
+07:46:13 P on hgb_raw rank-target: IC is 0.0572 oos 0.0438
+07:46:22   y_on_hgbraw_raw 2018: trained on 74,462 rows
+07:46:33   y_on_hgbraw_raw 2019: trained on 119,557 rows
+07:46:43   y_on_hgbraw_raw 2020: trained on 165,121 rows
+07:46:54   y_on_hgbraw_raw 2021: trained on 210,695 rows
+07:47:06   y_on_hgbraw_raw 2022: trained on 256,694 rows
+07:47:19   y_on_hgbraw_raw 2023: trained on 302,058 rows
+07:47:33   y_on_hgbraw_raw 2024: trained on 347,010 rows
+07:47:47   y_on_hgbraw_raw 2025: trained on 392,129 rows
+07:48:02   y_on_hgbraw_raw 2026: trained on 437,090 rows
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:155: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  ic = pd.DataFrame({"t": df.t[ok], "p": pr[ok], "y": df[target][ok]}).groupby("t").apply(lambda g: g.p.corr(g.y, method="spearman"))
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:164: RuntimeWarning: Mean of empty slice
+  mean_top = np.nanmean(np.where(sel, P, np.nan), 1)
+07:48:10 P on hgb_raw raw-target: IC is 0.0324 oos 0.0142
+07:48:10   y_cc_ridge_rank 2018: trained on 74,462 rows
+07:48:11   y_cc_ridge_rank 2019: trained on 119,557 rows
+07:48:11   y_cc_ridge_rank 2020: trained on 165,121 rows
+07:48:12   y_cc_ridge_rank 2021: trained on 210,695 rows
+07:48:13   y_cc_ridge_rank 2022: trained on 256,694 rows
+07:48:13   y_cc_ridge_rank 2023: trained on 302,058 rows
+07:48:14   y_cc_ridge_rank 2024: trained on 347,010 rows
+07:48:15   y_cc_ridge_rank 2025: trained on 392,129 rows
+07:48:15   y_cc_ridge_rank 2026: trained on 437,090 rows
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:155: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  ic = pd.DataFrame({"t": df.t[ok], "p": pr[ok], "y": df[target][ok]}).groupby("t").apply(lambda g: g.p.corr(g.y, method="spearman"))
+07:48:19 P cc ridge rank-target: IC is 0.0251 oos 0.0256
+07:48:29   y_cc_hgb_rank 2018: trained on 74,462 rows
+07:48:40   y_cc_hgb_rank 2019: trained on 119,557 rows
+07:48:50   y_cc_hgb_rank 2020: trained on 165,121 rows
+07:49:02   y_cc_hgb_rank 2021: trained on 210,695 rows
+07:49:13   y_cc_hgb_rank 2022: trained on 256,694 rows
+07:49:26   y_cc_hgb_rank 2023: trained on 302,058 rows
+07:49:39   y_cc_hgb_rank 2024: trained on 347,010 rows
+07:49:53   y_cc_hgb_rank 2025: trained on 392,129 rows
+07:50:07   y_cc_hgb_rank 2026: trained on 437,090 rows
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:155: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  ic = pd.DataFrame({"t": df.t[ok], "p": pr[ok], "y": df[target][ok]}).groupby("t").apply(lambda g: g.p.corr(g.y, method="spearman"))
+07:50:11 P cc hgb rank-target: IC is 0.0198 oos 0.0276
+07:50:25   y_cc_hgb_raw 2018: trained on 74,462 rows
+07:50:37   y_cc_hgb_raw 2019: trained on 119,557 rows
+07:50:54   y_cc_hgb_raw 2020: trained on 165,121 rows
+07:51:09   y_cc_hgb_raw 2021: trained on 210,695 rows
+07:51:19   y_cc_hgb_raw 2022: trained on 256,694 rows
+07:51:31   y_cc_hgb_raw 2023: trained on 302,058 rows
+07:51:43   y_cc_hgb_raw 2024: trained on 347,010 rows
+07:51:55   y_cc_hgb_raw 2025: trained on 392,129 rows
+07:52:07   y_cc_hgb_raw 2026: trained on 437,090 rows
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:155: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  ic = pd.DataFrame({"t": df.t[ok], "p": pr[ok], "y": df[target][ok]}).groupby("t").apply(lambda g: g.p.corr(g.y, method="spearman"))
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:164: RuntimeWarning: Mean of empty slice
+  mean_top = np.nanmean(np.where(sel, P, np.nan), 1)
+07:52:12 P cc hgb raw-target: IC is 0.0105 oos 0.0095
+07:52:21   y_cc_hgbraw_rank 2018: trained on 74,462 rows
+07:52:32   y_cc_hgbraw_rank 2019: trained on 119,557 rows
+07:52:43   y_cc_hgbraw_rank 2020: trained on 165,121 rows
+07:52:57   y_cc_hgbraw_rank 2021: trained on 210,695 rows
+07:53:12   y_cc_hgbraw_rank 2022: trained on 256,694 rows
+07:53:26   y_cc_hgbraw_rank 2023: trained on 302,058 rows
+07:53:43   y_cc_hgbraw_rank 2024: trained on 347,010 rows
+07:54:01   y_cc_hgbraw_rank 2025: trained on 392,129 rows
+07:54:17   y_cc_hgbraw_rank 2026: trained on 437,090 rows
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:155: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  ic = pd.DataFrame({"t": df.t[ok], "p": pr[ok], "y": df[target][ok]}).groupby("t").apply(lambda g: g.p.corr(g.y, method="spearman"))
+07:54:20 P cc hgb_raw rank-target: IC is 0.0244 oos 0.0249
+07:54:31   y_cc_hgbraw_raw 2018: trained on 74,462 rows
+07:54:44   y_cc_hgbraw_raw 2019: trained on 119,557 rows
+07:54:59   y_cc_hgbraw_raw 2020: trained on 165,121 rows
+07:55:13   y_cc_hgbraw_raw 2021: trained on 210,695 rows
+07:55:33   y_cc_hgbraw_raw 2022: trained on 256,694 rows
+07:55:57   y_cc_hgbraw_raw 2023: trained on 302,058 rows
+07:56:17   y_cc_hgbraw_raw 2024: trained on 347,010 rows
+07:56:33   y_cc_hgbraw_raw 2025: trained on 392,129 rows
+07:56:50   y_cc_hgbraw_raw 2026: trained on 437,090 rows
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:155: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  ic = pd.DataFrame({"t": df.t[ok], "p": pr[ok], "y": df[target][ok]}).groupby("t").apply(lambda g: g.p.corr(g.y, method="spearman"))
+C:\Users\xinyu\PycharmProjects\pythonProject\Residual-StatArb\research\mp_predict.py:164: RuntimeWarning: Mean of empty slice
+  mean_top = np.nanmean(np.where(sel, P, np.nan), 1)
+07:56:56 P cc hgb_raw raw-target: IC is 0.0144 oos -0.0007
+target   model  rank_target  ic_is  ic_oos  icir_is  icir_oos
+  y_on   ridge         True 0.0645  0.0470   4.0156    2.5058
+  y_on     hgb         True 0.0557  0.0394   3.7623    2.3805
+  y_on     hgb        False 0.0206  0.0212   1.3815    1.3141
+  y_on hgb_raw         True 0.0572  0.0438   3.8894    2.8186
+  y_on hgb_raw        False 0.0324  0.0142   2.3044    0.9095
+  y_cc   ridge         True 0.0251  0.0256   1.6223    1.7015
+  y_cc     hgb         True 0.0198  0.0276   1.5326    2.1457
+  y_cc     hgb        False 0.0105  0.0095   0.7678    0.6779
+  y_cc hgb_raw         True 0.0244  0.0249   1.8804    1.9549
+  y_cc hgb_raw        False 0.0144 -0.0007   1.1547   -0.0516
+                                           label  sh_all  sh_is  sh_oos  cagr_all  cagr_is  cagr_oos  vol_all  mdd_all  beta
+              REF top150+etf d45 top20 spy_trend   1.657  2.038   1.319     0.271    0.294     0.241    0.152   -0.223 0.210
+            REF top150+etf res45 top20 spy_trend   1.693  2.031   1.409     0.283    0.295     0.268    0.154   -0.229 0.225
+              REF top150+etf d45 top10 spy_trend   1.618  1.988   1.276     0.335    0.372     0.289    0.190   -0.305 0.240
+   P on hgb_raw rank-target top10 gate=spy_trend   1.692  1.875   1.602     0.364    0.323     0.420    0.195   -0.296 0.281
+   P on hgb_raw rank-target top20 gate=spy_trend   1.675  1.849   1.597     0.299    0.262     0.349    0.164   -0.232 0.260
+       P on hgb rank-target top10 gate=spy_trend   1.861  1.842   1.978     0.419    0.307     0.581    0.199   -0.154 0.297
+                REF top150 vsurp top20 spy_trend   1.734  1.818   1.675     0.229    0.212     0.252    0.123   -0.169 0.185
+       P on hgb rank-target top20 gate=spy_trend   1.672  1.776   1.699     0.311    0.241     0.410    0.171   -0.181 0.270
+        P on hgb rank-target top5 gate=spy_trend   1.856  1.658   2.112     0.499    0.328     0.758    0.233   -0.233 0.309
+    P on hgb_raw rank-target top5 gate=spy_trend   1.595  1.639   1.620     0.394    0.321     0.496    0.224   -0.387 0.294
+    P on hgb_raw raw-target top10 gate=spy_trend   1.366  1.597   1.190     0.303    0.303     0.303    0.210   -0.275 0.309
+    P on hgb_raw raw-target top20 gate=spy_trend   1.263  1.519   1.060     0.229    0.237     0.219    0.176   -0.254 0.286
+      P on ridge rank-target top5 gate=spy_trend   1.441  1.512   1.445     0.387    0.318     0.482    0.248   -0.281 0.342
+        P on hgb raw-target top20 gate=spy_trend   1.228  1.511   1.062     0.213    0.206     0.222    0.169   -0.266 0.271
+        P on hgb raw-target top10 gate=spy_trend   1.221  1.398   1.135     0.256    0.231     0.289    0.203   -0.360 0.301
+     P on hgb_raw raw-target top5 gate=spy_trend   1.295  1.397   1.228     0.345    0.322     0.377    0.254   -0.364 0.319
+            P on hgb rank-target top10 gate=none   1.633  1.368   1.935     0.427    0.306     0.605    0.235   -0.352 0.593
+             P on hgb rank-target top5 gate=none   1.682  1.326   2.083     0.523    0.343     0.796    0.272   -0.419 0.617
+     P on ridge rank-target top20 gate=spy_trend   1.280  1.316   1.321     0.264    0.206     0.345    0.198   -0.245 0.316
+           P on ridge rank-target top5 gate=none   1.285  1.285   1.292     0.402    0.375     0.439    0.298   -0.379 0.720
+     P on ridge rank-target top10 gate=spy_trend   1.336  1.280   1.452     0.311    0.224     0.434    0.221   -0.261 0.328
+        P on hgb_raw rank-target top20 gate=none   1.402  1.260   1.574     0.303    0.252     0.373    0.204   -0.372 0.560
+        P on hgb_raw rank-target top10 gate=none   1.418  1.256   1.610     0.357    0.284     0.460    0.235   -0.507 0.581
+            P on hgb rank-target top20 gate=none   1.397  1.215   1.605     0.304    0.229     0.410    0.205   -0.318 0.554
+          P on ridge rank-target top20 gate=none   1.236  1.215   1.268     0.307    0.276     0.350    0.240   -0.346 0.650
+         P on hgb_raw rank-target top5 gate=none   1.391  1.202   1.612     0.400    0.307     0.532    0.268   -0.588 0.597
+          P on ridge rank-target top10 gate=none   1.249  1.145   1.374     0.346    0.285     0.430    0.266   -0.344 0.680
+         P on hgb_raw raw-target top20 gate=none   1.131  1.135   1.128     0.250    0.242     0.260    0.218   -0.400 0.605
+         P on hgb_raw raw-target top10 gate=none   1.151  1.108   1.205     0.299    0.271     0.338    0.256   -0.493 0.649
+P on hgb_raw raw-target top20 gate=forecast>cost   1.185  1.107   1.282     0.248    0.213     0.296    0.205   -0.375 0.512
+P on hgb_raw raw-target top10 gate=forecast>cost   1.162  1.094   1.245     0.293    0.253     0.347    0.248   -0.456 0.594
+             P on hgb raw-target top10 gate=none   1.068  1.063   1.076     0.275    0.261     0.292    0.259   -0.565 0.688
+         P on hgb raw-target top5 gate=spy_trend   1.109  1.056   1.199     0.281    0.212     0.377    0.252   -0.414 0.325
+             P on hgb raw-target top20 gate=none   1.044  1.037   1.054     0.226    0.214     0.241    0.218   -0.433 0.616
+          P on hgb_raw raw-target top5 gate=none   1.104  0.934   1.305     0.335    0.255     0.449    0.303   -0.619 0.680
+              P on hgb raw-target top5 gate=none   1.014  0.903   1.151     0.306    0.254     0.379    0.311   -0.664 0.738
+    P on hgb raw-target top20 gate=forecast>cost   1.013  0.896   1.154     0.205    0.168     0.256    0.205   -0.392 0.532
+ P on hgb_raw raw-target top5 gate=forecast>cost   1.086  0.862   1.348     0.322    0.224     0.462    0.297   -0.590 0.649
+          P cc ridge rank-target top20 gate=none   1.035  0.843   1.310     0.314    0.244     0.412    0.310   -0.371 1.290
+    P on hgb raw-target top10 gate=forecast>cost   0.969  0.823   1.143     0.230    0.178     0.302    0.245   -0.543 0.608

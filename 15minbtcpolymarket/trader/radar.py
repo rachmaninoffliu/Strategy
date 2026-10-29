@@ -19,6 +19,7 @@ import numpy as np
 import pandas as pd
 
 from .data import extract_signals
+from .evfilter import DEFAULT_MIN_N, TrailingEVStats
 from .fees import fee_per_contract
 from .probmodel import SignalStats
 from .strategy import StrategyParams
@@ -26,6 +27,12 @@ from .strategy import StrategyParams
 SCOUT_HALFLIFE = 14.0
 SCOUT_HOUR_K = 30.0
 SCOUT_PRIOR_N = 20.0
+LUCK_Z = 2.9          # one hour out of 24 searched: its raw trailing EV needs z = EV / se of about 2.9 (Bonferroni, 5%) before it can be told from luck
+
+EVIDENCE_NOTE = ("Why the 14 d / 28 d columns can look good while the engine estimate does not: an hour yields only ~1 signal a day (se about 8-11c), so among 24 hours several look good by luck. "
+                 "Walk-forward test (ev_walkforward.py, Mar-Oct 2026, 4,788 hour-days, point-in-time): an hour's raw trailing EV had ~0 correlation with what it earned in the NEXT 14 days "
+                 "(top fifth -3.7c, bottom fifth -4.2c); hours that showed +8c or more on BOTH 14 d and 28 d (average +14.7c / +20.3c) then earned -2.1c - the shrunk engine estimate for them (-1.6c) was close, the raw average was ~16c off. "
+                 "The estimate is deliberately low; the raw dots are shown for transparency, not as a signal.")
 
 
 @dataclass(frozen=True)
@@ -44,6 +51,8 @@ class RadarConfig:
     near_k: float = 0.0
     near_width: int = 2
     window_days: int = 28
+    ev_rules: tuple = ()                 # EV-regime filter of the preset (trader.evfilter): when set, 'TRADE' means the hour passes every rule and the estimate column shows the filter's own EV
+    ev_min_n: int = DEFAULT_MIN_N
 
 
 def _net_pnl(s: pd.DataFrame, cfg: RadarConfig) -> np.ndarray:
@@ -59,7 +68,7 @@ def _stats(pnl: np.ndarray, s: pd.DataFrame) -> dict:
 
 
 def hour_radar(rows: pd.DataFrame, now: float, cfg: RadarConfig = RadarConfig(), active_hours: tuple = ()) -> pd.DataFrame:
-    """One row per UTC hour (0-23) plus an 'ALL' row.  Columns: hour, active, n, win, price, ev (net, trailing window), se, n14, ev14, est_edge, status.
+    """One row per UTC hour (0-23) plus an 'ALL' row.  Columns: hour, active, n, win, price, ev (net, trailing window), se, z (= ev / se), n14, ev14, est_edge, status.
     est_edge = what the engine would use: net edge (p - all-in cost) of the shrunk, decayed estimate at the middle of the band.  status: TRADE / WATCH / cold."""
     p = StrategyParams(hours=tuple(range(24)), minutes=cfg.minutes, cost_min=cfg.cost_min, cost_max=cfg.cost_max, legs=("DOG",))
     sig = extract_signals(rows, p)
@@ -69,6 +78,7 @@ def hour_radar(rows: pd.DataFrame, now: float, cfg: RadarConfig = RadarConfig(),
     typ = (cfg.cost_min + cfg.cost_max) / 2
     px = min(typ + cfg.slippage, 0.99)
     cost_all = px + fee_per_contract(cfg.fee_model, px)
+    evs = TrailingEVStats.from_signals(sig, cfg.ev_rules, cfg.ev_min_n, cfg.slippage, cfg.fee_model) if cfg.ev_rules else None
     w = sig[sig.open_ts >= now - cfg.window_days * 86400]
     w14 = sig[sig.open_ts >= now - 14 * 86400]
     out = []
@@ -76,6 +86,16 @@ def hour_radar(rows: pd.DataFrame, now: float, cfg: RadarConfig = RadarConfig(),
         a = w if h is None else w[w.hour == h]
         b = w14 if h is None else w14[w14.hour == h]
         st, st14 = _stats(_net_pnl(a, cfg), a), _stats(_net_pnl(b, cfg), b)
+        if evs is not None:                                                                # the preset trades by EV filter: show what the filter sees
+            if h is None:
+                est, status = float("nan"), "cold"
+            else:
+                ok, _g, parts = evs.check(h, now)
+                nets = [net for _d, n, net, _t, _ok in parts if n]
+                est, status = (min(nets) if nets else float("nan")), ("TRADE" if ok else "cold")
+            out.append(dict(hour="ALL" if h is None else h, active=(h in active_hours) if h is not None else False, n=st["n"], win=st["win"], price=st["price"], ev=st["ev"], se=st["se"],
+                            z=(st["ev"] / st["se"]) if (st["n"] > 1 and st["se"] and st["se"] > 0) else np.nan, n14=st14["n"], ev14=st14["ev"], est_edge=est, status=status))
+            continue
         if h is None:
             pr, _n, _nh = stats.p("DOG", 22, typ, now)                                    # overall level: the hour-shrinkage target
             d = stats.decayed(("DOG", None), now)
@@ -85,8 +105,19 @@ def hour_radar(rows: pd.DataFrame, now: float, cfg: RadarConfig = RadarConfig(),
             est = pr - cost_all
         status = "TRADE" if est >= cfg.min_edge else "WATCH" if est >= cfg.min_edge / 2 else "cold"
         out.append(dict(hour="ALL" if h is None else h, active=(h in active_hours) if h is not None else False, n=st["n"], win=st["win"], price=st["price"], ev=st["ev"], se=st["se"],
-                        n14=st14["n"], ev14=st14["ev"], est_edge=est, status=status))
+                        z=(st["ev"] / st["se"]) if (st["n"] > 1 and st["se"] and st["se"] > 0) else np.nan, n14=st14["n"], ev14=st14["ev"], est_edge=est, status=status))
     return pd.DataFrame(out)
+
+
+def luck_note(df: pd.DataFrame, cfg: RadarConfig = RadarConfig()) -> str:
+    """One sentence on the raw trailing columns: the best hour's EV and z, and whether any hour clears the bar for 'not just luck among 24 hours'."""
+    h = df[(df.hour != "ALL") & df.z.notna()]
+    if h.empty:
+        return "Raw trailing EV by hour: not enough signals."
+    best = h.loc[h.z.idxmax()]
+    ok = h[h.z >= LUCK_Z]
+    verdict = (f"{len(ok)} hour(s) clear it: {', '.join(str(int(x)) for x in ok.hour)}." if len(ok) else "none clears it - every raw edge is consistent with luck.")
+    return (f"Raw {cfg.window_days}-day EV by hour: the best is hour {int(best.hour)} at {best.ev * 100:+.1f}c (z = {best.z:.1f}); with 24 hours searched an edge needs z >= {LUCK_Z:g} to be told from luck - {verdict}")
 
 
 def summarize(df: pd.DataFrame, active_hours: tuple, cfg: RadarConfig = RadarConfig()) -> tuple[str, str]:

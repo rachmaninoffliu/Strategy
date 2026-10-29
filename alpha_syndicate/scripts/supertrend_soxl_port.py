@@ -94,11 +94,8 @@ os.makedirs(OUTDIR, exist_ok=True)
 
 
 def creds():
-    k, s = os.environ.get("ALPACA_API_KEY"), os.environ.get("ALPACA_SECRET_KEY")
-    if k and s:
-        return k, s
-    e = json.load(open(os.path.expanduser("~/.claude.json")))["mcpServers"]["alpaca-paper"]["env"]
-    return e["ALPACA_API_KEY"], e["ALPACA_SECRET_KEY"]
+    import alpaca_keys                                                      # "Alpaca Key.txt" in the project folder, then the environment, then ~/.claude.json
+    return alpaca_keys.creds(True)
 
 
 def load_bars():

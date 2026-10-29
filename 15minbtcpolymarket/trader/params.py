@@ -11,6 +11,7 @@ from typing import Optional
 
 from .adaptive import describe_liquidity, describe_regime_scale, format_ladder
 from .backtest import PROB_MODES, BacktestConfig
+from .evfilter import describe_rules
 from .live import MIN_HISTORY, LiveConfig
 from .strategy import fmt_int_list
 
@@ -45,7 +46,7 @@ def _band(lo: float, hi: float, on: bool) -> str:
 def auto_in_effect(c) -> bool:
     """Is Auto mode in effect for this config?  (It needs the learned probability: the backtest's history mode / the live 'history' source.)"""
     a = getattr(c, "auto", None)
-    if a is None or not a.enabled:
+    if a is None or not a.enabled or getattr(c, "ev_rules", ()):
         return False
     return c.prob_mode == PROB_MODES[0] if hasattr(c, "prob_mode") else c.prob_source == "history"
 
@@ -83,6 +84,10 @@ def describe_parameters(bt: Optional[BacktestConfig], lv: LiveConfig, preset: st
     both(g, "Underdog price band", lambda c: _band(c.params.cost_min, c.params.cost_max, "DOG" in c.params.legs))
     both(g, "Favourite price band", lambda c: _band(c.params.fav_min, c.params.fav_max, "FAV" in c.params.legs))
     both(g, "Max book spread", lambda c: f"{c.params.max_spread * 100:.0f}c")
+
+    g = "EV-regime filter (shared)"
+    both(g, "Trade an hour only if", lambda c: (describe_rules(c.ev_rules) + f"  (each window needs >= {c.ev_min_n} signals of that hour)") if c.ev_rules else "off - no filter",
+         "the hour's trailing net EV (the radar's 'Net EV 14 d / 28 d'); when on it replaces the learned win probability below: a passing hour is sized off its own trailing gross edge, a failing hour is skipped")
 
     g = "Win probability (shared estimator)"
     both(g, "Basis", lambda c: "price-adjusted edge" if c.p_basis == "edge" else "raw historical win rate")

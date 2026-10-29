@@ -1,0 +1,6 @@
+{"ts": "10:00:04", "j": 5, "sym": "TSLA", "side": "BUY", "lots": 3, "qty": 24, "ref_price": 376.195, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 3, "edge": 15.898512812834628, "note": ""}
+{"ts": "10:00:04", "j": 5, "sym": "NVDA", "side": "BUY", "lots": 3, "qty": 48, "ref_price": 237.27, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 3, "edge": 9.599053685215235, "note": ""}
+{"ts": "12:35:04", "j": 36, "sym": "NVDA", "side": "SELL", "lots": 1, "qty": 16, "ref_price": 236.18, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 2, "edge": 6.3011731853518675, "note": ""}
+{"ts": "12:50:04", "j": 39, "sym": "NVDA", "side": "BUY", "lots": 1, "qty": 16, "ref_price": 236.42, "type": "MARKETABLE_LIMIT", "mode": "DRY_RUN", "target": 3, "edge": 6.444406674895458, "note": ""}
+{"ts": "15:30:05", "j": 71, "sym": "TSLA", "side": "SELL", "lots": 3, "qty": 24, "type": "MOC", "mode": "DRY_RUN", "note": "flatten at the official close; entry deadline 15:50 ET"}
+{"ts": "15:30:05", "j": 71, "sym": "NVDA", "side": "SELL", "lots": 3, "qty": 48, "type": "MOC", "mode": "DRY_RUN", "note": "flatten at the official close; entry deadline 15:50 ET"}

@@ -1,0 +1,66 @@
+== A. slippage stress (total per-lot cost = half spread + slip; policy thresholds move with cost) and 1000-draw 21-day block bootstrap
+TSLA {'slip 0.25': 1.14, 'boot5': 0.69, 'boot95': 1.62, 'vol %/day of 3-lot capital': 2.46, 'worst day %': -12.27, 'slip 1.0': 1.06, 'slip 2.0': 0.93}
+SMH {'slip 0.25': 1.11, 'boot5': 0.52, 'boot95': 1.63, 'vol %/day of 3-lot capital': 1.18, 'worst day %': -6.83, 'slip 1.0': 0.87, 'slip 2.0': 0.7}
+NVDA {'slip 0.25': 1.04, 'boot5': 0.48, 'boot95': 1.64, 'vol %/day of 3-lot capital': 2.0, 'worst day %': -9.54, 'slip 1.0': 0.74, 'slip 2.0': 0.54}
+AMZN {'slip 0.25': 0.92, 'boot5': 0.26, 'boot95': 1.59, 'vol %/day of 3-lot capital': 1.16, 'worst day %': -6.0, 'slip 1.0': 0.2, 'slip 2.0': -0.2}
+QQQ {'slip 0.25': 0.46, 'boot5': -0.08, 'boot95': 0.95, 'vol %/day of 3-lot capital': 0.96, 'worst day %': -6.21, 'slip 1.0': -0.08, 'slip 2.0': -0.31}
+SOXL {'slip 0.25': 0.82, 'boot5': 0.27, 'boot95': 1.33, 'vol %/day of 3-lot capital': 4.62, 'worst day %': -35.26, 'slip 1.0': 0.87, 'slip 2.0': 0.78}
+
+== B. drift / bias / placebo (day-shuffle keeps time-of-day structure and any long bias, destroys day-specific information; 100 shuffles)
+TSLA: net Sharpe 1.14 | avg signed lots +0.83, avg |lots| 2.06 | gross bp/day long +50.6 short +17.4 | 1-lot buy&hold +8.9 bp/day | corr(P&L, day return) +0.45
+   sign-flip -1.81 | placebo mean -0.17 p95 +0.34 max +0.67
+   gross bp/day by interval: {'09:35-10:30': 26.4, '10:30-12:00': 23.7, '12:00-14:00': 2.6, '14:00-15:00': 6.6, '15:05-16:00': 8.7}
+SMH: net Sharpe 1.11 | avg signed lots +0.31, avg |lots| 1.49 | gross bp/day long +24.1 short +13.6 | 1-lot buy&hold +4.1 bp/day | corr(P&L, day return) +0.20
+   sign-flip -2.28 | placebo mean -0.61 p95 +0.00 max +0.26
+   gross bp/day by interval: {'09:35-10:30': 10.4, '10:30-12:00': 12.2, '12:00-14:00': 7.7, '14:00-15:00': 4.2, '15:05-16:00': 3.2}
+NVDA: net Sharpe 1.04 | avg signed lots +0.43, avg |lots| 2.10 | gross bp/day long +36.6 short +12.0 | 1-lot buy&hold +8.5 bp/day | corr(P&L, day return) +0.21
+   sign-flip -1.54 | placebo mean -0.12 p95 +0.51 max +0.69
+   gross bp/day by interval: {'09:35-10:30': 16.5, '10:30-12:00': 14.3, '12:00-14:00': 10.0, '14:00-15:00': 2.3, '15:05-16:00': 5.5}
+AMZN: net Sharpe 0.92 | avg signed lots +0.03, avg |lots| 1.64 | gross bp/day long +17.4 short +14.2 | 1-lot buy&hold +2.6 bp/day | corr(P&L, day return) +0.06
+   sign-flip -1.98 | placebo mean -0.59 p95 -0.04 max +0.22
+   gross bp/day by interval: {'09:35-10:30': 11.1, '10:30-12:00': 7.7, '12:00-14:00': 6.1, '14:00-15:00': 4.6, '15:05-16:00': 2.1}
+QQQ: net Sharpe 0.46 | avg signed lots +0.47, avg |lots| 2.09 | gross bp/day long +11.3 short +1.6 | 1-lot buy&hold +3.8 bp/day | corr(P&L, day return) +0.34
+   sign-flip -0.96 | placebo mean -0.19 p95 +0.28 max +0.52
+   gross bp/day by interval: {'09:35-10:30': 2.6, '10:30-12:00': 3.4, '12:00-14:00': 3.6, '14:00-15:00': 2.3, '15:05-16:00': 0.9}
+
+== C. open-hour cost stress and no-open variants (Sharpe 2019-26)
+TSLA {'open x1': 1.14, 'open x2': 1.02, 'open x3': 0.9, 'no trade before 10:00': 1.35, 'no trade before 10:30': 1.06}
+SMH {'open x1': 1.11, 'open x2': 0.92, 'open x3': 0.73, 'no trade before 10:00': 1.1, 'no trade before 10:30': 1.17}
+NVDA {'open x1': 1.04, 'open x2': 0.96, 'open x3': 0.88, 'no trade before 10:00': 0.89, 'no trade before 10:30': 0.96}
+AMZN {'open x1': 0.92, 'open x2': 0.72, 'open x3': 0.53, 'no trade before 10:00': 0.99, 'no trade before 10:30': 0.92}
+QQQ {'open x1': 0.46, 'open x2': 0.38, 'open x3': 0.29, 'no trade before 10:00': 0.51, 'no trade before 10:30': 0.6}
+
+== D. equal-risk baskets (inverse daily-vol weights), full-day policy and no-trade-before-10:00 policy
+full day          TSLA+SMH+NVDA          Sharpe 1.52 | mean pairwise corr 0.28
+full day          TSLA+SMH               Sharpe 1.46 | mean pairwise corr 0.19
+full day          TSLA+SMH+NVDA+AMZN     Sharpe 1.59 | mean pairwise corr 0.25
+no trade < 10:00  TSLA+SMH+NVDA          Sharpe 1.55 | mean pairwise corr 0.27 | by year {2019: -0.32, 2020: 2.39, 2021: 2.96, 2022: 0.5, 2023: 1.43, 2024: 2.17, 2025: 2.03, 2026: 1.34}
+no trade < 10:00  TSLA+SMH               Sharpe 1.59 | mean pairwise corr 0.19
+no trade < 10:00  TSLA+SMH+NVDA+AMZN     Sharpe 1.63 | mean pairwise corr 0.25
+
+== E. ex-ante predictor: intraday 9:35->close vol (pre-2019 only) / cost vs 2019-26 net Sharpe
+        vol_pre2019  cost  sharpe   ratio
+symbol                                   
+NVDA         209.83  0.71    1.04  295.16
+TQQQ         263.34  0.96    0.26  274.89
+SOXL         425.63  1.57    0.82  271.76
+QQQ           87.88  0.39    0.46  225.78
+TSLA         222.46  1.07    1.14  208.60
+IWM           87.44  0.43    0.61  202.61
+SPY           66.25  0.38    0.34  174.34
+SQQQ         259.91  1.58    0.36  164.32
+UPRO         199.13  1.28    0.02  155.82
+AAPL         104.14  0.68   -0.17  152.39
+AMZN         136.86  1.01    0.92  135.45
+DIA           66.52  0.53    0.09  124.48
+XBI          175.56  1.57    0.50  111.58
+XLK           86.06  0.77   -0.02  111.53
+XLE          101.80  0.99   -0.16  102.76
+GLD           49.00  0.52   -0.44   94.08
+AMD          313.16  3.49    0.30   89.70
+MSFT         108.97  1.27   -0.40   85.84
+META         126.27  1.54   -0.31   82.13
+SMH          109.65  1.39    1.11   78.92
+XLF           84.68  1.15   -0.28   73.75
+TLT           44.36  0.87   -1.01   50.74
+Spearman(vol/cost pre-2019, net Sharpe 2019-26) = +0.60  p=0.003

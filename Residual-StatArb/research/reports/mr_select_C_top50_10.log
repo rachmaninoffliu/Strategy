@@ -1,0 +1,22 @@
+﻿  market: 176 symbols, 2719 sessions (6 s)
+top50 k10 @1530 cost 1bp: Sharpe 0.88 (IS 0.98, OOS 0.78) · CAGR 15.2% vs SPY 15.0% · maxDD -27.7% · 7708 trades · win 64% · exposure 62% (8 s)
+top50 k10 @1530 cost 2bp: Sharpe 0.80 (IS 0.89, OOS 0.70) · CAGR 13.5% vs SPY 15.0% · maxDD -30.5% · 7708 trades · win 63% · exposure 62% (9 s)
+top50 k10 @1530 cost 3bp: Sharpe 0.72 (IS 0.80, OOS 0.63) · CAGR 11.8% vs SPY 15.0% · maxDD -33.3% · 7708 trades · win 63% · exposure 62% (10 s)
+top50 k10 @1530 cost 5bp: Sharpe 0.55 (IS 0.62, OOS 0.48) · CAGR 8.6% vs SPY 15.0% · maxDD -38.4% · 7708 trades · win 61% · exposure 62% (11 s)
+  market: 176 symbols, 2719 sessions (6 s)
+top50 k10 @1545 cost 1bp: Sharpe 1.01 (IS 1.02, OOS 1.04) · CAGR 17.8% vs SPY 15.0% · maxDD -24.3% · 7832 trades · win 64% · exposure 63% (18 s)
+top50 k10 @1545 cost 2bp: Sharpe 0.93 (IS 0.92, OOS 0.97) · CAGR 16.1% vs SPY 15.0% · maxDD -26.0% · 7832 trades · win 63% · exposure 63% (19 s)
+top50 k10 @1545 cost 3bp: Sharpe 0.84 (IS 0.82, OOS 0.90) · CAGR 14.3% vs SPY 15.0% · maxDD -27.5% · 7832 trades · win 63% · exposure 63% (20 s)
+top50 k10 @1545 cost 5bp: Sharpe 0.67 (IS 0.63, OOS 0.75) · CAGR 10.9% vs SPY 15.0% · maxDD -30.9% · 7832 trades · win 61% · exposure 63% (22 s)
+  market: 176 symbols, 2719 sessions (6 s)
+top50 k10 @1600 cost 1bp (LOOK-AHEAD: decided on the close it trades at): Sharpe 1.01 (IS 0.86, OOS 1.23) · CAGR 18.0% vs SPY 15.0% · maxDD -19.4% · 7752 trades · win 64% · exposure 62% (29 s)
+                                                                   model  sh_is  sh_oos  sh_all  cagr_is  cagr_oos  cagr    mdd   vol  trades   win  expo  max_expo  beta
+                                                top50 k10 @1545 cost 1bp  1.015   1.043   1.010    0.151     0.226 0.178 -0.243 0.178    7832 0.638 0.627     0.981 0.595
+                                                top50 k10 @1530 cost 1bp  0.980   0.778   0.882    0.153     0.151 0.152 -0.277 0.179    7708 0.637 0.621     0.986 0.622
+                                                top50 k10 @1545 cost 2bp  0.918   0.970   0.926    0.134     0.206 0.161 -0.260 0.178    7832 0.634 0.627     0.981 0.595
+                                                top50 k10 @1530 cost 2bp  0.890   0.704   0.800    0.137     0.134 0.135 -0.305 0.179    7708 0.631 0.621     0.984 0.622
+top50 k10 @1600 cost 1bp (LOOK-AHEAD: decided on the close it trades at)  0.856   1.234   1.014    0.126     0.276 0.180 -0.194 0.179    7752 0.641 0.624     0.980 0.574
+                                                top50 k10 @1545 cost 3bp  0.821   0.900   0.843    0.118     0.188 0.143 -0.275 0.178    7832 0.628 0.627     0.981 0.594
+                                                top50 k10 @1530 cost 3bp  0.798   0.627   0.716    0.120     0.115 0.118 -0.333 0.179    7708 0.626 0.621     0.986 0.621
+                                                top50 k10 @1545 cost 5bp  0.627   0.752   0.674    0.086     0.150 0.109 -0.309 0.177    7832 0.613 0.626     0.981 0.593
+                                                top50 k10 @1530 cost 5bp  0.618   0.482   0.553    0.089     0.082 0.086 -0.384 0.178    7708 0.614 0.620     0.984 0.621

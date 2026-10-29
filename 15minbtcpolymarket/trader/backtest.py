@@ -16,6 +16,7 @@ from .data import SETTLE_DELAY, extract_signals
 from .fees import fee_total
 from .metrics import compute_metrics, drawdown_series, equity_curve
 from .adaptive import AdaptiveStats, AutoConfig, decide, resolve_volume
+from .evfilter import DEFAULT_MIN_N, TrailingEVStats
 from .probmodel import SignalStats
 from .strategy import MIN_HISTORY, StrategyParams, size_bet, throttled_sizing
 
@@ -52,6 +53,8 @@ class BacktestConfig:
     p_model: str = "overall"                    # 'overall' (per leg) or 'by_hour' (per leg and UTC hour, shrunk to the leg estimate)
     p_basis: str = "edge"                       # 'edge' = price-adjusted historical edge (default) | 'win_rate' = raw historical win rate
     hour_k: float = 40.0                        # shrinkage strength toward the leg estimate in 'by_hour' mode
+    ev_rules: tuple = ()                        # EV-regime filter (trader.evfilter): ((days, threshold), ...) - an hour trades only while its trailing net EV beats EVERY rule; () = off
+    ev_min_n: int = DEFAULT_MIN_N               # signals an hour needs inside a rule's window before its EV counts
     start_ts: Optional[int] = None              # exact period (UTC epoch seconds, [start_ts, end_ts) by window open) instead of whole days; the live-vs-backtest reconcile compares a session's own span
     end_ts: Optional[int] = None
 
@@ -101,8 +104,11 @@ def run_backtest(rows: pd.DataFrame, cfg: BacktestConfig) -> BacktestResult:
     start_ts, end_ts = bounds(cfg)
     sig = extract_signals(rows, cfg.params)                         # full history: it also burns in the probability model
     in_rng = sig[(sig.open_ts >= start_ts) & (sig.open_ts < end_ts)]
-    auto_on = cfg.auto is not None and cfg.auto.enabled and cfg.prob_mode == PROB_MODES[0]       # Auto needs the learned (expanding) probability
-    if auto_on:
+    ev_on = bool(cfg.ev_rules) and cfg.prob_mode == PROB_MODES[0]                                 # the EV filter needs the history (expanding) mode too
+    auto_on = cfg.auto is not None and cfg.auto.enabled and cfg.prob_mode == PROB_MODES[0] and not ev_on       # Auto needs the learned (expanding) probability
+    if ev_on:
+        stats = TrailingEVStats.from_signals(sig, cfg.ev_rules, cfg.ev_min_n, cfg.slippage, cfg.fee_model)
+    elif auto_on:
         stats = AdaptiveStats.from_signals(sig, cfg.auto, mode=cfg.p_model, hour_k=cfg.hour_k, prior_n=cfg.prior_n, basis=cfg.p_basis, core_hours=cfg.core_hours, core_k=cfg.core_k, near_k=cfg.near_k, near_width=cfg.near_width)
     else:
         stats = SignalStats.from_signals(sig, mode=cfg.p_model, hour_k=cfg.hour_k, prior_n=cfg.prior_n, lookback_days=cfg.lookback_days, basis=cfg.p_basis, halflife_days=cfg.halflife_days, core_hours=cfg.core_hours, core_k=cfg.core_k, near_k=cfg.near_k, near_width=cfg.near_width)

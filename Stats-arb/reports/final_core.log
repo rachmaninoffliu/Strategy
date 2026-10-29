@@ -1,0 +1,27 @@
+universe=core preset='Earnings premium + OU screen (paper-trade candidate)' -> ../reports/statarb/final_core
+431 stocks + 20 ETFs · 2016-01-04 → 2026-10-23 · 2,718 sessions
+  building signals: 431 names x 2718 sessions on 8 worker(s) ...
+  signals built in 42s
+ALL {'years': 9.373, 'cagr': 0.057, 'mean_ann': 0.059, 'vol': 0.081, 'sharpe': 0.727, 'sortino': 0.94, 'maxdd': -0.18, 'calmar': 0.319, 'hit': 0.38, 'skew': 1.382, 'kurt': 24.595, 'best_day': 0.066, 'worst_day': -0.043, 'worst_21d': -0.068, 'psr0': 0.989, 'total': 0.686, 'dsr': 0.496, 'sharpe_se': 0.327, 'beta': 0.05, 'alpha_ann': 0.051, 'corr': 0.108, 'bench_sharpe': 0.867, 'bench_cagr': 0.147, 'bench_maxdd': -0.32}
+IS  {'cagr': 0.035, 'vol': 0.065, 'sharpe': 0.572, 'maxdd': -0.161}
+OOS {'cagr': 0.079, 'vol': 0.094, 'sharpe': 0.85, 'maxdd': -0.18}
+RISK {'var95_1d': 0.0066, 'var99_1d': 0.0152, 'cvar95_1d': 0.0112, 'cvar99_1d': 0.02, 'var95_1d_usd': 656.8247, 'cvar99_1d_usd': 2004.3163, 'worst_day': -0.043, 'worst_day_date': '2024-12-18', 'avg_gross': 1.3013, 'max_gross': 2.0, 'avg_beta': 0.0197, 'avg_turnover': 0.5665, 'cost_per_year': 0.0196, 'borrow_per_year': 0.0016, 'avg_names': 38.1338, 'avg_eap_names': 38.1338, 'pct_days_flat': 0.2583, 'ann_vol_realised': 0.0811, 'corr_spy': 0.1083}
+ablation ...
+    CURRENT SETTING: Sharpe 0.73
+    A&L 2008 rules (equal $, no filters, no overlays): Sharpe 0.29
+    no earnings-premium sleeve (reversion only): Sharpe -0.36
+    earnings sleeve unhedged: Sharpe 1.13
+    earnings sleeve: all announcers (no OU screen): Sharpe 0.69
+    no news / post-earnings filter: Sharpe 0.73
+    no earnings-window filter: Sharpe 0.73
+    no factor / sector neutrality: Sharpe 0.73
+    no style (mom / vol / size) neutrality: Sharpe 0.73
+    no macro (oil / rates / USD) neutrality: Sharpe 0.73
+    no volatility target: Sharpe 0.74
+    no geopolitical shock multiplier: Sharpe 0.61
+    equal-dollar sizing (no 1/vol): Sharpe 0.73
+    no no-trade band: Sharpe 0.75
+    costs x2: Sharpe 0.52
+    costs x0.5: Sharpe 0.83
+costs / sensitivity ...
+done ../reports/statarb/final_core

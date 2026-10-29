@@ -1,0 +1,125 @@
+﻿19:59:50 loading 292 stocks + 14 ETFs (sip) from 2015-06-11 ...
+20:00:00 factor model 'etf': betas over 252 days, residuals for 70,692 bars ...
+20:00:04 306 symbols · 70,692 bars · 2016-01-04 .. 2026-10-26
+20:00:16 [1/108] F=252 S=21 monthly q=0.2/0.2: IS 0.07 OOS 0.29 gross IS 0.10 turn 12x
+20:00:28 [2/108] F=252 S=21 monthly q=0.2/0.35: IS -0.10 OOS 0.22 gross IS -0.07 turn 8x
+20:00:40 [3/108] F=252 S=21 monthly q=0.1/0.25: IS -0.04 OOS 0.31 gross IS -0.02 turn 9x
+20:00:52 [4/108] F=252 S=21 weekly q=0.2/0.2: IS -0.03 OOS 0.27 gross IS 0.01 turn 26x
+20:01:05 [5/108] F=252 S=21 weekly q=0.2/0.35: IS -0.15 OOS 0.31 gross IS -0.12 turn 13x
+20:01:17 [6/108] F=252 S=21 weekly q=0.1/0.25: IS -0.04 OOS 0.35 gross IS -0.01 turn 16x
+20:01:31 [7/108] F=252 S=21 daily q=0.2/0.2: IS 0.01 OOS 0.43 gross IS 0.09 turn 62x
+20:01:43 [8/108] F=252 S=21 daily q=0.2/0.35: IS -0.09 OOS 0.37 gross IS -0.05 turn 24x
+20:01:54 [9/108] F=252 S=21 daily q=0.1/0.25: IS -0.05 OOS 0.36 gross IS -0.01 turn 27x
+20:02:05 [10/108] F=252 S=5 monthly q=0.2/0.2: IS -0.13 OOS 0.21 gross IS -0.10 turn 11x
+20:02:16 [11/108] F=252 S=5 monthly q=0.2/0.35: IS -0.12 OOS 0.22 gross IS -0.09 turn 8x
+20:02:27 [12/108] F=252 S=5 monthly q=0.1/0.25: IS -0.00 OOS 0.30 gross IS 0.02 turn 9x
+20:02:38 [13/108] F=252 S=5 weekly q=0.2/0.2: IS -0.14 OOS 0.19 gross IS -0.10 turn 24x
+20:02:49 [14/108] F=252 S=5 weekly q=0.2/0.35: IS -0.23 OOS 0.24 gross IS -0.20 turn 13x
+20:03:01 [15/108] F=252 S=5 weekly q=0.1/0.25: IS -0.11 OOS 0.37 gross IS -0.09 turn 15x
+20:03:15 [16/108] F=252 S=5 daily q=0.2/0.2: IS -0.14 OOS 0.34 gross IS -0.07 turn 61x
+20:03:29 [17/108] F=252 S=5 daily q=0.2/0.35: IS -0.20 OOS 0.18 gross IS -0.16 turn 23x
+20:03:43 [18/108] F=252 S=5 daily q=0.1/0.25: IS -0.10 OOS 0.41 gross IS -0.06 turn 26x
+20:03:57 [19/108] F=252 S=0 monthly q=0.2/0.2: IS -0.12 OOS 0.17 gross IS -0.09 turn 11x
+20:04:11 [20/108] F=252 S=0 monthly q=0.2/0.35: IS -0.16 OOS 0.19 gross IS -0.13 turn 8x
+20:04:26 [21/108] F=252 S=0 monthly q=0.1/0.25: IS 0.01 OOS 0.42 gross IS 0.03 turn 9x
+20:04:38 [22/108] F=252 S=0 weekly q=0.2/0.2: IS -0.20 OOS 0.15 gross IS -0.16 turn 25x
+20:04:50 [23/108] F=252 S=0 weekly q=0.2/0.35: IS -0.21 OOS 0.19 gross IS -0.18 turn 13x
+20:05:02 [24/108] F=252 S=0 weekly q=0.1/0.25: IS -0.25 OOS 0.32 gross IS -0.22 turn 15x
+20:05:15 [25/108] F=252 S=0 daily q=0.2/0.2: IS -0.34 OOS 0.19 gross IS -0.27 turn 60x
+20:05:29 [26/108] F=252 S=0 daily q=0.2/0.35: IS -0.25 OOS 0.21 gross IS -0.20 turn 23x
+20:05:42 [27/108] F=252 S=0 daily q=0.1/0.25: IS -0.22 OOS 0.38 gross IS -0.18 turn 26x
+20:05:55 [28/108] F=126 S=21 monthly q=0.2/0.2: IS 0.07 OOS 0.50 gross IS 0.11 turn 15x
+20:06:09 [29/108] F=126 S=21 monthly q=0.2/0.35: IS 0.03 OOS 0.48 gross IS 0.06 turn 11x
+20:06:23 [30/108] F=126 S=21 monthly q=0.1/0.25: IS -0.03 OOS 0.63 gross IS -0.00 turn 13x
+20:06:37 [31/108] F=126 S=21 weekly q=0.2/0.2: IS -0.19 OOS 0.41 gross IS -0.13 turn 34x
+20:06:48 [32/108] F=126 S=21 weekly q=0.2/0.35: IS -0.08 OOS 0.57 gross IS -0.04 turn 19x
+20:06:58 [33/108] F=126 S=21 weekly q=0.1/0.25: IS -0.13 OOS 0.41 gross IS -0.09 turn 23x
+20:07:10 [34/108] F=126 S=21 daily q=0.2/0.2: IS -0.13 OOS 0.53 gross IS -0.02 turn 84x
+20:07:24 [35/108] F=126 S=21 daily q=0.2/0.35: IS -0.11 OOS 0.60 gross IS -0.05 turn 35x
+20:07:37 [36/108] F=126 S=21 daily q=0.1/0.25: IS -0.05 OOS 0.45 gross IS 0.01 turn 41x
+20:07:49 [37/108] F=126 S=5 monthly q=0.2/0.2: IS 0.06 OOS 0.41 gross IS 0.09 turn 15x
+20:07:56 [38/108] F=126 S=5 monthly q=0.2/0.35: IS -0.06 OOS 0.45 gross IS -0.03 turn 10x
+20:08:05 [39/108] F=126 S=5 monthly q=0.1/0.25: IS -0.03 OOS 0.50 gross IS -0.00 turn 12x
+20:08:17 [40/108] F=126 S=5 weekly q=0.2/0.2: IS -0.03 OOS 0.44 gross IS 0.03 turn 32x
+20:08:29 [41/108] F=126 S=5 weekly q=0.2/0.35: IS -0.05 OOS 0.25 gross IS -0.01 turn 18x
+20:08:41 [42/108] F=126 S=5 weekly q=0.1/0.25: IS -0.12 OOS 0.35 gross IS -0.09 turn 22x
+20:08:53 [43/108] F=126 S=5 daily q=0.2/0.2: IS -0.11 OOS 0.49 gross IS -0.01 turn 79x
+20:09:05 [44/108] F=126 S=5 daily q=0.2/0.35: IS -0.07 OOS 0.54 gross IS -0.01 turn 33x
+20:09:17 [45/108] F=126 S=5 daily q=0.1/0.25: IS -0.11 OOS 0.45 gross IS -0.06 turn 38x
+20:09:26 [46/108] F=126 S=0 monthly q=0.2/0.2: IS 0.04 OOS 0.58 gross IS 0.07 turn 14x
+20:09:36 [47/108] F=126 S=0 monthly q=0.2/0.35: IS 0.01 OOS 0.61 gross IS 0.04 turn 10x
+20:09:47 [48/108] F=126 S=0 monthly q=0.1/0.25: IS -0.04 OOS 0.52 gross IS -0.02 turn 12x
+20:09:58 [49/108] F=126 S=0 weekly q=0.2/0.2: IS -0.26 OOS 0.33 gross IS -0.21 turn 32x
+20:10:09 [50/108] F=126 S=0 weekly q=0.2/0.35: IS -0.15 OOS 0.33 gross IS -0.11 turn 18x
+20:10:19 [51/108] F=126 S=0 weekly q=0.1/0.25: IS -0.25 OOS 0.31 gross IS -0.22 turn 22x
+20:10:30 [52/108] F=126 S=0 daily q=0.2/0.2: IS -0.35 OOS 0.32 gross IS -0.25 turn 79x
+20:10:42 [53/108] F=126 S=0 daily q=0.2/0.35: IS -0.26 OOS 0.44 gross IS -0.20 turn 32x
+20:10:54 [54/108] F=126 S=0 daily q=0.1/0.25: IS -0.23 OOS 0.41 gross IS -0.18 turn 37x
+20:11:05 [55/108] F=63 S=21 monthly q=0.2/0.2: IS 0.20 OOS 0.66 gross IS 0.25 turn 21x
+20:11:15 [56/108] F=63 S=21 monthly q=0.2/0.35: IS 0.36 OOS 0.39 gross IS 0.41 turn 17x
+20:11:24 [57/108] F=63 S=21 monthly q=0.1/0.25: IS 0.37 OOS 0.60 gross IS 0.41 turn 21x
+20:11:33 [58/108] F=63 S=21 weekly q=0.2/0.2: IS -0.01 OOS 0.47 gross IS 0.08 turn 49x
+20:11:43 [59/108] F=63 S=21 weekly q=0.2/0.35: IS -0.26 OOS 0.31 gross IS -0.19 turn 32x
+20:11:52 [60/108] F=63 S=21 weekly q=0.1/0.25: IS -0.02 OOS 0.47 gross IS 0.04 turn 39x
+20:12:02 [61/108] F=63 S=21 daily q=0.2/0.2: IS -0.16 OOS 0.65 gross IS 0.02 turn 123x
+20:12:13 [62/108] F=63 S=21 daily q=0.2/0.35: IS -0.13 OOS 0.61 gross IS -0.01 turn 60x
+20:12:22 [63/108] F=63 S=21 daily q=0.1/0.25: IS 0.00 OOS 0.70 gross IS 0.10 turn 72x
+20:12:32 [64/108] F=63 S=5 monthly q=0.2/0.2: IS 0.19 OOS 0.45 gross IS 0.23 turn 19x
+20:12:44 [65/108] F=63 S=5 monthly q=0.2/0.35: IS 0.07 OOS 0.28 gross IS 0.11 turn 15x
+20:12:59 [66/108] F=63 S=5 monthly q=0.1/0.25: IS 0.06 OOS 0.49 gross IS 0.10 turn 18x
+20:13:14 [67/108] F=63 S=5 weekly q=0.2/0.2: IS -0.21 OOS 0.34 gross IS -0.13 turn 43x
+20:13:28 [68/108] F=63 S=5 weekly q=0.2/0.35: IS -0.22 OOS 0.13 gross IS -0.16 turn 27x
+20:13:42 [69/108] F=63 S=5 weekly q=0.1/0.25: IS -0.08 OOS 0.42 gross IS -0.03 turn 33x
+20:13:56 [70/108] F=63 S=5 daily q=0.2/0.2: IS -0.27 OOS 0.58 gross IS -0.11 turn 110x
+20:14:10 [71/108] F=63 S=5 daily q=0.2/0.35: IS -0.33 OOS 0.58 gross IS -0.23 turn 50x
+20:14:24 [72/108] F=63 S=5 daily q=0.1/0.25: IS 0.05 OOS 0.71 gross IS 0.14 turn 59x
+20:14:36 [73/108] F=63 S=0 monthly q=0.2/0.2: IS -0.10 OOS 0.70 gross IS -0.06 turn 19x
+20:14:49 [74/108] F=63 S=0 monthly q=0.2/0.35: IS -0.00 OOS 0.58 gross IS 0.04 turn 14x
+20:15:05 [75/108] F=63 S=0 monthly q=0.1/0.25: IS 0.04 OOS 0.49 gross IS 0.07 turn 18x
+20:15:31 [76/108] F=63 S=0 weekly q=0.2/0.2: IS -0.49 OOS 0.39 gross IS -0.41 turn 43x
+20:15:57 [77/108] F=63 S=0 weekly q=0.2/0.35: IS -0.36 OOS 0.29 gross IS -0.30 turn 26x
+20:16:20 [78/108] F=63 S=0 weekly q=0.1/0.25: IS -0.11 OOS 0.41 gross IS -0.06 turn 31x
+20:16:41 [79/108] F=63 S=0 daily q=0.2/0.2: IS -0.58 OOS 0.34 gross IS -0.43 turn 105x
+20:17:04 [80/108] F=63 S=0 daily q=0.2/0.35: IS -0.60 OOS 0.43 gross IS -0.51 turn 48x
+20:17:27 [81/108] F=63 S=0 daily q=0.1/0.25: IS -0.15 OOS 0.55 gross IS -0.07 turn 56x
+20:17:48 [91/108] F=21 S=5 monthly q=0.2/0.2: IS -0.11 OOS -0.00 gross IS -0.05 turn 25x
+20:18:10 [92/108] F=21 S=5 monthly q=0.2/0.35: IS -0.09 OOS 0.23 gross IS -0.03 turn 21x
+20:18:34 [93/108] F=21 S=5 monthly q=0.1/0.25: IS -0.08 OOS -0.13 gross IS -0.02 turn 27x
+20:18:58 [94/108] F=21 S=5 weekly q=0.2/0.2: IS -0.06 OOS -0.25 gross IS 0.08 turn 73x
+20:19:21 [95/108] F=21 S=5 weekly q=0.2/0.35: IS -0.17 OOS -0.34 gross IS -0.05 turn 53x
+20:19:36 [96/108] F=21 S=5 weekly q=0.1/0.25: IS -0.03 OOS -0.33 gross IS 0.08 turn 67x
+20:19:46 [97/108] F=21 S=5 daily q=0.2/0.2: IS -0.39 OOS 0.04 gross IS -0.07 turn 186x
+20:19:57 [98/108] F=21 S=5 daily q=0.2/0.35: IS -0.31 OOS 0.11 gross IS -0.10 turn 107x
+20:20:08 [99/108] F=21 S=5 daily q=0.1/0.25: IS -0.08 OOS 0.06 gross IS 0.12 turn 131x
+20:20:20 [100/108] F=21 S=0 monthly q=0.2/0.2: IS -0.31 OOS 0.29 gross IS -0.25 turn 25x
+20:20:31 [101/108] F=21 S=0 monthly q=0.2/0.35: IS -0.23 OOS 0.41 gross IS -0.18 turn 21x
+20:20:41 [102/108] F=21 S=0 monthly q=0.1/0.25: IS -0.14 OOS 0.26 gross IS -0.09 turn 27x
+20:20:53 [103/108] F=21 S=0 weekly q=0.2/0.2: IS -0.47 OOS 0.02 gross IS -0.35 turn 66x
+20:21:05 [104/108] F=21 S=0 weekly q=0.2/0.35: IS -0.43 OOS -0.05 gross IS -0.33 turn 46x
+20:21:15 [105/108] F=21 S=0 weekly q=0.1/0.25: IS -0.16 OOS 0.03 gross IS -0.07 turn 58x
+20:21:25 [106/108] F=21 S=0 daily q=0.2/0.2: IS -0.52 OOS -0.41 gross IS -0.28 turn 166x
+20:21:36 [107/108] F=21 S=0 daily q=0.2/0.35: IS -0.50 OOS -0.18 gross IS -0.34 turn 91x
+20:21:46 [108/108] F=21 S=0 daily q=0.1/0.25: IS -0.61 OOS -0.13 gross IS -0.46 turn 112x
+ form  skip     reb  q_in  q_out  sh_is  sh_oos  sh_all  gross_sh_is  gross_sh_all  cagr_is  cagr_oos   vol    mdd   turn  hold_d  cost_yr   beta  names
+   63    21 monthly   0.1   0.25  0.368   0.603   0.466        0.410         0.507    0.030     0.065 0.102 -0.161 21.198  23.325    0.003 -0.005 25.603
+   63    21 monthly   0.2   0.35  0.364   0.386   0.370        0.413         0.416    0.023     0.032 0.079 -0.161 16.503  28.678    0.002  0.001 45.493
+   63    21 monthly   0.2   0.20  0.199   0.664   0.401        0.253         0.453    0.012     0.062 0.084 -0.163 21.345  22.552    0.003 -0.002 37.911
+   63     5 monthly   0.2   0.20  0.188   0.449   0.298        0.232         0.342    0.012     0.043 0.093 -0.158 19.044  25.949    0.003 -0.006 38.886
+  252    21 monthly   0.2   0.20  0.075   0.295   0.166        0.102         0.193    0.002     0.029 0.111 -0.240 11.819  41.524    0.002  0.001 38.482
+  126    21 monthly   0.2   0.20  0.071   0.501   0.256        0.107         0.289    0.002     0.054 0.105 -0.278 15.421  32.517    0.002  0.002 39.454
+   63     5 monthly   0.2   0.35  0.068   0.280   0.159        0.110         0.199    0.002     0.023 0.086 -0.185 14.570  33.498    0.002 -0.003 47.469
+   63     5 monthly   0.1   0.25  0.061   0.486   0.242        0.098         0.278    0.001     0.053 0.107 -0.207 17.916  27.804    0.002 -0.010 26.789
+  126     5 monthly   0.2   0.20  0.058   0.406   0.207        0.091         0.238    0.001     0.044 0.111 -0.223 14.543  34.500    0.002 -0.007 39.470
+   63     5   daily   0.1   0.25  0.054   0.707   0.331        0.138         0.412    0.001     0.078 0.102 -0.200 59.264   8.504    0.007 -0.004 31.834
+  126     0 monthly   0.2   0.20  0.042   0.583   0.273        0.075         0.303   -0.001     0.067 0.110 -0.216 14.461  34.713    0.002 -0.006 39.503
+   63     0 monthly   0.1   0.25  0.038   0.489   0.233        0.074         0.267   -0.001     0.055 0.110 -0.201 17.827  28.054    0.002 -0.013 27.159
+  126    21 monthly   0.2   0.35  0.026   0.481   0.224        0.059         0.255   -0.001     0.048 0.096 -0.285 11.146  44.842    0.001  0.001 49.849
+  126     0 monthly   0.2   0.35  0.013   0.614   0.269        0.044         0.298   -0.003     0.064 0.097 -0.219 10.347  48.452    0.001 -0.007 50.295
+  252    21   daily   0.2   0.20  0.009   0.428   0.180        0.086         0.256   -0.005     0.046 0.112 -0.272 62.403   7.872    0.007  0.010 38.826
+  252     0 monthly   0.1   0.25  0.006   0.416   0.175        0.027         0.195   -0.006     0.050 0.128 -0.303  8.942  55.353    0.001  0.003 28.683
+   63    21   daily   0.1   0.25  0.003   0.705   0.296        0.105         0.397   -0.004     0.073 0.098 -0.240 72.354   6.965    0.008 -0.010 31.795
+  252     5 monthly   0.1   0.25 -0.001   0.296   0.122        0.020         0.142   -0.007     0.033 0.129 -0.283  9.068  54.580    0.001 -0.000 28.517
+   63     0 monthly   0.2   0.35 -0.005   0.578   0.254        0.038         0.293   -0.003     0.055 0.085 -0.200 14.225  34.406    0.002  0.004 47.724
+   63    21  weekly   0.2   0.20 -0.010   0.467   0.194        0.080         0.281   -0.004     0.043 0.089 -0.182 49.183  10.253    0.006 -0.000 39.911
+
+99 variants; IS Sharpe mean -0.14 sd 0.18; OOS of the IS-best: 0.60
